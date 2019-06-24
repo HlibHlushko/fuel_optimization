@@ -4,7 +4,7 @@ import { ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper'
 import Map from '../Map/map'
-
+import Orders from '../Orders/orders'
 import './point.css'
 class Point extends React.Component {
 
@@ -31,11 +31,11 @@ class Point extends React.Component {
                         Point #{this.state.id}: {this.state.point.name}
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails >
-                        <Paper className='mapData' point={this.state.point}>
-                            <Map/>
+                        <Paper className='mapData'>
+                            <Map  point={this.state.point}/>
                         </Paper>
                         <Paper className = 'ordersData'>
-
+                            <Orders/>
                         </Paper>
 
 
