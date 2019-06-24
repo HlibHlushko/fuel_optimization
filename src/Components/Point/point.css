@@ -1,0 +1,22 @@
+.highlight-expanded-header--true{
+   
+}
+.mapData{
+    width: 60%;
+    margin-right: 15px;
+    height: 300px;
+    border: 1px black;
+    
+}
+
+.ordersData{
+    width: 40%;
+    height: 300px;
+}
+
+.expansionPanel{
+    margin: 10px !important;
+    box-shadow: 2px 1px 8px 0px rgba(0,0,0,0.4), 
+                2px 1px 1px 0px rgba(0,0,0,0.14), 
+                2px 2px 1px -1px rgba(0,0,0,0.12) !important;
+}
