@@ -7,33 +7,41 @@ import './route.css'
 class Route extends React.Component{
     constructor(props){
         super(props);
-        this.state ={
-            mapData : ['mapData1', 'mapData2'],
-            points : [ {
-                gpsLong : 10.11,
-                gpsLat : 14.88,
-                name: 'Ukraine'
-            },
-            {
-                gpsLong : 98.32,
-                gpsLat : 22.8,
-                name: 'Australia'
-            }],
-        }
-        this.handleAddClick.bind(this);
+        this.state = {}
     }
     handleAddClick = ()=>{
       
-        this.setState({ points: [...this.state.points, {
-            gpsLat: null,
-            gpsLong: null,
-            name: null
-        }]});
+        this.props.handleRouteChanged([...this.props.points, {
+            mapData: 'mapData'+this.props.points.length(),
+            name: '',
+            coordinates: {
+                GpsLatitude: null,
+                GpsLongitude: null
+            },
+            orders: [
+                {
+                    selectedBrand: null,
+                    selectedModel: null,
+                    number: 1
+                },
+            ]}]);
     }
+    handleOrderChanged = () =>{}
+    
+    handleBrandSelected = (selectedBrand, id) => {
+        this.props.handleBrandSelected(selectedBrand,id);
+    }
+    
     render(){
-        let points = [];
-        for (let i=0; i<this.state.points.length; ++i)
-            points.push(<Point mapData = {this.state.mapData[i]} point = {this.state.points[i]} id = {i} key = {i} />);
+        let points = this.props.points ? 
+        this.props.points.map((point, id)=>
+            <Point 
+                    point = {point}
+                    id = {id}
+                    key = {id} 
+                    handleOrderChanged = {this.handleOrderChanged}
+                />)
+        : null;
         return (
             <div>
                 {points}
