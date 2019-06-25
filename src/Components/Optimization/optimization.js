@@ -92,6 +92,22 @@ class Optimization extends React.Component{
                         ...this.state.points.slice(pointId+1)]
         })
     }
+    handlePointAdded = () =>{
+        this.setState({points:[...this.state.points, {
+            mapData: 'mapData'+this.state.points.length,
+            name: '',
+            coordinates: {
+                GpsLatitude: null,
+                GpsLongitude: null
+            },
+            orders: [
+                {
+                    selectedBrand: null,
+                    selectedModel: null,
+                    number: 1
+                },
+            ]}]});
+    }
     render(){
         return (
         <div>
@@ -101,6 +117,7 @@ class Optimization extends React.Component{
                 handleOrderChanged = {this.handleOrderChanged}
                 handleOrderAdded = {this.handleOrderAdded}
                 handleOrderDeleted = {this.handleOrderDeleted}
+                handlePointAdded = {this.handlePointAdded}
                 />
         </div>
         );

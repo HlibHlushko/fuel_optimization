@@ -9,23 +9,6 @@ class Route extends React.Component{
         super(props);
         this.state = {}
     }
-    handleAddClick = ()=>{
-      
-        this.props.handleRouteChanged([...this.props.points, {
-            mapData: 'mapData'+this.props.points.length(),
-            name: '',
-            coordinates: {
-                GpsLatitude: null,
-                GpsLongitude: null
-            },
-            orders: [
-                {
-                    selectedBrand: null,
-                    selectedModel: null,
-                    number: 1
-                },
-            ]}]);
-    }
     //handleOrderChanged = () =>{}
     
     
@@ -45,8 +28,8 @@ class Route extends React.Component{
         return (
             <div>
                 {points}
-                <Fab className ='addIcon' size="small">
-                    <AddIcon onClick={this.handleAddClick} />
+                <Fab className ='addIcon' size="small" onClick = {this.props.handlePointAdded}>
+                    <AddIcon/>
                 </Fab>
                 
             </div>);
