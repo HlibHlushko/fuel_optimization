@@ -20,34 +20,7 @@ class Point extends React.Component {
     handleExpandedChange = () => {
         this.setState({ isActive: !this.state.isActive });
     }
-    handleDelete = (id)=>{
-        console.log('id:',id);
-        console.log('orders', this.state.orders);
-        let oleh = {orders: [...this.state.orders.slice(0,id),
-            ...this.state.orders.slice(id+1)]};
-        console.log(oleh);
-        this.setState(oleh);
-    }
-    handleChangeOrder = (id, order) =>{
-        console.log(order)
-        console.log('before:', this.state.orders);
-        this.setState({orders: [...this.state.orders.slice(0,id),
-                                order,
-                                ...this.state.orders.slice(id+1)]});
-        console.log('after:', this.state.orders);
-    }
-    handleAdd = () =>{
-        this.props.handleAdd({orders: [...this.state.orders,{ 
-            selectedBrand: null,
-            selectedModel: null,
-            number: 1
-        }]});
-    }
-    handleBrandSelected = (selectedModel) => {
-        this.props.handleBrandSelected(selectedModel,this.props.id);
-    }
     render() {
-        console.log('props in point', this.props.point.orders);
         const orders = this.props.point.orders ? 
                 this.props.point.orders.map((item, id)=>
                     <Order 
@@ -56,7 +29,7 @@ class Point extends React.Component {
                         number = {item.number}
                         id = {id}
                         key={id}
-
+                        handleOrdersChanged = {this.props.handleOrdersChanged.bind(this, id)}
                     />) 
                 : null;
         const expandedHeader = 'highlight-expanded-header--' + this.state.isActive;
@@ -73,7 +46,7 @@ class Point extends React.Component {
                         </Paper>
                         <Paper className = 'ordersData'>
                             {orders}
-                            <Fab size="small" className='add-button' onClick={this.handleAdd}>
+                            <Fab size="small" className='add-button' onClick={this.props.handleOrdersAdded}>
                                 <AddIcon className='add-icon'/>
                             </Fab>
                         </Paper>

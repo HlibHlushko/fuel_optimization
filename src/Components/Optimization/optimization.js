@@ -48,21 +48,42 @@ class Optimization extends React.Component{
     handleTruckChanged = (truck) =>{
         this.setState({selectedTruck: truck});
     }
-    handleRouteChanged = (points) =>{
-        this.setState({points: points});
+    
+    handleOrdersChanged = (pointId, orderId, newOrder ) =>{
+        this.setState({
+            points: [...this.state.points.slice(0,pointId),
+                    {
+                        mapData: this.state.points[pointId].mapData,
+                        name: this.state.points[pointId].name,
+                        coordinates: this.state.points[pointId].coordinates,
+                        orders: [...this.state.points[pointId].orders.slice(0,orderId),
+                                newOrder,
+                                ...this.state.points[pointId].orders.slice(orderId+1)]
+                    } ,
+                    ...this.state.points.slice(pointId+1)]
+        })
     }
-    handleBrandSelected = (selectedBrand, id ) =>{
-        this.setState({points:[
-            ...this.state.points.slice(id),
-            this.state.points[id]
-        ]
-         })
+    handleOrdersAdded = (pointId) => {
+        this.setState({
+            points: [...this.state.points.slice(0,pointId),
+                    {
+                        mapData: this.state.points[pointId].mapData,
+                        name: this.state.points[pointId].name,
+                        coordinates: this.state.points[pointId].coordinates,
+                        orders: [...this.state.points[pointId].orders, {
+                                                            selectedBrand: { value: null, label: null},
+                                                            selectedModel: {value: null, label: null},
+                                                            number: 1
+                                                        }]
+                    },
+                    ...this.state.points.slice(pointId+1)]
+        });
     }
     render(){
         return (
         <div>
             <TruckPicker handleTruckChanged = {this.handleTruckChanged}/>
-            <Route points= {this.state.points} handleRouteChanged = {this.handleRouteChanged} />
+            <Route points= {this.state.points} handleOrdersChanged = {this.handleOrdersChanged} handleOrdersAdded = {this.handleOrdersAdded} />
         </div>
         );
     }

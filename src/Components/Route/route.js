@@ -26,11 +26,9 @@ class Route extends React.Component{
                 },
             ]}]);
     }
-    handleOrderChanged = () =>{}
+    //handleOrderChanged = () =>{}
     
-    handleBrandSelected = (selectedBrand, id) => {
-        this.props.handleBrandSelected(selectedBrand,id);
-    }
+    
     
     render(){
         let points = this.props.points ? 
@@ -39,7 +37,8 @@ class Route extends React.Component{
                     point = {point}
                     id = {id}
                     key = {id} 
-                    handleOrderChanged = {this.handleOrderChanged}
+                    handleOrdersChanged = {this.props.handleOrdersChanged.bind(this, id)}
+                    handleOrdersAdded = {this.props.handleOrdersAdded.bind(this, id)}
                 />)
         : null;
         return (

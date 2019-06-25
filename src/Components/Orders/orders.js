@@ -9,7 +9,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 class Order extends React.Component{
     constructor(props){
         super(props);
-        console.log('props in order', props);
         this.state = {}
     }
 
@@ -17,20 +16,25 @@ class Order extends React.Component{
         this.props.onDeleteOrder(this.props.id);
     }
     handleBrandSelected = (selectedBrand)=>{
-        this.props.handleBrandSelected(selectedBrand);
-        // this.setState({
-        //     selectedBrand: selectedBrand,
-        //     selectedModel: null
-        // });
-        // this.props.onChangeOrder(this.props.id, {selectedBrand: selectedBrand, selectedModel: null, number: this.state.number});
+        this.props.handleOrdersChanged({
+            selectedBrand: selectedBrand,
+            selectedModel: null,
+            number: this.props.number
+        });
     }
     handleModelSelected = (selectedModel)=>{
-        this.setState({selectedModel: selectedModel});
-        this.props.onChangeOrder(this.props.id, {selectedBrand: this.state.selectedBrand, selectedModel: selectedModel, number: this.state.number});
+        this.props.handleOrdersChanged({
+            selectedBrand: this.props.selectedBrand,
+            selectedModel: selectedModel,
+            number: this.props.number
+        });
     }
     handleNumberChanged =(event)=>{
-        this.setState({number: event.target.value});
-        this.props.onChangeOrder(this.props.id, {selectedBrand: this.state.selectedBrand, selectedModel: this.selectedModel, number: event.target.value});
+        this.props.handleOrdersChanged({
+            selectedBrand: this.props.selectedBrand,
+            selectedModel: this.props.selectedModel,
+            number: event.target.value
+        });
     }
     render(){
         const cars = require('./models.json');
@@ -48,8 +52,8 @@ class Order extends React.Component{
                         options = {brands.map((item, id)=>{
                             return {label: item, value:id};
                         })}
-                        value = {this.props.selectedBrand}//{this.state.selectedBrand.label ? this.state.selectedBrand : null}
-                        onChange = {this.props.handleBrandSelected}
+                        value = {this.props.selectedBrand} //{this.state.selectedBrand.label ? this.state.selectedBrand : null}
+                        onChange = {this.handleBrandSelected}
                         placeholder='Select brand'
                     />
                     <Select
@@ -58,7 +62,7 @@ class Order extends React.Component{
                         options = {models.map((item,id)=>{
                             return {label: item.name, value:id};
                         })}
-                        onChange = {this.props.handleModelSelected}
+                        onChange = {this.handleModelSelected}
                         placeholder='Select model'
                     />
                     <TextField 
