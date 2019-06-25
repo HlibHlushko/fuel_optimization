@@ -2,13 +2,13 @@ import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Paper from '@material-ui/core/Paper'
-import Map from '../Map/map'
-import Order from '../Orders/orders'
-import './point.css'
+import Paper from '@material-ui/core/Paper';
+import Map from '../Map/map';
+import Order from '../Orders/orders';
+import './point.css';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add'
-
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 class Point extends React.Component {
 
     constructor(props) {
@@ -20,6 +20,7 @@ class Point extends React.Component {
     handleExpandedChange = () => {
         this.setState({ isActive: !this.state.isActive });
     }
+    
     render() {
         const orders = this.props.point.orders ? 
                 this.props.point.orders.map((item, id)=>
@@ -37,9 +38,14 @@ class Point extends React.Component {
         //console.log('order after render', this.state.orders);
         return (
             <div >
-                <ExpansionPanel className='expansionPanel' onChange={this.handleExpandedChange}>
+                <ExpansionPanel className='expansionPanel' onChange={this.handleExpandedChange} >
                     <ExpansionPanelSummary className={expandedHeader} expandIcon={<ExpandMoreIcon />}>
-                        Point #{this.props.id}: {this.props.point.name}
+                        <div className='expansion-panel-summary'>
+                            <div> Point #{this.props.id}: {this.props.point.name} </div>
+                            <Fab size = 'small' className = 'expansion-panel-delete-button' onClick = {this.props.handlePointDeleted} >
+                                <DeleteIcon/>
+                            </Fab>
+                        </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails >
                         <Paper className='mapData'>

@@ -108,6 +108,11 @@ class Optimization extends React.Component{
                 },
             ]}]});
     }
+    handlePointDeleted = (pointId) => {
+        this.setState({points:
+                            [...this.state.points.slice(0,pointId),
+                            ...this.state.points.slice(pointId+1)]});
+    }
     render(){
         return (
         <div>
@@ -118,6 +123,7 @@ class Optimization extends React.Component{
                 handleOrderAdded = {this.handleOrderAdded}
                 handleOrderDeleted = {this.handleOrderDeleted}
                 handlePointAdded = {this.handlePointAdded}
+                handlePointDeleted = {this.handlePointDeleted}
                 />
         </div>
         );

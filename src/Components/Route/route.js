@@ -23,6 +23,7 @@ class Route extends React.Component{
                     handleOrderChanged = {this.props.handleOrderChanged.bind(this, id)}
                     handleOrderAdded = {this.props.handleOrderAdded.bind(this, id)}
                     handleOrderDeleted = {this.props.handleOrderDeleted.bind(this,id)}
+                    handlePointDeleted = {this.props.handlePointDeleted.bind(this,id)}
                 />)
         : null;
         return (
