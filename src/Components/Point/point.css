@@ -24,6 +24,9 @@
     display: flex;
     width: 100%;
 }
+.expansion-panel-summary-info{
+    width: 99%;
+}
 
 .expansion-panel-delete-button{
     margin-right: 0px;

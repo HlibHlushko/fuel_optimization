@@ -41,7 +41,7 @@ class Point extends React.Component {
                 <ExpansionPanel className='expansionPanel' onChange={this.handleExpandedChange} >
                     <ExpansionPanelSummary className={expandedHeader} expandIcon={<ExpandMoreIcon />}>
                         <div className='expansion-panel-summary'>
-                            <div> Point #{this.props.id}: {this.props.point.name} </div>
+                            <div className='expansion-panel-summary-info'> Point #{this.props.id}: {this.props.point.name} </div>
                             <Fab size = 'small' className = 'expansion-panel-delete-button' onClick = {this.props.handlePointDeleted} >
                                 <DeleteIcon/>
                             </Fab>
