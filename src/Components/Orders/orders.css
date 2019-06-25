@@ -8,6 +8,10 @@
     margin: 7px;
     width: 10%;
     align-self: center;
+      
+}
+.number *{
+    text-align: right;
 }
 .orders-container{
 

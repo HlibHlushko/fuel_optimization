@@ -49,7 +49,7 @@ class Optimization extends React.Component{
         this.setState({selectedTruck: truck});
     }
     
-    handleOrdersChanged = (pointId, orderId, newOrder ) =>{
+    handleOrderChanged = (pointId, orderId, newOrder ) =>{
         this.setState({
             points: [...this.state.points.slice(0,pointId),
                     {
@@ -63,7 +63,7 @@ class Optimization extends React.Component{
                     ...this.state.points.slice(pointId+1)]
         })
     }
-    handleOrdersAdded = (pointId) => {
+    handleOrderAdded = (pointId) => {
         this.setState({
             points: [...this.state.points.slice(0,pointId),
                     {
@@ -71,19 +71,37 @@ class Optimization extends React.Component{
                         name: this.state.points[pointId].name,
                         coordinates: this.state.points[pointId].coordinates,
                         orders: [...this.state.points[pointId].orders, {
-                                                            selectedBrand: { value: null, label: null},
-                                                            selectedModel: {value: null, label: null},
+                                                            selectedBrand: null,
+                                                            selectedModel: null,
                                                             number: 1
                                                         }]
                     },
                     ...this.state.points.slice(pointId+1)]
         });
     }
+    handleOrderDeleted = (pointId, orderId) => {
+        this.setState({points:
+                        [...this.state.points.slice(0,pointId),
+                        {
+                            mapData: this.state.points[pointId].mapData,
+                            name: this.state.points[pointId].name,
+                            coordinates: this.state.points[pointId].coordinates,
+                            orders: [...this.state.points[pointId].orders.slice(0,orderId),
+                                    ...this.state.points[pointId].orders.slice(orderId+1)]
+                        },
+                        ...this.state.points.slice(pointId+1)]
+        })
+    }
     render(){
         return (
         <div>
             <TruckPicker handleTruckChanged = {this.handleTruckChanged}/>
-            <Route points= {this.state.points} handleOrdersChanged = {this.handleOrdersChanged} handleOrdersAdded = {this.handleOrdersAdded} />
+            <Route 
+                points= {this.state.points} 
+                handleOrderChanged = {this.handleOrderChanged}
+                handleOrderAdded = {this.handleOrderAdded}
+                handleOrderDeleted = {this.handleOrderDeleted}
+                />
         </div>
         );
     }

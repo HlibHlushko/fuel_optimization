@@ -29,7 +29,8 @@ class Point extends React.Component {
                         number = {item.number}
                         id = {id}
                         key={id}
-                        handleOrdersChanged = {this.props.handleOrdersChanged.bind(this, id)}
+                        handleOrderChanged = {this.props.handleOrderChanged.bind(this, id)}
+                        handleOrderDeleted = {this.props.handleOrderDeleted.bind(this, id)}
                     />) 
                 : null;
         const expandedHeader = 'highlight-expanded-header--' + this.state.isActive;
@@ -46,7 +47,7 @@ class Point extends React.Component {
                         </Paper>
                         <Paper className = 'ordersData'>
                             {orders}
-                            <Fab size="small" className='add-button' onClick={this.props.handleOrdersAdded}>
+                            <Fab size="small" className='add-button' onClick={this.props.handleOrderAdded}>
                                 <AddIcon className='add-icon'/>
                             </Fab>
                         </Paper>

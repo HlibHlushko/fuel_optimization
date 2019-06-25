@@ -16,21 +16,21 @@ class Order extends React.Component{
         this.props.onDeleteOrder(this.props.id);
     }
     handleBrandSelected = (selectedBrand)=>{
-        this.props.handleOrdersChanged({
+        this.props.handleOrderChanged({
             selectedBrand: selectedBrand,
             selectedModel: null,
             number: this.props.number
         });
     }
     handleModelSelected = (selectedModel)=>{
-        this.props.handleOrdersChanged({
+        this.props.handleOrderChanged({
             selectedBrand: this.props.selectedBrand,
             selectedModel: selectedModel,
             number: this.props.number
         });
     }
     handleNumberChanged =(event)=>{
-        this.props.handleOrdersChanged({
+        this.props.handleOrderChanged({
             selectedBrand: this.props.selectedBrand,
             selectedModel: this.props.selectedModel,
             number: event.target.value
@@ -71,7 +71,7 @@ class Order extends React.Component{
                         value = {this.props.number}
                         onChange = {this.handleNumberChanged}
                         />
-                    <Fab size="small" className='delete-button' onClick={this.handleDelete}>
+                    <Fab size="small" className='delete-button' onClick={this.props.handleOrderDeleted}>
                         <DeleteIcon className='delete-icon'/>
                     </Fab>
                 </div>
