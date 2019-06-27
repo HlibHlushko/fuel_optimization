@@ -1,0 +1,31 @@
+.root {
+	height: 250;
+	flex-grow: 1;
+}
+
+.container {
+	position: relative;
+}
+
+.suggestionsContainerOpen {
+	position: absolute;
+	z-index: 1;
+	margin-top: 1;
+	left: 0;
+	right: 0;
+}
+
+.suggestion {
+	display: block;
+}
+
+.suggestionsList {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+;
+.divider {
+	height: 2
+}

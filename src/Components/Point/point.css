@@ -29,5 +29,15 @@
 }
 
 .expansion-panel-delete-button{
-    margin-right: 0px;
+    min-width: 25px;
+    min-height: 25px  !important;
+    max-width: 25px;
+    max-height: 25px !important;
+}
+
+.expansion-panel-delete-icon{
+    min-width: 20px;
+    min-height: 20px  !important;
+    max-width: 20px;
+    max-height: 20px !important;
 }
