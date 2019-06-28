@@ -41,7 +41,7 @@ class Order extends React.Component{
         const brands = [...new Set(cars.map((model)=>{
             return model.brandName;
         }))];
-        const models = cars.filter(model=>this.props.selectedBrand && model.brandName == this.props.selectedBrand.label);
+        const models = cars.filter(model=>this.props.selectedBrand && model.brandName === this.props.selectedBrand.label);
         
         return(
 
