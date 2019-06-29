@@ -1,6 +1,8 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-import './map.css'
+import SearchButton from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton'
+import './map.css';
 
 
 function renderSuggestion(suggestion) {
@@ -36,20 +38,20 @@ class Map extends React.Component {
     let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
     let url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json';
     fetch(`${url}?query=${inputValue}&app_id=${app_id}&&app_code=${app_code}`, {
-          method: 'GET', 
-          mode: 'cors'
-        }).then(response => {
-          return response.json();
-        }).then(resp=>{
-          let result  = resp.suggestions.map(item=>(
-            {
-              label: item.label,
-              value: item.locationId
-            }
-          ));
-         
-          this.setState({suggestions:result? result : []})
-        });
+      method: 'GET',
+      mode: 'cors'
+    }).then(response => {
+      return response.json();
+    }).then(resp => {
+      let result = resp.suggestions.map(item => (
+        {
+          label: item.label,
+          value: item.locationId
+        }
+      ));
+
+      this.setState({ suggestions: result ? result : [] })
+    });
   }
 
   onSuggestionsFetchRequested = (value) => {
@@ -60,12 +62,12 @@ class Map extends React.Component {
       suggestions: []
     });
   };
-  onChange = (event, {newValue}) => {
+  onChange = (event, { newValue }) => {
     console.log(newValue);
-    let new_label =  this.state.suggestions.find(sug=> sug.value == newValue);
-    new_label = new_label? new_label.label : null;
-    this.setState({ value: new_label?  new_label : newValue });
-    this.onSuggestionsUpdateRequested( new_label? new_label:newValue);
+    let new_label = this.state.suggestions.find(sug => sug.value == newValue);
+    new_label = new_label ? new_label.label : null;
+    this.setState({ value: new_label ? new_label : newValue });
+    this.onSuggestionsUpdateRequested(new_label ? new_label : newValue);
   }
 
   onSuggestionsUpdateRequested({ value }) {
@@ -84,18 +86,23 @@ class Map extends React.Component {
       onChange: this.onChange
     };
 
-    console.log(inputProps);
 
     return (
-          <Autosuggest
-            value={this.state.value}
-            suggestions= {suggestions}
-            onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            inputProps={inputProps} />
+      <div className='search-bar-container'>
+        <Autosuggest
+          value={this.state.value}
+          suggestions={suggestions}
+          onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+        />
+        <IconButton size='small' className ='search-button' >
+          <SearchButton  className='search-icon' />
+        </IconButton>
+      </div>
     );
   }
 }

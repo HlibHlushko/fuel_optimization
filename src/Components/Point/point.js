@@ -38,7 +38,7 @@ class Point extends React.Component {
         //console.log('order after render', this.state.orders);
         return (
             <div >
-                <ExpansionPanel className='expansionPanel' onChange={this.handleExpandedChange} >
+                <ExpansionPanel className='expansion-panel' onChange={this.handleExpandedChange} >
                     <ExpansionPanelSummary className={expandedHeader} expandIcon={<ExpandMoreIcon />}>
                         <div className='expansion-panel-summary'>
                             <div className='expansion-panel-summary-info'> Point #{this.props.id}: {this.props.point.name} </div>
@@ -48,10 +48,10 @@ class Point extends React.Component {
                         </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails >
-                        <Paper className='mapData'>
+                        <Paper className='map-data'>
                             <Map  point={this.props.point.mapData} coordinates = {this.props.point.coordinates} />
                         </Paper>
-                        <Paper className = 'ordersData'>
+                        <Paper className = 'orders-data'>
                             {orders}
                             <Fab size="small" className='add-button' onClick={this.props.handleOrderAdded}>
                                 <AddIcon className='add-icon'/>
