@@ -49,7 +49,10 @@ class Point extends React.Component {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails >
                         <Paper className='map-data'>
-                            <Map  point={this.props.point.mapData} coordinates = {this.props.point.coordinates} />
+                            <Map
+                              point={this.props.locationId}
+                              handleLocationIdChanged = {this.props.handleLocationIdChanged}
+                            />
                         </Paper>
                         <Paper className = 'orders-data'>
                             {orders}

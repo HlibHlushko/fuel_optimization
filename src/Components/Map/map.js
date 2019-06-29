@@ -21,12 +21,12 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
-      value: this.props.location || '',
+      value: this.props.locationId || '',
       suggestions: this.getSuggestions('')
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
   }
 
   getSuggestions(event) {
@@ -63,15 +63,20 @@ class Map extends React.Component {
     });
   };
   onChange = (event, { newValue }) => {
-    console.log(newValue);
     let new_label = this.state.suggestions.find(sug => sug.value == newValue);
+    if (new_label) this.props.handleLocationIdChanged(newValue);
     new_label = new_label ? new_label.label : null;
     this.setState({ value: new_label ? new_label : newValue });
     this.onSuggestionsUpdateRequested(new_label ? new_label : newValue);
+    
   }
 
   onSuggestionsUpdateRequested({ value }) {
     this.getSuggestions(value);
+  }
+  
+  onSearchRequested = () =>{
+    
   }
 
   render() {
@@ -99,7 +104,7 @@ class Map extends React.Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
-        <IconButton size='small' className ='search-button' >
+        <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
           <SearchButton  className='search-icon' />
         </IconButton>
       </div>

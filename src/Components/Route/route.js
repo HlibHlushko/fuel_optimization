@@ -24,6 +24,7 @@ class Route extends React.Component{
                     handleOrderAdded = {this.props.handleOrderAdded.bind(this, id)}
                     handleOrderDeleted = {this.props.handleOrderDeleted.bind(this,id)}
                     handlePointDeleted = {this.props.handlePointDeleted.bind(this,id)}
+                    handleLocationIdChanged = {this.props.handleLocationIdChanged.bind(this, id)}
                 />)
         : null;
         return (
