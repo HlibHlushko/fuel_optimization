@@ -1,7 +1,6 @@
 import React from 'react';
 import Route from '../Route/route';
 import TruckPicker from '../TruckPicker/TruckPicker'
-import { thisExpression } from '@babel/types';
 
 class Optimization extends React.Component{
     constructor(props){
