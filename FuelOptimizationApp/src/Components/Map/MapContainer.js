@@ -3,7 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import SearchButton from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton'
 import './map.css';
-
+import Map from './Map.js'
 
 function renderSuggestion(suggestion) {
   return (
@@ -15,7 +15,7 @@ function getSuggestionValue(suggestion) {
   return suggestion.value;
 }
 
-class Map extends React.Component {
+class MapContainer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ class Map extends React.Component {
   }
 
   onSuggestionsFetchRequested = (value) => {
-    let x = this.getSuggestions(value? value.value : null).then(resp=>{
+    this.getSuggestions(value? value.value : null).then(resp=>{
       let result = resp.suggestions.map(suggestion => (
         {
           label: suggestion.label,
@@ -107,6 +107,7 @@ class Map extends React.Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
+        <Map/>
         <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
           <SearchButton  className='search-icon' />
         </IconButton>
@@ -115,7 +116,7 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+export default MapContainer;
 
 
 

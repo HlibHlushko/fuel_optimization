@@ -3,7 +3,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import { ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
-import Map from '../Map/map';
+import MapContainer from '../Map/MapContainer';
 import Order from '../Orders/orders';
 import './point.css';
 import Fab from '@material-ui/core/Fab';
@@ -49,7 +49,7 @@ class Point extends React.Component {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails >
                         <Paper className='map-data'>
-                            <Map
+                            <MapContainer
                               point={this.props.locationId}
                               handleLocationIdChanged = {this.props.handleLocationIdChanged}
                             />

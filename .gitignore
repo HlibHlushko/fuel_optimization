@@ -1,23 +1,34 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/node_modules
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.pnp
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.pnp.js
 
 # testing
-/coverage
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/coverage
 
 # production
-/build
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/build
 
 # misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.DS_Store
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.env.local
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.env.development.local
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.env.test.local
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/npm-debug.log*
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/yarn-debug.log*
+D:/Programming/react/fuel_optimization/FuelOptimizationApp/yarn-error.log*
+
+D:/Programming/react/fuel_optimization/FuelOptimizationAPI
+*[Oo]bj
+*[Bb]in
+*.user
+*.suo
+*.[Cc]ache
+*.bak
+*.ncb
+*.log 
+*.DS_Store
