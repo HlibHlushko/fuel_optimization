@@ -29,33 +29,32 @@ class Map extends React.Component {
     // this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
   }
 
-  getSuggestions(event) {
-    if (!event) return [];
-    const inputValue = event.value;
-    const inputLength = inputValue.length;
+  getSuggestions(value) {
+    if (!value) return [];
+    const inputLength = value.length;
     if (inputLength === 0) return [];
     let app_id = 'fLR4pqJX0jZZZle8nwaM';
     let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
     let url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json';
-    fetch(`${url}?query=${inputValue}&app_id=${app_id}&&app_code=${app_code}`, {
+    return fetch(`${url}?query=${value}&app_id=${app_id}&&app_code=${app_code}`, {
       method: 'GET',
       mode: 'cors'
     }).then(response => {
       return response.json();
-    }).then(resp => {
-      let result = resp.suggestions.map(item => (
-        {
-          label: item.label,
-          value: item.locationId
-        }
-      ));
-
-      this.setState({ suggestions: result ? result : [] })
     });
+    
   }
 
   onSuggestionsFetchRequested = (value) => {
-    this.getSuggestions(value);
+    let x = this.getSuggestions(value? value.value : null).then(resp=>{
+      let result = resp.suggestions.map(suggestion => (
+        {
+          label: suggestion.label,
+          value: suggestion.locationId
+        }
+      ));
+      this.setState({suggestions: result});
+    });
   }
   onSuggestionsClearRequested = () => {
     this.setState({
@@ -63,7 +62,7 @@ class Map extends React.Component {
     });
   };
   onChange = (event, { newValue }) => {
-    let new_label = this.state.suggestions.find(sug => sug.value == newValue);
+    let new_label = this.state.suggestions.find(sug => sug.value === newValue);
     if (new_label) this.props.handleLocationIdChanged(newValue);
     new_label = new_label ? new_label.label : null;
     this.setState({ value: new_label ? new_label : newValue });
@@ -72,15 +71,19 @@ class Map extends React.Component {
   }
 
   onSuggestionsUpdateRequested({ value }) {
-    this.getSuggestions(value);
+    this.getSuggestions(value? value.value: null);
   }
   
   onSearchRequested = () =>{
-    
+    this.getSuggestions(this.state.value).then(resp => {
+      this.setState({value: resp.suggestions[0].label});
+      this.props.handleLocationIdChanged(resp.suggestions[0].locationId);
+  
+    });
   }
 
   render() {
-    const { className, required } = this.props;
+    const {  required } = this.props;
     const { value, suggestions } = this.state;
     const inputProps = {
       id: 'search',
