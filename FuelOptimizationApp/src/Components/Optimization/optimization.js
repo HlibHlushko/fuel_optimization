@@ -24,6 +24,7 @@ class Optimization extends React.Component{
                         number: 4
                     },
                 ],
+                position: [50.393219, 30.488314],
                 locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C'                
             },
             {
@@ -36,6 +37,7 @@ class Optimization extends React.Component{
                         number: 2
                     },
                 ],
+                position: [51.797901, 11.198762],
                 locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
             }
         ]});
@@ -48,9 +50,7 @@ class Optimization extends React.Component{
         this.setState({
             points: [...this.state.points.slice(0,pointId),
                     {
-                        mapData: this.state.points[pointId].mapData,
-                        name: this.state.points[pointId].name,
-                        locationId: this.state.points[pointId].locationId,
+                        ...this.state.points[pointId],
                         orders: [...this.state.points[pointId].orders.slice(0,orderId),
                                 newOrder,
                                 ...this.state.points[pointId].orders.slice(orderId+1)]
@@ -61,11 +61,8 @@ class Optimization extends React.Component{
     handleOrderAdded = (pointId) => {
         this.setState({
             points: [...this.state.points.slice(0,pointId),
-                    {
-                        mapData: this.state.points[pointId].mapData,
-                        name: this.state.points[pointId].name,
-                        locationId: this.state.points[pointId].locationId,
-                        orders: [...this.state.points[pointId].orders, {
+                    {...this.state.points[pointId],
+                     orders: [...this.state.points[pointId].orders, {
                                                             selectedBrand: null,
                                                             selectedModel: null,
                                                             number: 1
@@ -77,10 +74,7 @@ class Optimization extends React.Component{
     handleOrderDeleted = (pointId, orderId) => {
         this.setState({points:
                         [...this.state.points.slice(0,pointId),
-                        {
-                            mapData: this.state.points[pointId].mapData,
-                            name: this.state.points[pointId].name,
-                            locationId: this.state.points[pointId].locationId,
+                            {...this.state.points[pointId],
                             orders: [...this.state.points[pointId].orders.slice(0,orderId),
                                     ...this.state.points[pointId].orders.slice(orderId+1)]
                         },
@@ -109,13 +103,31 @@ class Optimization extends React.Component{
                             ...this.state.points.slice(pointId+1)]});
     }
     handleLocationIdChanged = (pointId, locationId)=>{
-        let obj = JSON.parse(JSON.stringify(this.state.points[pointId]));//.locationId;
-        obj.locationId = locationId;
-        this.setState({points:[
-            ...this.state.points.slice(0,pointId),
-            obj,
-            ...this.state.points.slice(pointId+1)
-        ]})
+        let app_id = 'fLR4pqJX0jZZZle8nwaM';
+        let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
+        let url = 'http://geocoder.api.here.com/6.2/geocode.json';
+        fetch(`${url}?locationId=${locationId}&app_id=${app_id}&&app_code=${app_code}`, {
+            method: 'GET',
+            mode: 'cors'
+        }).then(response => {
+            return response.json();
+        }).then( json =>{
+            let pos = json.Response.View[0].Result[0].Location.DisplayPosition;
+            this.setState({points:[
+                ...this.state.points.slice(0,pointId),
+                {
+                    ...this.state.points[pointId],
+                    locationId: locationId,
+                    position: [pos.Latitude, pos.Longitude]
+                },
+                ...this.state.points.slice(pointId+1)
+            ]})
+        });
+
+
+        // let obj = JSON.parse(JSON.stringify(this.state.points[pointId]));//.locationId;
+        // obj.locationId = locationId;
+        
     }
     render(){
         return (

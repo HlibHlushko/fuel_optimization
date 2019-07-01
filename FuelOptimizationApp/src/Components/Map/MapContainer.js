@@ -3,7 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import SearchButton from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton'
 import './map.css';
-import Map from './Map.js'
+import MapPic from './MapPic.js'
 
 function renderSuggestion(suggestion) {
   return (
@@ -22,7 +22,7 @@ class MapContainer extends React.Component {
 
     this.state = {
       value: this.props.locationId || '',
-      suggestions: this.getSuggestions('')
+      suggestions: [],//this.getSuggestions('')
     };
 
     // this.onChange = this.onChange.bind(this);
@@ -30,9 +30,9 @@ class MapContainer extends React.Component {
   }
 
   getSuggestions(value) {
-    if (!value) return [];
+    if (!value) return Promise.resolve([]);
     const inputLength = value.length;
-    if (inputLength === 0) return [];
+    if (inputLength === 0) return Promise.reject([]);
     let app_id = 'fLR4pqJX0jZZZle8nwaM';
     let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
     let url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json';
@@ -47,10 +47,12 @@ class MapContainer extends React.Component {
 
   onSuggestionsFetchRequested = (value) => {
     this.getSuggestions(value? value.value : null).then(resp=>{
+      console.log(resp.suggestions)
       let result = resp.suggestions.map(suggestion => (
         {
           label: suggestion.label,
-          value: suggestion.locationId
+          value: suggestion.locationId,
+          position: this.props.position
         }
       ));
       this.setState({suggestions: result});
@@ -63,6 +65,8 @@ class MapContainer extends React.Component {
   };
   onChange = (event, { newValue }) => {
     let new_label = this.state.suggestions.find(sug => sug.value === newValue);
+    console.log(new_label);
+
     if (new_label) this.props.handleLocationIdChanged(newValue);
     new_label = new_label ? new_label.label : null;
     this.setState({ value: new_label ? new_label : newValue });
@@ -94,24 +98,25 @@ class MapContainer extends React.Component {
       onChange: this.onChange
     };
 
-
     return (
-      <div className='search-bar-container'>
-        <Autosuggest
-          value={this.state.value}
-          suggestions={suggestions}
-          onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-        />
-        <Map/>
-        <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
-          <SearchButton  className='search-icon' />
-        </IconButton>
-      </div>
+      <div>
+        <div className='search-bar-container'>
+          <Autosuggest
+            value={this.state.value}
+            suggestions={suggestions}
+            onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+          />
+          <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
+            <SearchButton  className='search-icon' />
+          </IconButton>
+        </div>
+        <MapPic position = {this.props.position}/>
+    </div>
     );
   }
 }

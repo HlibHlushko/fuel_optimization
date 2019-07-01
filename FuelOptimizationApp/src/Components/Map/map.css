@@ -1,11 +1,12 @@
 .react-autosuggest__container {
 	position: relative;
-	
+	width: 90%;
+	max-width: 500px;
 }
 
 .react-autosuggest__input {
 	width: 100%;
-	max-width: 500px;
+	/* max-width: 500px; */
 	height: 32px;
 	position: relative;
 	padding-left: 10px;
@@ -67,6 +68,7 @@
 
 .search-bar-container {
 	display: flex;
+	flex-grow: 1;
 	align-items: stretch;
 }
 
@@ -82,4 +84,10 @@
 .search-icon {
 	max-width: 20px;
 	max-height: 20px !important;
+}
+
+.map-picture {
+	width: 100%;
+	height: 450px;
+	z-index: 1;
 }

@@ -4,14 +4,14 @@
 .map-data{
     width: 60%;
     margin-right: 15px;
-    height: 450px;
+    height: 500px;
     border: 1px black;
     
 }
 
 .orders-data{
     width: 40%;
-    height: 450px;
+    height: 500px;
 }
 
 .expansion-panel{
