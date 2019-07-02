@@ -106,16 +106,19 @@ class Optimization extends React.Component{
                             ...this.state.points.slice(pointId+1)]});
     }
     handlePointSelected = (pointId, coordinates) =>{
-        console.log('ahfdfg', this.state.points[pointId].locationId)
         let url ='https://reverse.geocoder.api.here.com/6.2/reversegeocode.json';
         fetch(`${url}?prox=${coordinates[0]},${coordinates[1]}&mode=retrieveAddresses&maxresults=1&app_id=${this.state.app_id}&app_code=${this.state.app_code}`)
         .then( response =>{
             return (response.json());
         }).then(json=>{
+            let res =json.Response.View[0].Result[0].Location.Address;
+            console.log(res);
+            console.log('need', res.Country);
             this.setState({ points: [...this.state.points.slice(0,pointId),
                     {
                         ...this.state.points[pointId],
-                        locationName: json.Response.View[0].Result[0].Location.Address.Label,
+                        locationName: res.Label,
+                        name: res.AdditionalData[0].value + (res.City? ', '+res.City:''),
                     },
                     ...this.state.points.slice(pointId+1)]});
         });

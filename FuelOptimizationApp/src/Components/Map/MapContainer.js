@@ -97,7 +97,7 @@ class MapContainer extends React.Component {
       required,
       onChange: this.onChange
     };
-    console.log('value',this.props);
+    // console.log('value',this.props);
     return (
       <div>
         <div className='search-bar-container'>
