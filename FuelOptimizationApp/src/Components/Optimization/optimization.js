@@ -27,6 +27,7 @@ class Optimization extends React.Component{
                 ],
                 coordinates: [50.393219, 30.488314],
                 locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C',
+                locationName: 'aszcx'
             },
             {
                 mapData: 'mapData2',
@@ -40,6 +41,7 @@ class Optimization extends React.Component{
                 ],
                 coordinates: [51.797901, 11.198762],
                 locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
+                locationName: 'dfkl'
             }
         ]});
     }
@@ -104,7 +106,19 @@ class Optimization extends React.Component{
                             ...this.state.points.slice(pointId+1)]});
     }
     handlePointSelected = (pointId, coordinates) =>{
-
+        console.log('ahfdfg', this.state.points[pointId].locationId)
+        let url ='https://reverse.geocoder.api.here.com/6.2/reversegeocode.json';
+        fetch(`${url}?prox=${coordinates[0]},${coordinates[1]}&mode=retrieveAddresses&maxresults=1&app_id=${this.state.app_id}&app_code=${this.state.app_code}`)
+        .then( response =>{
+            return (response.json());
+        }).then(json=>{
+            this.setState({ points: [...this.state.points.slice(0,pointId),
+                    {
+                        ...this.state.points[pointId],
+                        locationName: json.Response.View[0].Result[0].Location.Address.Label,
+                    },
+                    ...this.state.points.slice(pointId+1)]});
+        });
     }
     handleLocationIdChanged = (pointId, locationId)=>{
         
@@ -143,6 +157,7 @@ class Optimization extends React.Component{
                 handleOrderDeleted = {this.handleOrderDeleted}
                 handlePointAdded = {this.handlePointAdded}
                 handlePointDeleted = {this.handlePointDeleted}
+                handlePointSelected = {this.handlePointSelected}
                 handleLocationIdChanged = {this.handleLocationIdChanged}
                 />
         </div>

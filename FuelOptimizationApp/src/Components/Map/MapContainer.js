@@ -21,7 +21,7 @@ class MapContainer extends React.Component {
     super(props);
 
     this.state = {
-      value: this.props.locationId || '',
+      // value: this.props.locationName || '',
       suggestions: [],//this.getSuggestions('')
     };
 
@@ -65,7 +65,7 @@ class MapContainer extends React.Component {
   };
   onChange = (event, { newValue }) => {
     let new_label = this.state.suggestions.find(sug => sug.value === newValue);
-    console.log(new_label);
+    // console.log(new_label);
 
     if (new_label) this.props.handleLocationIdChanged(newValue);
     new_label = new_label ? new_label.label : null;
@@ -92,17 +92,17 @@ class MapContainer extends React.Component {
     const inputProps = {
       id: 'search',
       name: 'search',
-      value,
+      value: this.props.locationName,
       className: 'react-autosuggest__input',
       required,
       onChange: this.onChange
     };
-
+    console.log('value',this.props);
     return (
       <div>
         <div className='search-bar-container'>
           <Autosuggest
-            value={this.state.value}
+            value={this.props.locationName}
             suggestions={suggestions}
             onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -116,7 +116,9 @@ class MapContainer extends React.Component {
             </IconButton>
         </div>
         
-        <MapPic coordinates = {this.props.coordinates}/>
+        <MapPic coordinates = {this.props.coordinates}
+            handlePointSelected ={this.props.handlePointSelected}
+          />
     </div>
     );
   }

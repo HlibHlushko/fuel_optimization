@@ -31,11 +31,13 @@ class MapPic extends React.Component {
 
     }
     handleClick = (event)=>{
-        this.setState({markerPosition:[event.latlng.lat,event.latlng.lng]})
+        let position = [event.latlng.lat,event.latlng.lng];
+        this.props.handlePointSelected(position);
+        this.setState({markerPosition:position});
         // console.log(event.latlng.lat,event.latlng.lng);
     }
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         return (
             <div>
                 <Map
