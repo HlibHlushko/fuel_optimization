@@ -1,5 +1,5 @@
-import React from 'react'
 import { Map, TileLayer, Marker } from 'react-leaflet';
+import React from 'react';
 
 export const hereCredentials = {
     id: 'fLR4pqJX0jZZZle8nwaM',
@@ -10,6 +10,7 @@ export const maxIsolineRangeLookup = {
     time: 20000,
     distance: 400000
 }
+
 
 // const hereIsolineUrl = (coords, options) => `https://isoline.route.api.here.com/routing/7.2/calculateisoline.json?app_id=${hereCredentials.id}&app_code=${hereCredentials.code}&mode=shortest;${options.mode};traffic:${options.traffic}&start=geo!${coords[0]},${coords[1]}&range=${options.range}&rangetype=${options.type}`
 
@@ -22,17 +23,29 @@ class MapPic extends React.Component {
         this.state = {
             app_id: 'fLR4pqJX0jZZZle8nwaM',
             app_code: 'eM1d0zQLOLaA44cULr6NwQ',
+            mapRef : React.createRef(),
+            markerPosition: null
+
         }
+        // const mapRef = React.createRef();
 
     }
+    handleClick = (event)=>{
+        this.setState({markerPosition:[event.latlng.lat,event.latlng.lng]})
+        // console.log(event.latlng.lat,event.latlng.lng);
+    }
     render() {
+        console.log(this.state);
         return (
             <div>
                 <Map
                     center={this.props.position}
                     className='map-picture'
-                    zoom={6}>
-
+                    zoom={6}
+                    // mapRef = {this.mapRef}
+                    onClick = {this.handleClick}
+                    >
+                    {this.state.markerPosition ? <Marker position = {this.state.markerPosition}/> : null }
                     <TileLayer
                         url={hereTileUrl('reduced.day')}
                     />

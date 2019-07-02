@@ -111,10 +111,11 @@ class MapContainer extends React.Component {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />
-          <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
-            <SearchButton  className='search-icon' />
-          </IconButton>
+            <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
+              <SearchButton  className='search-icon' />
+            </IconButton>
         </div>
+        
         <MapPic position = {this.props.position}/>
     </div>
     );

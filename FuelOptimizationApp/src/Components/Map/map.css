@@ -73,6 +73,7 @@
 }
 
 .search-button {
+	background-color: white !important;
 	right: 10px;
 	margin-top: 8px !important;
 	min-width: 30px;
