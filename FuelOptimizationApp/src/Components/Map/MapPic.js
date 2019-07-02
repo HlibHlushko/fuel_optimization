@@ -39,7 +39,7 @@ class MapPic extends React.Component {
         return (
             <div>
                 <Map
-                    center={this.props.position}
+                    center={this.props.coordinates}
                     className='map-picture'
                     zoom={6}
                     // mapRef = {this.mapRef}

@@ -8,7 +8,8 @@ class Optimization extends React.Component{
         this.state = {
             selectedTruck : null,
             points: null,
-            
+            app_id : 'fLR4pqJX0jZZZle8nwaM',
+            app_code : 'eM1d0zQLOLaA44cULr6NwQ',
         }
 
     }
@@ -24,8 +25,8 @@ class Optimization extends React.Component{
                         number: 4
                     },
                 ],
-                position: [50.393219, 30.488314],
-                locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C'                
+                coordinates: [50.393219, 30.488314],
+                locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C',
             },
             {
                 mapData: 'mapData2',
@@ -37,7 +38,7 @@ class Optimization extends React.Component{
                         number: 2
                     },
                 ],
-                position: [51.797901, 11.198762],
+                coordinates: [51.797901, 11.198762],
                 locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
             }
         ]});
@@ -102,11 +103,13 @@ class Optimization extends React.Component{
                             [...this.state.points.slice(0,pointId),
                             ...this.state.points.slice(pointId+1)]});
     }
+    handlePointSelected = (pointId, coordinates) =>{
+
+    }
     handleLocationIdChanged = (pointId, locationId)=>{
-        let app_id = 'fLR4pqJX0jZZZle8nwaM';
-        let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
+        
         let url = 'http://geocoder.api.here.com/6.2/geocode.json';
-        fetch(`${url}?locationId=${locationId}&app_id=${app_id}&&app_code=${app_code}`, {
+        fetch(`${url}?locationId=${locationId}&app_id=${this.state.app_id}&&app_code=${this.state.app_code}`, {
             method: 'GET',
             mode: 'cors'
         }).then(response => {

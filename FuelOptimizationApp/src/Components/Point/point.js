@@ -52,7 +52,7 @@ class Point extends React.Component {
                         <Paper className='map-data'>
                             <MapContainer
                               point={this.props.point.locationId}
-                              position={this.props.point.position}
+                              coordinates={this.props.point.coordinates}
                               handleLocationIdChanged = {this.props.handleLocationIdChanged}
                             />
                         </Paper>

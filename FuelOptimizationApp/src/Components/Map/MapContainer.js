@@ -52,7 +52,7 @@ class MapContainer extends React.Component {
         {
           label: suggestion.label,
           value: suggestion.locationId,
-          position: this.props.position
+          coordinates: this.props.coordinates
         }
       ));
       this.setState({suggestions: result});
@@ -116,7 +116,7 @@ class MapContainer extends React.Component {
             </IconButton>
         </div>
         
-        <MapPic position = {this.props.position}/>
+        <MapPic coordinates = {this.props.coordinates}/>
     </div>
     );
   }
