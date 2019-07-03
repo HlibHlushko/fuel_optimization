@@ -21,12 +21,9 @@ class MapContainer extends React.Component {
     super(props);
 
     this.state = {
-      // value: this.props.locationName || '',
-      suggestions: [],//this.getSuggestions('')
+      input: (this.props.point.locationName ? this.props.point.locationName : ''),
+      suggestions: []
     };
-
-    // this.onChange = this.onChange.bind(this);
-    // this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this);
   }
 
   getSuggestions(value) {
@@ -42,67 +39,110 @@ class MapContainer extends React.Component {
     }).then(response => {
       return response.json();
     });
-    
-  }
 
-  onSuggestionsFetchRequested = (value) => {
-    this.getSuggestions(value? value.value : null).then(resp=>{
-      console.log(resp.suggestions)
-      let result = resp.suggestions.map(suggestion => (
-        {
-          label: suggestion.label,
-          value: suggestion.locationId,
-          coordinates: this.props.coordinates
-        }
-      ));
-      this.setState({suggestions: result});
+  }
+  getLocation = (locationId) => {
+    const { app_code, app_id } = this.props.credentials;
+    let url = 'http://geocoder.api.here.com/6.2/geocode.json';
+    return fetch(`${url}?locationId=${locationId}&app_id=${app_id}&&app_code=${app_code}`, {
+      method: 'GET',
+      mode: 'cors'
+    }).then(response => {
+      return response.json();
+    }).then(json => {
+      let pos = json.Response.View[0].Result[0].Location.DisplayPosition;
+      let coordinates = [pos.Latitude, pos.Longitude];
+      return coordinates;
     });
+  }
+  onSuggestionsFetchRequested = (value) => {
+    if (!value) { this.setState({ suggestions: [] }); return; }
+    let suggestions;
+    this.getSuggestions(value.value)
+      .then(resp => {
+        suggestions = resp.suggestions;
+        return Promise.all(
+          suggestions.map(s=> this.getLocation(s.locationId))
+        );
+      })
+      .then(newCoordinates => {
+
+        let result = suggestions.map((suggestion, i) => (
+          {
+            label: suggestion.label,
+            value: newCoordinates[i]
+          }
+        ));
+        this.setState({ suggestions: result });
+      });
   }
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
     });
   };
+  findLabelByValue = (value) =>{
+    let equal = (x, y) => {
+        return x[0] === y[0] && x[1]===y[1];
+    }
+    let sug = this.state.suggestions.filter(s=>equal(value,s.value));
+    return sug ? sug[0].label:'';
+  }
   onChange = (event, { newValue }) => {
-    let new_label = this.state.suggestions.find(sug => sug.value === newValue);
-    // console.log(new_label);
 
-    if (new_label) this.props.handleLocationIdChanged(newValue);
-    new_label = new_label ? new_label.label : null;
-    this.setState({ value: new_label ? new_label : newValue });
-    this.onSuggestionsUpdateRequested(new_label ? new_label : newValue);
-    
+    if (typeof(newValue)=='string') {
+      this.setState({input: newValue});
+      return;
+    }
+    this.setState({ input: this.findLabelByValue(newValue) })
+    // let new_label = this.state.suggestions.find(sug => sug.value === newValue);
+    // if (new_label) this.props.handleLocationIdChanged(newValue);
+    // new_label = new_label ? new_label.label : null;
+    // this.setState({ value: new_label ? new_label : newValue });
+    // this.onSuggestionsUpdateRequested(new_label ? new_label : newValue);
+
   }
 
   onSuggestionsUpdateRequested({ value }) {
-    this.getSuggestions(value? value.value: null);
+    this.getSuggestions(value ? value.value : null);
+
   }
-  
-  onSearchRequested = () =>{
-    this.getSuggestions(this.state.value).then(resp => {
-      this.setState({value: resp.suggestions[0].label});
-      this.props.handleLocationIdChanged(resp.suggestions[0].locationId);
-  
+
+  onSearchRequested = () => {
+    this.getSuggestions(this.state.input).then(resp => {
+      console.log('null',resp)
+      if (resp.length===0 || resp.suggestions.length===0) return; 
+      this.setState({ input: resp.suggestions[0].label });
+      let position = this.getLocation(resp.suggestions[0].locationId).then(coordinates=>{
+        this.props.handlePointSelected(coordinates);
+      })
+      // console.log('p;osdfj',position)
+      // this.props.handleLocationIdChanged();
+
+    });
+  }
+  handlePointSelected = (location) => {
+    this.props.handlePointSelected(location).then(newLabel =>{
+      // if (!newLabel) this.setState({})
+      this.setState({input:newLabel});
     });
   }
 
   render() {
-    const {  required } = this.props;
-    const { value, suggestions } = this.state;
+    const { required } = this.props;
+    const { input, suggestions } = this.state;
     const inputProps = {
       id: 'search',
       name: 'search',
-      value: this.props.locationName,
+      value: input,
       className: 'react-autosuggest__input',
       required,
       onChange: this.onChange
     };
-    // console.log('value',this.props);
     return (
       <div>
         <div className='search-bar-container'>
           <Autosuggest
-            value={this.props.locationName}
             suggestions={suggestions}
             onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -111,15 +151,16 @@ class MapContainer extends React.Component {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />
-            <IconButton size='small' className ='search-button' onClick = {this.onSearchRequested} >
-              <SearchButton  className='search-icon' />
-            </IconButton>
+          <IconButton size='small' className='search-button' onClick={this.onSearchRequested} >
+            <SearchButton className='search-icon' />
+          </IconButton>
         </div>
-        
-        <MapPic coordinates = {this.props.coordinates}
-            handlePointSelected ={this.props.handlePointSelected}
-          />
-    </div>
+
+        <MapPic 
+          point = {this.props.point}
+          handlePointSelected={this.handlePointSelected}
+        />
+      </div>
     );
   }
 }

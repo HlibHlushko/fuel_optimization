@@ -20,12 +20,13 @@ class Route extends React.Component{
                     point = {point}
                     id = {id}
                     key = {id} 
+                    credentials = {this.props.credentials}
                     handlePointSelected = {this.props.handlePointSelected.bind(this, id)}
                     handleOrderChanged = {this.props.handleOrderChanged.bind(this, id)}
                     handleOrderAdded = {this.props.handleOrderAdded.bind(this, id)}
                     handleOrderDeleted = {this.props.handleOrderDeleted.bind(this,id)}
                     handlePointDeleted = {this.props.handlePointDeleted.bind(this,id)}
-                    handleLocationIdChanged = {this.props.handleLocationIdChanged.bind(this, id)}
+                    // handleLocationIdChanged = {this.props.handleLocationIdChanged.bind(this, id)}
                 />)
         : null;
         return (

@@ -35,8 +35,6 @@ class Point extends React.Component {
                     />) 
                 : null;
         const expandedHeader = 'highlight-expanded-header--' + this.state.isActive;
-        //console.log('order after render', this.state.orders);
-        console.log('adsfs',this.props.point.locationName);
         return (
             <div >
                 <ExpansionPanel className='expansion-panel' onChange={this.handleExpandedChange} >
@@ -51,12 +49,10 @@ class Point extends React.Component {
                     <ExpansionPanelDetails >
                         <Paper className='map-data'>
                             <MapContainer
-                              point={this.props.point.locationId}
-                              locationId={this.props.point.locationId}
-                              locationName={this.props.point.locationName}
-                              coordinates={this.props.point.coordinates}
+                              credentials = {this.props.credentials}
+                              point = {this.props.point}
                               handlePointSelected = {this.props.handlePointSelected}
-                              handleLocationIdChanged = {this.props.handleLocationIdChanged}
+                            //   handleLocationIdChanged = {this.props.handleLocationIdChanged}
                             />
                         </Paper>
                         <Paper className = 'orders-data'>

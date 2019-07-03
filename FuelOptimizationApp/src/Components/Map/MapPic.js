@@ -20,12 +20,14 @@ class MapPic extends React.Component {
 
     constructor(props) {
         super(props);
+        let center = this.props.point.coordinates;
+        center = center ? center : [49.43532, 19.33918];
         this.state = {
             app_id: 'fLR4pqJX0jZZZle8nwaM',
             app_code: 'eM1d0zQLOLaA44cULr6NwQ',
             mapRef : React.createRef(),
-            markerPosition: null
-
+            // markerPosition: this.props.point.coordinates,
+            center: center
         }
         // const mapRef = React.createRef();
 
@@ -33,21 +35,23 @@ class MapPic extends React.Component {
     handleClick = (event)=>{
         let position = [event.latlng.lat,event.latlng.lng];
         this.props.handlePointSelected(position);
-        this.setState({markerPosition:position});
+        // this.setState({markerPosition:position});
         // console.log(event.latlng.lat,event.latlng.lng);
     }
     render() {
         // console.log(this.state);
+        
+        console.log('center', this.props.point)
+
         return (
             <div>
                 <Map
-                    center={this.props.coordinates}
+                    center={this.state.center}
                     className='map-picture'
                     zoom={6}
-                    // mapRef = {this.mapRef}
                     onClick = {this.handleClick}
                     >
-                    {this.state.markerPosition ? <Marker position = {this.state.markerPosition}/> : null }
+                    {this.props.point.coordinates ? <Marker position = {this.props.point.coordinates}/> : null }
                     <TileLayer
                         url={hereTileUrl('reduced.day')}
                     />
