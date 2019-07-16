@@ -20,14 +20,13 @@ class MapPic extends React.Component {
 
     constructor(props) {
         super(props);
-        let center = this.props.point.coordinates;
-        center = center ? center : [49.43532, 19.33918];
+        
         this.state = {
             app_id: 'fLR4pqJX0jZZZle8nwaM',
             app_code: 'eM1d0zQLOLaA44cULr6NwQ',
             mapRef : React.createRef(),
             // markerPosition: this.props.point.coordinates,
-            center: center
+            // center: center
         }
         // const mapRef = React.createRef();
 
@@ -41,15 +40,18 @@ class MapPic extends React.Component {
     render() {
         // console.log(this.state);
         
-        console.log('center', this.props.point)
-
+        // console.log('center', this.props.point)
+        let center = this.props.point.coordinates;
+        center = center ? center : [49.43532, 19.33918];
+        console.log('center', center);
         return (
             <div>
                 <Map
-                    center={this.state.center}
+                    center={center}
                     className='map-picture'
-                    zoom={6}
+                    zoom={10}
                     onClick = {this.handleClick}
+                    
                     >
                     {this.props.point.coordinates ? <Marker position = {this.props.point.coordinates}/> : null }
                     <TileLayer

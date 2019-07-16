@@ -113,7 +113,7 @@ class MapContainer extends React.Component {
       console.log('null',resp)
       if (resp.length===0 || resp.suggestions.length===0) return; 
       this.setState({ input: resp.suggestions[0].label });
-      let position = this.getLocation(resp.suggestions[0].locationId).then(coordinates=>{
+      this.getLocation(resp.suggestions[0].locationId).then(coordinates=>{
         this.props.handlePointSelected(coordinates);
       })
       // console.log('p;osdfj',position)

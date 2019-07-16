@@ -5,9 +5,6 @@
   "dependencies": {
     "@material-ui/core": "^4.1.2",
     "@material-ui/icons": "^4.2.1",
-    "autosuggest-highlight": "^3.1.1",
-    "bootstrap": "^4.3.1",
-    "downshift": "^3.2.10",
     "leaflet": "^1.5.1",
     "react": "^16.8.6",
     "react-autocomplete": "^1.8.1",

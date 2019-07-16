@@ -30,7 +30,12 @@ class Optimization extends React.Component {
                     ],
                     coordinates: [50.393219, 30.488314],
                     // locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C',
-                    locationName: 'aszcx'
+                    locationName: 'aszcx',
+                    MapView: {
+                        BottomRight: {Latitude: 53.11653, Longitude: 13.90612},
+                        TopLeft: {Latitude: 53.1228, Longitude: 13.90277}
+                    }
+
                 },
                 {
                     mapData: 'mapData2',
@@ -44,7 +49,11 @@ class Optimization extends React.Component {
                     ],
                     coordinates: [51.797901, 11.198762],
                     // locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
-                    locationName: 'dfkl'
+                    locationName: 'dfkl',
+                    MapView: {
+                        BottomRight: {Latitude: 53.11653, Longitude: 13.90612},
+                        TopLeft: {Latitude: 53.1228, Longitude: 13.90277}
+                    }
                 }
             ]
         });
@@ -122,7 +131,9 @@ class Optimization extends React.Component {
                 return (response.json());
             }).then(json => {
                 if (json.Response.View.length === 0) return this.state.points[pointId].locationName;
+                
                 let res = json.Response.View[0].Result[0].Location.Address;
+                console.log('request: ', json.Response.View[0].Result[0].Location);
                 this.setState({
                     points: [...this.state.points.slice(0, pointId),
                     {

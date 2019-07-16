@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fuel_optimization", "fuel_optimization\fuel_optimization.csproj", "{6390F71B-CDEC-4D35-8EB2-5B8CE3D7C920}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{89A59DD6-5433-46AD-977A-AC7E2DBC2DAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Interfaces", "Services.Interfaces\Services.Interfaces.csproj", "{0B027BF8-5ED2-484A-B2A5-3F32F866E1D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{8A517042-053C-4BC4-8FB5-9C31FD680EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0B027BF8-5ED2-484A-B2A5-3F32F866E1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B027BF8-5ED2-484A-B2A5-3F32F866E1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B027BF8-5ED2-484A-B2A5-3F32F866E1D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A517042-053C-4BC4-8FB5-9C31FD680EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A517042-053C-4BC4-8FB5-9C31FD680EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A517042-053C-4BC4-8FB5-9C31FD680EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A517042-053C-4BC4-8FB5-9C31FD680EAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
