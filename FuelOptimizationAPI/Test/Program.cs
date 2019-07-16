@@ -6,14 +6,31 @@ namespace Test
     {
         static void Main()
         {
+            Random random = new Random();
             int max_volume = 600;
             int min_balance = 0;
             int points_number = 4;
-            double[] costs = new double[]{ 1, 1.25, 0.95, 1.3 };
+            double[] costs = new double[points_number];
             int[][] distances = new int[points_number][];
-            bool[] necessary = new bool[] { false, false, false, true };
-            Tuple<int, int>[][] pred = new Tuple<int, int>[points_number][];
-            for (int i = 0; i < points_number; ++i) pred[i] = new Tuple<int, int>[max_volume+1]; //distances[i] = new int[points_number];
+            bool[] necessary = new bool[points_number];
+            //for (int i = 0; i < points_number; ++i)
+            //{
+            //    costs[i] = random.NextDouble() * 4 + 28;
+            //    necessary[i] = true;
+            //    distances[i] = new int[points_number];
+            //}
+            //for (int i = 0; i < points_number - 1; ++i)
+            //    for (int j = i + 1; j < points_number; ++j)
+            //    {
+
+            //        distances[i][j] = random.Next(30, 600);
+            //        distances[i][j] = distances[j][i];
+            //    }
+            costs = new double[] { 0.95, 1.25, 0.95, 1.3 };
+            //necessary[1] = false;
+            necessary = new bool[] { true, false, false, true };
+            Tuple<int, int, int>[][] pred = new Tuple<int, int, int>[points_number][];
+            for (int i = 0; i < points_number; ++i) pred[i] = new Tuple<int, int, int>[max_volume + 1]; //distances[i] = new int[points_number];
             distances[0] = new int[] { 0, 300, 450, 800 };
             distances[1] = new int[] { 300, 0, 200, 450 };
             distances[2] = new int[] { 450, 200, 0, 300 };
@@ -38,10 +55,10 @@ namespace Test
                         {
                             //dp[point][volume] = Math.Min(dp[point][volume], dp[prev_point][possible_volume] + (distances[point][prev_point] + volume - possible_volume) * costs[point]);
                             double new_cost = dp[prev_point][possible_volume] + (distances[point][prev_point] + volume - possible_volume) * costs[point];
-                            if (dp[point][volume]> new_cost)
+                            if (dp[point][volume] >= new_cost)
                             {
                                 dp[point][volume] = new_cost;
-                                pred[point][volume] = new Tuple<int, int>(prev_point, possible_volume);
+                                pred[point][volume] = new Tuple<int, int, int>(prev_point, possible_volume, distances[point][prev_point] + volume - possible_volume);
                             }
                         }
                 }
@@ -49,9 +66,9 @@ namespace Test
             }
             int curr = points_number - 1;
             int vol = min_balance;
-            while(pred[curr][vol] != null)
+            while (pred[curr][vol] != null)
             {
-                Console.WriteLine($"Point #{curr}, buy {vol} with cost {costs[curr]}");
+                Console.WriteLine($"Point #{curr}, buy {pred[curr][vol].Item3} with cost {costs[curr]}");
                 var t = pred[curr][vol];
                 curr = t.Item1;
                 vol = t.Item2;

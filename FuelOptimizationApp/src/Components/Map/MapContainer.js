@@ -50,6 +50,7 @@ class MapContainer extends React.Component {
     }).then(response => {
       return response.json();
     }).then(json => {
+      if (!json.Response.View[0]) return [0,0];
       let pos = json.Response.View[0].Result[0].Location.DisplayPosition;
       let coordinates = [pos.Latitude, pos.Longitude];
       return coordinates;
@@ -88,8 +89,9 @@ class MapContainer extends React.Component {
     let sug = this.state.suggestions.filter(s=>equal(value,s.value));
     return sug ? sug[0].label:'';
   }
-  onChange = (event, { newValue }) => {
-
+  
+  onChange = (event, { newValue, method }) => {
+    
     if (typeof(newValue)=='string') {
       this.setState({input: newValue});
       return;
@@ -127,7 +129,9 @@ class MapContainer extends React.Component {
       this.setState({input:newLabel});
     });
   }
-
+  handleSuggestionSelected = (event, {suggestionValue}) =>{
+    this.props.handlePointSelected(suggestionValue);
+  }
   render() {
     const { required } = this.props;
     const { input, suggestions } = this.state;
@@ -148,6 +152,7 @@ class MapContainer extends React.Component {
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             getSuggestionValue={getSuggestionValue}
+            onSuggestionSelected  = {this.handleSuggestionSelected}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />

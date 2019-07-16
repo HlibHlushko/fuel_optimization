@@ -43,7 +43,6 @@ class MapPic extends React.Component {
         // console.log('center', this.props.point)
         let center = this.props.point.coordinates;
         center = center ? center : [49.43532, 19.33918];
-        console.log('center', center);
         return (
             <div>
                 <Map
