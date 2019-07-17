@@ -1,8 +1,6 @@
 import React from 'react';
 import Point from '../Point/point';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import './route.css'
+import './route.css';
 
 class Route extends React.Component{
     constructor(props){
@@ -32,9 +30,7 @@ class Route extends React.Component{
         return (
             <div>
                 {points}
-                <Fab className ='addIcon' size="small" onClick = {this.props.handlePointAdded}>
-                    <AddIcon/>
-                </Fab>
+               
                 
             </div>);
     }

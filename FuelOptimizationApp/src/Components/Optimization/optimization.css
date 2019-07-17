@@ -1,0 +1,10 @@
+.send-button{
+    /* color: black !important; */
+    float:right;
+    /* right:  20px;  */
+    margin-right: 20px !important;
+}
+.add-point-icon{
+    margin: 10px;
+    
+}

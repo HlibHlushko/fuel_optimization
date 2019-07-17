@@ -1,6 +1,16 @@
 import React from 'react';
 import Route from '../Route/route';
-import TruckPicker from '../TruckPicker/TruckPicker'
+import TruckPicker from '../TruckPicker/TruckPicker';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import './optimization.css'
+
 
 class Optimization extends React.Component {
     constructor(props) {
@@ -8,6 +18,7 @@ class Optimization extends React.Component {
         this.state = {
             selectedTruck: null,
             points: null,
+            isDialogOpened: false,
             credentials: {
                 app_id: 'fLR4pqJX0jZZZle8nwaM',
                 app_code: 'eM1d0zQLOLaA44cULr6NwQ',
@@ -23,8 +34,8 @@ class Optimization extends React.Component {
                     name: 'Ukraine',
                     orders: [
                         {
-                            selectedBrand: { value: 0, label: 'Renault' },
-                            selectedModel: { value: 0, label: 'Logan' },
+                            selectedBrand: { value: 1, label: 'Renault' },
+                            selectedModel: { value: 1, label: 'Logan' },
                             number: 4
                         },
                     ],
@@ -42,8 +53,8 @@ class Optimization extends React.Component {
                     name: 'England',
                     orders: [
                         {
-                            selectedBrand: { value: 0, label: 'Nissan' },
-                            selectedModel: { value: 0, label: 'X-Trail' },
+                            selectedBrand: { value: 2, label: 'Nissan' },
+                            selectedModel: { value: 3, label: 'X-Trail' },
                             number: 2
                         },
                     ],
@@ -147,33 +158,33 @@ class Optimization extends React.Component {
                 return res.Label;
             });
     }
-    // handleLocationIdChanged = (pointId, locationId)=>{
+    handleSendRequested = () =>{
+        let points = this.state.points;
+        let filled = true;
+        for (let i=0; i<points.length;++i)
+            {
+                if (!points[i].coordinates||!points[i].orders) 
+                    { 
+                        filled=false; 
+                        break; 
+                    }
+                for(let j=0;j<points[i].orders.length;++j)
+                    if (!points[i].orders[j].selectedBrand || !points[i].orders[j].selectedModel) {
+                        filled = false;
+                        break;
+                    }
 
-    //     let url = 'http://geocoder.api.here.com/6.2/geocode.json';
-    //     fetch(`${url}?locationId=${locationId}&app_id=${this.state.app_id}&&app_code=${this.state.app_code}`, {
-    //         method: 'GET',
-    //         mode: 'cors'
-    //     }).then(response => {
-    //         return response.json();
-    //     }).then( json =>{
-    //         let pos = json.Response.View[0].Result[0].Location.DisplayPosition;
-    //         this.setState({points:[
-    //             ...this.state.points.slice(0,pointId),
-    //             {
-    //                 ...this.state.points[pointId],
-    //                 locationId: locationId,
-    //                 position: [pos.Latitude, pos.Longitude]
-    //             },
-    //             ...this.state.points.slice(pointId+1)
-    //         ]})
-    //     });
-
-
-    //     // let obj = JSON.parse(JSON.stringify(this.state.points[pointId]));//.locationId;
-    //     // obj.locationId = locationId;
-
-    // }
+            }
+        
+        if (!filled) this.setState({isDialogOpened:true}); else{
+            console.log('ok')
+        }
+    }
+    handleCloseDialog = () =>{
+        this.setState({isDialogOpened: false});
+    }
     render() {
+        console.log(this.state.isDialogOpened)
         return (
             <div>
                 <TruckPicker handleTruckChanged={this.handleTruckChanged} />
@@ -188,6 +199,25 @@ class Optimization extends React.Component {
                     handlePointSelected={this.handlePointSelected}
                 // handleLocationIdChanged = {this.handleLocationIdChanged}
                 />
+                <div>
+                    <Fab className ='add-point-icon' size="small" onClick = {this.handlePointAdded}>
+                        <AddIcon/>
+                    </Fab>
+                    <Fab variant = 'extended'  size = 'medium' className='send-button' onClick = {this.handleSendRequested}>
+                        Send 
+                    </Fab>
+                </div>
+                <Dialog open = {this.state.isDialogOpened}>
+                    <DialogTitle> Warning </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            You have unfilled fields, check your input and try again
+                        </DialogContentText>
+                        <DialogActions>
+                            <Button onClick = {this.handleCloseDialog}>OK</Button>
+                        </DialogActions>
+                    </DialogContent>
+                </Dialog>
             </div>
         );
     }
