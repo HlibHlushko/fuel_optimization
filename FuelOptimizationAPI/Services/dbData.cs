@@ -20,7 +20,7 @@ namespace Services
         }
         public List<Brand> GetBrands()
         {
-            return _context.Brands.ToList();
+           return _context.Brands.ToList();
         }
     }
 }

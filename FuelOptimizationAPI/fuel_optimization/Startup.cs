@@ -21,8 +21,10 @@ namespace fuel_optimization
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration["ConnectionString"]));
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<ApplicationContext>(options => 
+                options.UseLazyLoadingProxies().UseSqlServer(Configuration["ConnectionString"])
+              );
             services.AddTransient<IdbData, dbData>();
         }
 
