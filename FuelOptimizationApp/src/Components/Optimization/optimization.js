@@ -22,7 +22,8 @@ class Optimization extends React.Component {
             credentials: {
                 app_id: 'fLR4pqJX0jZZZle8nwaM',
                 app_code: 'eM1d0zQLOLaA44cULr6NwQ',
-            }
+            },
+            cars: []
         }
 
     }
@@ -68,6 +69,25 @@ class Optimization extends React.Component {
                 }
             ]
         });
+
+        fetch('http://localhost:1984/api/GetBrands', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                
+            }
+        })
+            .then(response=>  response.json() )
+            .then(data=>{
+                this.setState({cars:data});
+                // this.state.cars = data;
+            })
+        // const cars = require('./models.json');
+        // const brands = [...new Set(cars.map((model)=>{
+        //     return model.brandName;
+        // }))];
+        // const models = cars.filter(model=>this.props.selectedBrand && model.brandName === this.props.selectedBrand.label);
+        
     }
     handleTruckChanged = (truck) => {
         this.setState({ selectedTruck: truck });
@@ -144,7 +164,6 @@ class Optimization extends React.Component {
                 if (json.Response.View.length === 0) return this.state.points[pointId].locationName;
                 
                 let res = json.Response.View[0].Result[0].Location.Address;
-                console.log('request: ', json.Response.View[0].Result[0].Location);
                 this.setState({
                     points: [...this.state.points.slice(0, pointId),
                     {
@@ -160,7 +179,8 @@ class Optimization extends React.Component {
     }
     handleSendRequested = () =>{
         let points = this.state.points;
-        let filled = true;
+        let filled = this.state.selectedTruck ? true : false;
+        
         for (let i=0; i<points.length;++i)
             {
                 if (!points[i].coordinates||!points[i].orders) 
@@ -184,13 +204,13 @@ class Optimization extends React.Component {
         this.setState({isDialogOpened: false});
     }
     render() {
-        console.log(this.state.isDialogOpened)
         return (
             <div>
                 <TruckPicker handleTruckChanged={this.handleTruckChanged} />
                 <Route
                     points={this.state.points}
                     credentials={this.state.credentials}
+                    cars = {this.state.cars}
                     handleOrderChanged={this.handleOrderChanged}
                     handleOrderAdded={this.handleOrderAdded}
                     handleOrderDeleted={this.handleOrderDeleted}

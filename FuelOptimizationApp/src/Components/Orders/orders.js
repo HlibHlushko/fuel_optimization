@@ -7,12 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 
 class Order extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {}
-    }
-
-    handleDelete = ()=>{
+      handleDelete = ()=>{
         this.props.onDeleteOrder(this.props.id);
     }
     handleBrandSelected = (selectedBrand)=>{
@@ -37,20 +32,20 @@ class Order extends React.Component{
         });
     }
     render(){
-        const cars = require('./models.json');
-        const brands = [...new Set(cars.map((model)=>{
-            return model.brandName;
-        }))];
-        const models = cars.filter(model=>this.props.selectedBrand && model.brandName === this.props.selectedBrand.label);
+        let cars = this.props.cars;
+        let selectedBrandId = this.props.selectedBrand ? this.props.selectedBrand.value : -1 ;
         
+        let models = cars ? cars.filter(car => car.id === selectedBrandId ) : null;
+        models = models && models[0] ? models[0].models : [];
+      
         return(
 
             <div>
                 <div className='orders-container'>
                     <Select
                         className = 'select'
-                        options = {brands.map((item, id)=>{
-                            return {label: item, value:id};
+                        options = {cars.map(item=>{
+                            return {label: item.brandName, value:item.id};
                         })}
                         value = {this.props.selectedBrand} //{this.state.selectedBrand.label ? this.state.selectedBrand : null}
                         onChange = {this.handleBrandSelected}
@@ -59,8 +54,8 @@ class Order extends React.Component{
                     <Select
                         className = 'select'
                         value = {this.props.selectedModel}
-                        options = {models.map((item,id)=>{
-                            return {label: item.name, value:id};
+                        options = {models.map(item=>{
+                            return {label: item.modelName, value:item.id};
                         })}
                         onChange = {this.handleModelSelected}
                         placeholder='Select model'

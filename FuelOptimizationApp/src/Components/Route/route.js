@@ -19,6 +19,7 @@ class Route extends React.Component{
                     id = {id}
                     key = {id} 
                     credentials = {this.props.credentials}
+                    cars = {this.props.cars}
                     handlePointSelected = {this.props.handlePointSelected.bind(this, id)}
                     handleOrderChanged = {this.props.handleOrderChanged.bind(this, id)}
                     handleOrderAdded = {this.props.handleOrderAdded.bind(this, id)}

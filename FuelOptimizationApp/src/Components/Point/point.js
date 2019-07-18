@@ -25,6 +25,7 @@ class Point extends React.Component {
         const orders = this.props.point.orders ? 
                 this.props.point.orders.map((item, id)=>
                     <Order 
+                        cars = {this.props.cars}
                         selectedBrand = {item.selectedBrand}
                         selectedModel = {item.selectedModel}
                         number = {item.number}
