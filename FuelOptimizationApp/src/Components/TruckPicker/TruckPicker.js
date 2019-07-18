@@ -11,10 +11,15 @@ class TruckPicker extends React.Component{
 
     }
     componentDidMount(){
-        this.setState({suggestions: [
-            {value: 1, label: 'Lohr 1.21'},
-            {value: 2, label: 'Rolfo 228'},
-            {value: 3, label: 'Azlagor 148'}] });
+        fetch('http://localhost:1984/api/GetTrucks', {
+            method: 'GET',
+            mode: 'cors',
+        })
+            .then(response=>  response.json() )
+            .then(data=>{
+                this.setState({suggestions:data});
+            })
+            
     }
     handleChange = (selectedOption) => {
         this.props.handleTruckChanged(selectedOption);
@@ -23,7 +28,7 @@ class TruckPicker extends React.Component{
         return (
             <Select className='picker'
                 onChange = {this.handleChange}
-                options = {this.state.suggestions}
+                options = {this.state.suggestions.map(item=>{ return {value: item.id, label: item.name}})}
                 placeholder = 'Select truck'
                 />
         );

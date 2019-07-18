@@ -73,9 +73,6 @@ class Optimization extends React.Component {
         fetch('http://localhost:1984/api/GetBrands', {
             method: 'GET',
             mode: 'cors',
-            headers: {
-                
-            }
         })
             .then(response=>  response.json() )
             .then(data=>{

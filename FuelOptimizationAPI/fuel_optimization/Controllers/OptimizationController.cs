@@ -14,7 +14,7 @@ namespace fuel_optimization.Controllers
         {
             _dbData = dbData;
         }
-        [HttpGet("trucks")]
+        [HttpGet("GetTrucks")]
         public List<Truck> GetTrucks()
         {
             return _dbData.GetTrucks();
