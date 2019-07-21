@@ -16,7 +16,7 @@ class Optimization extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTruck: null,
+            selectedTruck: {value: 1, label:"Lohr 1.21"},
             points: null,
             isDialogOpened: false,
             credentials: {
