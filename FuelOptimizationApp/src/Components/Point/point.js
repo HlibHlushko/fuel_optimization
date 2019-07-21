@@ -36,14 +36,19 @@ class Point extends React.Component {
                     />) 
                 : null;
         const expandedHeader = 'highlight-expanded-header--' + this.state.isActive;
+        const textToShow = this.props.point.startOrFinish? (this.props.point.startOrFinish == 1 ? "Start" : "Finish" ) + ` point: ${this.props.point.name}` : `Point #${this.props.id}: ${this.props.point.name}` 
         return (
             <div >
                 <ExpansionPanel className='expansion-panel' onChange={this.handleExpandedChange} >
                     <ExpansionPanelSummary className={expandedHeader} expandIcon={<ExpandMoreIcon />}>
                         <div className='expansion-panel-summary'>
-                            <div className='expansion-panel-summary-info'> Point #{this.props.id}: {this.props.point.name} </div>
-                            <Fab size = 'small' className = 'expansion-panel-delete-button' onClick = {this.props.handlePointDeleted} >
-                                <DeleteIcon className='expansion-panel-delete-icon'/>
+                            <div className='expansion-panel-summary-info'> {textToShow} </div>
+                            <Fab 
+                                size = 'small' 
+                                className = 'expansion-panel-delete-button' 
+                                onClick = {this.props.handlePointDeleted}
+                                disabled = {this.props.point.startOrFinish} >
+                                    <DeleteIcon className='expansion-panel-delete-icon'/>
                             </Fab>
                         </div>
                     </ExpansionPanelSummary>
