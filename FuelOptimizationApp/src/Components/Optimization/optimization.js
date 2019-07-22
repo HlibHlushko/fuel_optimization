@@ -52,65 +52,65 @@ class Optimization extends React.Component {
         }
 
     }
-    // componentDidMount() {
-    //     this.setState({
-    //         points: [
-    //             {
-    //                 name: 'Ukraine',
-    //                 startOrFinish: 1,
-    //                 orders: [
-    //                     {
-    //                         selectedBrand: { value: 1, label: 'Renault' },
-    //                         selectedModel: { value: 1, label: 'Logan' },
-    //                         number: 4
-    //                     },
-    //                 ],
-    //                 coordinates: [50.393219, 30.488314],
-    //                 // locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C',
-    //                 locationName: 'Ukraine',
-    //                 MapView: {
-    //                     BottomRight: { Latitude: 53.11653, Longitude: 13.90612 },
-    //                     TopLeft: { Latitude: 53.1228, Longitude: 13.90277 }
-    //                 }
+    componentDidMount() {
+        // this.setState({
+        //     points: [
+        //         {
+        //             name: 'Ukraine',
+        //             startOrFinish: 1,
+        //             orders: [
+        //                 {
+        //                     selectedBrand: { value: 1, label: 'Renault' },
+        //                     selectedModel: { value: 1, label: 'Logan' },
+        //                     number: 4
+        //                 },
+        //             ],
+        //             coordinates: [50.393219, 30.488314],
+        //             // locationId: 'NT_s5uXPmqbNH4pCOzMAorV.C',
+        //             locationName: 'Ukraine',
+        //             MapView: {
+        //                 BottomRight: { Latitude: 53.11653, Longitude: 13.90612 },
+        //                 TopLeft: { Latitude: 53.1228, Longitude: 13.90277 }
+        //             }
 
-    //             },
-    //             {
-    //                 name: 'England',
-    //                 startOrFinish: -1,
-    //                 orders: [
-    //                     {
-    //                         selectedBrand: { value: 2, label: 'Nissan' },
-    //                         selectedModel: { value: 3, label: 'X-Trail' },
-    //                         number: 2
-    //                     },
-    //                 ],
-    //                 coordinates: [51.797901, 11.198762],
-    //                 // locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
-    //                 locationName: 'England',
-    //                 MapView: {
-    //                     BottomRight: { Latitude: 53.11653, Longitude: 13.90612 },
-    //                     TopLeft: { Latitude: 53.1228, Longitude: 13.90277 }
-    //                 }
-    //             }
-    //         ]
-    //     });
+        //         },
+        //         {
+        //             name: 'England',
+        //             startOrFinish: -1,
+        //             orders: [
+        //                 {
+        //                     selectedBrand: { value: 2, label: 'Nissan' },
+        //                     selectedModel: { value: 3, label: 'X-Trail' },
+        //                     number: 2
+        //                 },
+        //             ],
+        //             coordinates: [51.797901, 11.198762],
+        //             // locationId: 'NT_Bn2nZIGG5u7l6Vv2n9z9AD',
+        //             locationName: 'England',
+        //             MapView: {
+        //                 BottomRight: { Latitude: 53.11653, Longitude: 13.90612 },
+        //                 TopLeft: { Latitude: 53.1228, Longitude: 13.90277 }
+        //             }
+        //         }
+        //     ]
+        // });
 
-    //     fetch('http://localhost:1984/api/GetBrands', {
-    //         method: 'GET',
-    //         mode: 'cors',
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             this.setState({ cars: data });
-    //             // this.state.cars = data;
-    //         })
-    //     // const cars = require('./models.json');
-    //     // const brands = [...new Set(cars.map((model)=>{
-    //     //     return model.brandName;
-    //     // }))];
-    //     // const models = cars.filter(model=>this.props.selectedBrand && model.brandName === this.props.selectedBrand.label);
+        fetch('http://localhost:1984/api/GetBrands', {
+            method: 'GET',
+            mode: 'cors',
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ cars: data });
+                // this.state.cars = data;
+            })
+        // const cars = require('./models.json');
+        // const brands = [...new Set(cars.map((model)=>{
+        //     return model.brandName;
+        // }))];
+        // const models = cars.filter(model=>this.props.selectedBrand && model.brandName === this.props.selectedBrand.label);
 
-    // }
+    }
     handleTruckChanged = (truck) => {
         this.setState({ selectedTruck: truck });
     }
@@ -128,15 +128,19 @@ class Optimization extends React.Component {
         })
     }
     handleOrderAdded = (pointId) => {
+        console.log(this.state.points[pointId].orders)
+        let emptyOrder = {
+            selectedBrand: null,
+            selectedModel: null,
+            number: 1
+        };
+        let newOrders = this.state.points[pointId].orders ? [...this.state.points[pointId].orders, emptyOrder] : [emptyOrder];
+         
         this.setState({
             points: [...this.state.points.slice(0, pointId),
             {
                 ...this.state.points[pointId],
-                orders: [...this.state.points[pointId].orders, {
-                    selectedBrand: null,
-                    selectedModel: null,
-                    number: 1
-                }]
+                orders: newOrders
             },
             ...this.state.points.slice(pointId + 1)]
         });

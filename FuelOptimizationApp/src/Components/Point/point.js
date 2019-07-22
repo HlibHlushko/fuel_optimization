@@ -36,10 +36,10 @@ class Point extends React.Component {
                     />) 
                 : null;
         const expandedHeader = 'highlight-expanded-header--' + this.state.isActive;
-        const textToShow = this.props.point.startOrFinish? (this.props.point.startOrFinish == 1 ? "Start" : "Finish" ) + ` point: ${this.props.point.name}` : `Point #${this.props.id}: ${this.props.point.name}` 
+        const textToShow = this.props.point.startOrFinish? (this.props.point.startOrFinish === 1 ? "Start" : "Finish" ) + ` point: ${this.props.point.name}` : `Point #${this.props.id}: ${this.props.point.name}` 
         return (
             <div >
-                <ExpansionPanel className='expansion-panel' onChange={this.handleExpandedChange} >
+                <ExpansionPanel className='expansion-panel' onChange={this.handleExpandedChange} expanded = {this.state.isActive} >
                     <ExpansionPanelSummary className={expandedHeader} expandIcon={<ExpandMoreIcon />}>
                         <div className='expansion-panel-summary'>
                             <div className='expansion-panel-summary-info'> {textToShow} </div>
@@ -47,7 +47,7 @@ class Point extends React.Component {
                                 size = 'small' 
                                 className = 'expansion-panel-delete-button' 
                                 onClick = {this.props.handlePointDeleted}
-                                disabled = {this.props.point.startOrFinish} >
+                                disabled = {this.props.point.startOrFinish!==0} >
                                     <DeleteIcon className='expansion-panel-delete-icon'/>
                             </Fab>
                         </div>
