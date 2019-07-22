@@ -10,7 +10,7 @@ namespace DataTransferObjects
     }
     public class Point
     {
-        public double[,] Coordinates { get; set; }
+        public double[] Coordinates { get; set; }
         public PointType PointType { get; set; }
         public int DistanceToNextPoint {get; set;}
         public double? FuelCost { get; set; }       //depends if we use service with all fuel costs or we save costs localy,
@@ -27,6 +27,6 @@ namespace DataTransferObjects
     {
         public int BrandId { get; set; }
         public int ModelId { get; set; }
-        public int Weight { get; set; }
+        //public int Weight { get; set; }
     }
 }

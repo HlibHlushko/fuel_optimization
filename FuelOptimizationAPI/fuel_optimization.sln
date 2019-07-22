@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fuel_optimization", "fuel_optimization\fuel_optimization.csproj", "{6390F71B-CDEC-4D35-8EB2-5B8CE3D7C920}"
 EndProject
@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Interfaces", "Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{8A517042-053C-4BC4-8FB5-9C31FD680EAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{BCD49E53-3E45-4CE7-8FDF-77D437AFA342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{BCD49E53-3E45-4CE7-8FDF-77D437AFA342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimizationSimplexMethod", "OptimizationSimplexMethod\OptimizationSimplexMethod.csproj", "{C5083E3B-0FE2-4D16-9745-5196A7B1ADBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BCD49E53-3E45-4CE7-8FDF-77D437AFA342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCD49E53-3E45-4CE7-8FDF-77D437AFA342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCD49E53-3E45-4CE7-8FDF-77D437AFA342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5083E3B-0FE2-4D16-9745-5196A7B1ADBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5083E3B-0FE2-4D16-9745-5196A7B1ADBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5083E3B-0FE2-4D16-9745-5196A7B1ADBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5083E3B-0FE2-4D16-9745-5196A7B1ADBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -128,7 +128,6 @@ class Optimization extends React.Component {
         })
     }
     handleOrderAdded = (pointId) => {
-        console.log(this.state.points[pointId].orders)
         let emptyOrder = {
             selectedBrand: null,
             selectedModel: null,

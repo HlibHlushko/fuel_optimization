@@ -1,4 +1,8 @@
 ﻿using System;
+using DataTransferObjects;
+
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Test
 {
@@ -6,6 +10,62 @@ namespace Test
     {
         static void Main()
         {
+
+           
+            Point p1 = new Point
+            {
+                Cars = null,
+                Coordinates = new double[] { 1, 2 },
+                FuelCost = 1,
+                DistanceToNextPoint = 200,
+                PointType = PointType.Dealer
+            };
+
+            Point p2 = new Point
+            {
+                Cars = new List<Car>
+                {
+                    new Car
+                    {
+                        BrandId = 1,
+                        ModelId = 1
+                    },
+                    new Car
+                    {
+                        BrandId = 1,
+                        ModelId = 2
+                    },
+                    new Car
+                    {
+                        BrandId = 2,
+                        ModelId = 1
+                    }
+                },
+                Coordinates = new double[] { 1, 2 },
+                FuelCost = null,
+                DistanceToNextPoint = 300,
+                PointType = PointType.Dealer
+            };
+
+            Point p3 = new Point
+            {
+                Cars = null,
+                Coordinates = new double[] { 1, 2 },
+                FuelCost = 0.94,
+                DistanceToNextPoint = 400,
+                PointType = PointType.FuelStation
+            };
+            Input input = new Input
+            {
+                TruckId = 1,
+                Points = new List<Point>
+                {
+                    p1,p2,p3
+                }
+            };
+            Console.WriteLine(JsonConvert.SerializeObject(input));
+            return;
+
             Random random = new Random();
             int max_volume = 600;
             int min_balance = 0;
