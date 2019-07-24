@@ -32,6 +32,7 @@ namespace fuel_optimization
             services.AddDbContext<ApplicationContext>(options => 
                 options.UseLazyLoadingProxies().UseSqlServer(Configuration["ConnectionString"])
               );
+            services.AddTransient<IOptimization, Optimization>();
             services.AddTransient<IdbData, dbData>();
         }
 

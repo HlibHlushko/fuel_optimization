@@ -30,6 +30,7 @@ namespace fuel_optimization.Controllers
         [HttpPost("hook")]
         public void Optimization(Input input)
         {
+
             _optimization.StartOptimization(input);
         }
 

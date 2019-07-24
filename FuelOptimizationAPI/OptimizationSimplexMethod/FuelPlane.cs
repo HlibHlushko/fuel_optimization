@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OptimizationSimplexMethod
+﻿namespace OptimizationSimplexMethod
 {
-    public class FuelPlane
+    public class FuelPlan
     {
         double[] costs;//ціна палива в і-й країні
         int[] volumes;//об'єм палива, що потрібен для доїзду від країни і до кордону країни i+1
@@ -43,7 +39,7 @@ namespace OptimizationSimplexMethod
             }
         }//вхідні дані для симплекс-таблиці (обмеження, цільова функція)
 
-        public double[] Plane//об'єм купленого палива в і-й країні
+        public double[] Plan//об'єм купленого палива в і-й країні
         {
             get
             {
@@ -56,14 +52,14 @@ namespace OptimizationSimplexMethod
             }
         }
 
-        public FuelPlane()
+        public FuelPlan()
         {
             costs = new double[] { 31 };
             tank = 600;
             volumes = new int[] { 0 };
         }
 
-        public FuelPlane(double[] Costs, int[] Volumes, int Tank)
+        public FuelPlan(double[] Costs, int[] Volumes, int Tank)
         {
             costs = Costs;
             tank = Tank;
