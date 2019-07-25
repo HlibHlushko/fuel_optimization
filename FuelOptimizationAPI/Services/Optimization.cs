@@ -2,8 +2,7 @@
 using OptimizationSimplexMethod;
 using Services.Interfaces;
 using System.Collections.Generic;
-using System;
-using System.Linq;
+using Newtonsoft.Json;
 
 namespace Services
 {
@@ -26,13 +25,13 @@ namespace Services
 
             FuelPlan P = new FuelPlan(costs.ToArray(), volumes.ToArray(), tank);
 
-            Output output = new Output();
-            output.Points = new List<OutputPoint>();
+            List<OutputPoint> output = new List<OutputPoint>();
+            //output.Points = new List<OutputPoint>();
             List<int> pos = new List<int>();
             for (int i=0;i<P.Plan.Length; ++i)
             {
                 if (P.Plan[i] < 1) continue;
-                output.Points.Add(new OutputPoint
+                output.Add(new OutputPoint
                 {
                     Coordinates = input.Points[idx[i]].Coordinates,
                     FuelCost = input.Points[idx[i]].FuelCost,
@@ -45,7 +44,7 @@ namespace Services
             {
                 it++;
                 if (point.PointType != PointType.Dealer) continue;
-                output.Points.Add(new OutputPoint
+                output.Add(new OutputPoint
                 {
                     Coordinates = point.Coordinates,
                     UnloadCars = point.Cars
@@ -55,8 +54,8 @@ namespace Services
             List<OutputPoint> result = new List<OutputPoint>();
             for (int i=0;i<pos.Count; ++i) result.Add(new OutputPoint());
             for (int i = 0; i < pos.Count; ++i)
-                result[pos[i]] = output.Points[i];
-            output.Points = result;
+                result[pos[i]] = output[i];
+            output = result;
             //Array.Sort(pos.ToArray(), output.Points.ToArray());
             //Console.ReadKey();
         }
@@ -77,7 +76,7 @@ namespace Services
             currentVolume = ConvertDistanceToVolume(points[0].DistanceToNextPoint, currentWeight);
 
             for (int i = 1; i < points.Count; ++i)
-            {
+            { 
                 Point point = points[i];
                 if (point.PointType == PointType.Dealer)
                 {

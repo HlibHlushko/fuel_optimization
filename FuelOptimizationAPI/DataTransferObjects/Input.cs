@@ -13,9 +13,8 @@ namespace DataTransferObjects
         public double[] Coordinates { get; set; }
         public PointType PointType { get; set; }
         public int DistanceToNextPoint {get; set;}
-        public double? FuelCost { get; set; }       //depends if we use service with all fuel costs or we save costs localy,
+        public double? FuelCost { get; set; }       //depends if we use service with all fuel costs or we save costs locally,
                                                     //null if PointType == Dealer, but it's possible that we can fuel up at dealer like at terminal
-        //public List<int> Weights { get; set; }
         public List<Car> Cars { get; set; }
     }
     public enum PointType
@@ -27,6 +26,5 @@ namespace DataTransferObjects
     {
         public int BrandId { get; set; }
         public int ModelId { get; set; }
-        //public int Weight { get; set; }
     }
 }

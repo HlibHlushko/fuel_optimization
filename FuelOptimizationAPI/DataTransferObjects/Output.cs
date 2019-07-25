@@ -2,11 +2,6 @@
 
 namespace DataTransferObjects
 {
-    public class Output
-    {
-        public List<OutputPoint> Points { get; set; }
-
-    }
     public class OutputPoint
     {
         public double[] Coordinates { get; set; }
