@@ -3,7 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import SearchButton from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton'
 import './map.css';
-import MapPic from './MapPic.js'
+import MapPic from './MapPic'
 
 function renderSuggestion(suggestion) {
   return (
