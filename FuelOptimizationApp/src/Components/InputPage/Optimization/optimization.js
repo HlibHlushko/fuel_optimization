@@ -9,7 +9,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import './optimization.css'
+import './optimization.css';
+import {Link} from 'react-router-dom';
 
 const necesseryPoints = [{
     name: '',
@@ -203,7 +204,8 @@ class Optimization extends React.Component {
                 return res.Label;
             });
     }
-    handleSendRequested = () => {
+    handleSendRequested = (event) => {
+        console.log('asks');
         let points = this.state.points;
         let filled = this.state.selectedTruck ? true : false;
 
@@ -220,7 +222,11 @@ class Optimization extends React.Component {
 
         }
 
-        if (!filled) this.setState({ isDialogOpened: true }); else {
+        if (!filled) {
+            this.setState({ isDialogOpened: true });
+            event.preventDefault();
+        }
+            else {
             console.log('ok')
         }
     }
@@ -247,9 +253,12 @@ class Optimization extends React.Component {
                     <Fab className='add-point-icon' size="small" onClick={this.handlePointAdded}>
                         <AddIcon />
                     </Fab>
-                    <Fab variant='extended' size='medium' className='send-button' onClick={this.handleSendRequested}>
-                        Send
-                    </Fab>
+                    <Link to = '/result' onClick={this.handleSendRequested}>
+                        <Fab variant='extended' size='medium' className='send-button' onClick={this.handleSendRequested}>
+                            Send
+                        </Fab>
+                    </Link>
+                    
                 </div>
                 <Dialog open={this.state.isDialogOpened}>
                     <DialogTitle> Warning </DialogTitle>
