@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, TileLayer, Marker } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import  {hereTileUrl} from '../InputPage/Map/MapPic'
 import './Result.css'
 
@@ -13,14 +13,38 @@ class Result extends React.Component {
     
 
     
+    getPopupText = (point) =>{
+         let innerData;
+         if (point.FuelCost!=null){
+             innerData = (
+                 <div>
+                    <div>Refuel here {point.FuelVolume} liters with cost {point.FuelCost} euro/liter</div>
+                    <div>Total cost = {Number((point.FuelVolume * point.FuelCost).toFixed(10))} euros </div>
+                </div>
+             );
+         } else
+            innerData = point.UnloadCars.map((item, id) => <div key = {id} > {item.BrandId} {item.ModelId} </div>);
+         
+
+        return (
+            <div>
+                <div>Type: {point.FuelCost? 'FuelStation': 'Dealer'} </div>
+                <div>Name: {point.Coordinates}</div>
+                {innerData}
+            </div>
+        )
+    } 
 
     render() {
         let center = null;
         center = center ? center : [49.43532, 19.33918];
         let markers = output.map((item, id) =>{
             return (
-                <Marker 
+                <Marker key = {id}
                     position = {item.Coordinates} >
+                        <Popup autoClose = {false}>
+                            {this.getPopupText(item)}
+                        </Popup>
                 </Marker>
             );
         });
