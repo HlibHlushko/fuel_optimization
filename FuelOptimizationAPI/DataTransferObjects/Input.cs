@@ -22,9 +22,13 @@ namespace DataTransferObjects
         FuelStation,
         Dealer
     }
+
     public class Car
     {
         public int BrandId { get; set; }
         public int ModelId { get; set; }
+        public string BrandName { get; set; }
+        public string ModelName { get; set; }
     }
 }
+

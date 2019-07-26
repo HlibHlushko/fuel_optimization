@@ -28,17 +28,23 @@ namespace Test
                     new Car
                     {
                         BrandId = 1,
-                        ModelId = 1
+                        ModelId = 1,
+                        BrandName = "Renault",
+                        ModelName = "Logan"
                     },
                     new Car
                     {
                         BrandId = 1,
-                        ModelId = 2
+                        ModelId = 2,
+                        BrandName = "Renault",
+                        ModelName = "Master"
                     },
                     new Car
                     {
                         BrandId = 2,
-                        ModelId = 1
+                        ModelId = 3,
+                        BrandName = "Nissan",
+                        ModelName = "X-Trail"
                     }
                 },
                 Coordinates = new double[] { 1, 2 },

@@ -5,7 +5,7 @@ import './Result.css'
 
 const output = [
     { "Coordinates": [49.43532, 19.33918], "UnloadCars": null, "FuelCost": 1.0, "FuelVolume": 630 },
-    { "Coordinates": [49.53532, 19.346918], "UnloadCars": [{ "BrandId": 1, "ModelId": 1 }, { "BrandId": 1, "ModelId": 2 }, { "BrandId": 2, "ModelId": 3 }], "FuelCost": null, "FuelVolume": null },
+    { "Coordinates": [49.53532, 19.346918], "UnloadCars": [{"BrandId": 1,"ModelId": 1,"BrandName": "Renault","ModelName": "Logan"},{"BrandId": 1,"ModelId": 2,"BrandName": "Renault","ModelName": "Master"},{"BrandId": 2,"ModelId": 3,"BrandName": "Nissan","ModelName": "X-Trail"}], "FuelCost": null, "FuelVolume": null },
     { "Coordinates": [49.39532, 19.71918], "UnloadCars": null, "FuelCost": 0.94, "FuelVolume": 370 }];
 
 
@@ -23,7 +23,7 @@ class Result extends React.Component {
                 </div>
              );
          } else
-            innerData = point.UnloadCars.map((item, id) => <div key = {id} > {item.BrandId} {item.ModelId} </div>);
+            innerData = point.UnloadCars.map((item, id) => <div key = {id} > {item.BrandName} {item.ModelName} </div>);
          
 
         return (
