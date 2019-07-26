@@ -6,15 +6,12 @@ export const hereCredentials = {
     code: 'eM1d0zQLOLaA44cULr6NwQ',
 }
 
-export const maxIsolineRangeLookup = {
-    time: 20000,
-    distance: 400000
-}
+
 
 
 // const hereIsolineUrl = (coords, options) => `https://isoline.route.api.here.com/routing/7.2/calculateisoline.json?app_id=${hereCredentials.id}&app_code=${hereCredentials.code}&mode=shortest;${options.mode};traffic:${options.traffic}&start=geo!${coords[0]},${coords[1]}&range=${options.range}&rangetype=${options.type}`
 
-const hereTileUrl = (style) => `https://2.base.maps.api.here.com/maptile/2.1/maptile/newest/${style}/{z}/{x}/{y}/512/png8?app_id=${hereCredentials.id}&app_code=${hereCredentials.code}&ppi=320`;
+export const hereTileUrl = () => `https://2.base.maps.api.here.com/maptile/2.1/maptile/newest/reduced.day/{z}/{x}/{y}/512/png8?app_id=${hereCredentials.id}&app_code=${hereCredentials.code}&ppi=320`;
 
 class MapPic extends React.Component {
 
@@ -54,7 +51,7 @@ class MapPic extends React.Component {
                     >
                     {this.props.point.coordinates ? <Marker position = {this.props.point.coordinates}/> : null }
                     <TileLayer
-                        url={hereTileUrl('reduced.day')}
+                        url={hereTileUrl()}
                     />
                 </Map>
             </div>
