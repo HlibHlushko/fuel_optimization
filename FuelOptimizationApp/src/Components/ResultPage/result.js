@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import  {hereTileUrl} from '../InputPage/Map/MapPic'
 import './Result.css'
 
@@ -8,6 +8,22 @@ const output = [
     { "Coordinates": [49.53532, 19.346918], "UnloadCars": [{"BrandId": 1,"ModelId": 1,"BrandName": "Renault","ModelName": "Logan"},{"BrandId": 1,"ModelId": 2,"BrandName": "Renault","ModelName": "Master"},{"BrandId": 2,"ModelId": 3,"BrandName": "Nissan","ModelName": "X-Trail"}], "FuelCost": null, "FuelVolume": null },
     { "Coordinates": [49.39532, 19.71918], "UnloadCars": null, "FuelCost": 0.94, "FuelVolume": 370 }];
 
+const polyline = [
+    {
+      from_lat: 49.43532,
+      from_long: 19.33918,
+      id: 1,
+      to_lat: 49.53532,
+      to_long: 19.346918,
+    },
+    {
+      from_lat: 49.53532,
+      from_long: 19.346918,
+      id: 2,
+      to_lat: 49.39532,
+      to_long: 19.71918,
+    }
+  ]
 
 class Result extends React.Component {
     
@@ -62,6 +78,16 @@ class Result extends React.Component {
                     <TileLayer
                         url={hereTileUrl()}
                     />
+
+                    {polyline.map(({id, from_lat, from_long, to_lat, to_long})=>{
+                        return (<Polyline 
+                                    key={id}
+                                    positions={[[from_lat, from_long], [to_lat, to_long]]}    
+                                    color={'red'}    
+                                        >
+
+                                </Polyline>);
+                    })}
                 </Map>
             </div>
         );
