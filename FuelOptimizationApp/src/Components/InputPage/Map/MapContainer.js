@@ -19,7 +19,6 @@ function getSuggestionValue (suggestion) {
 class MapContainer extends React.Component {
   constructor (props) {
     super(props)
-    console.log('sosi', this.props.credentials)
     this.state = {
       input: (this.props.point.locationName ? this.props.point.locationName : ''),
       suggestions: []

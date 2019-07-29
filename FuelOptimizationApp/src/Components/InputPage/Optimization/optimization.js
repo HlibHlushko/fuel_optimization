@@ -13,8 +13,10 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Button from '@material-ui/core/Button'
 import './optimization.css'
 import { Link } from 'react-router-dom'
+import nextId from 'react-id-generator'
 
 const necesseryPoints = [{
+  id: nextId(),
   name: '',
   startOrFinish: 1,
   orders: null,
@@ -22,6 +24,7 @@ const necesseryPoints = [{
   locationName: ''
 },
 {
+  id: nextId(),
   name: '',
   startOrFinish: -1,
   orders: null,
@@ -65,6 +68,7 @@ class Optimization extends React.Component {
   }
 
   handleOrderChanged (pointId, orderId, newOrder) {
+    pointId = this.state.points.findIndex(p => p.id === pointId)
     this.setState({
       points: [...this.state.points.slice(0, pointId),
         {
@@ -78,6 +82,7 @@ class Optimization extends React.Component {
   }
 
   handleOrderAdded (pointId) {
+    pointId = this.state.points.findIndex(p => p.id === pointId)
     const emptyOrder = {
       selectedBrand: null,
       selectedModel: null,
@@ -96,6 +101,7 @@ class Optimization extends React.Component {
   }
 
   handleOrderDeleted (pointId, orderId) {
+    pointId = this.state.points.findIndex(p => p.id === pointId)
     this.setState({
       points:
                 [...this.state.points.slice(0, pointId),
@@ -111,6 +117,7 @@ class Optimization extends React.Component {
   handlePointAdded () {
     this.setState({
       points: [...this.state.points.slice(0, this.state.points.length - 1), {
+        id: nextId(),
         startOrFinish: 0,
         name: '',
         coordinates: null,
@@ -127,6 +134,8 @@ class Optimization extends React.Component {
   }
 
   handlePointDeleted (pointId) {
+    pointId = this.state.points.findIndex(p => p.id === pointId)
+
     this.setState({
       points:
                 [...this.state.points.slice(0, pointId),
@@ -135,7 +144,7 @@ class Optimization extends React.Component {
   }
 
   handlePointSelected (pointId, coordinates) {
-    console.log('credentrias', this.props.credentials)
+    pointId = this.state.points.findIndex(p => p.id === pointId)
     const { appId, appCode } = this.props.credentials
     const url = 'https://reverse.geocoder.api.here.com/6.2/reversegeocode.json'
     return fetch(`${url}?prox=${coordinates[0]},${coordinates[1]}&mode=retrieveAddresses&maxresults=1&app_id=${appId}&app_code=${appCode}`)

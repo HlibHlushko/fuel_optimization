@@ -37,8 +37,7 @@ class Point extends React.Component {
         />)
       : null
     const expandedHeader = 'highlight-expanded-header--' + this.state.isActive
-    const textToShow = this.props.point.startOrFinish ? (this.props.point.startOrFinish === 1 ? 'Start' : 'Finish') + ` point: ${this.props.point.name}` : `Point #${this.props.id}: ${this.props.point.name}`
-    console.log('sasu', this.props.credentials)
+    const textToShow = this.props.point.startOrFinish ? (this.props.point.startOrFinish === 1 ? 'Start' : 'Finish') + ` point: ${this.props.point.name}` : `Intermediate point: ${this.props.point.name}`
 
     return (
       <div >

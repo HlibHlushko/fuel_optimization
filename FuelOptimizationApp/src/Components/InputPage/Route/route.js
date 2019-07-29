@@ -10,19 +10,20 @@ class Route extends React.Component {
   // handleOrderChanged = () =>{}
 
   render () {
+    console.log(this.props.points)
     const points = this.props.points
-      ? this.props.points.map((point, id) =>
+      ? this.props.points.map((point) =>
         <Point
           point={point}
-          id={id}
-          key={id}
+          id={point.id}
+          key={point.id}
           credentials={this.props.credentials}
           cars={this.props.cars}
-          handlePointSelected={this.props.handlePointSelected.bind(this, id)}
-          handleOrderChanged={this.props.handleOrderChanged.bind(this, id)}
-          handleOrderAdded={this.props.handleOrderAdded.bind(this, id)}
-          handleOrderDeleted={this.props.handleOrderDeleted.bind(this, id)}
-          handlePointDeleted={this.props.handlePointDeleted.bind(this, id)}
+          handlePointSelected={this.props.handlePointSelected.bind(this, point.id)}
+          handleOrderChanged={this.props.handleOrderChanged.bind(this, point.id)}
+          handleOrderAdded={this.props.handleOrderAdded.bind(this, point.id)}
+          handleOrderDeleted={this.props.handleOrderDeleted.bind(this, point.id)}
+          handlePointDeleted={this.props.handlePointDeleted.bind(this, point.id)}
           // handleLocationIdChanged = {this.props.handleLocationIdChanged.bind(this, id)}
         />)
       : null
