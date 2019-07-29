@@ -1,6 +1,7 @@
 import React from 'react'
 import Optimization from './Components/InputPage/Optimization/optimization'
 import Result from './Components/ResultPage/result'
+import FuelStations from './Components/FuelStationsPage/fuelStations'
 import { Switch, Route } from 'react-router-dom'
 
 class App extends React.Component {
@@ -35,6 +36,7 @@ class App extends React.Component {
               credentials={credentials}
               points={points} />}
           />
+          <Route exact path='/fuel-stations' component={FuelStations} />
         </Switch>
       </div>
     )
