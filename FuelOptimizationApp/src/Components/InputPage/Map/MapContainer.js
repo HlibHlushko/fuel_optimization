@@ -1,100 +1,110 @@
-import React from 'react';
-import Autosuggest from 'react-autosuggest';
-import SearchButton from '@material-ui/icons/Search';
+/* global fetch */
+import React from 'react'
+import Autosuggest from 'react-autosuggest'
+import SearchButton from '@material-ui/icons/Search'
 import IconButton from '@material-ui/core/IconButton'
-import './map.css';
+import './map.css'
 import MapPic from './MapPic'
 
-function renderSuggestion(suggestion) {
+function renderSuggestion (suggestion) {
   return (
     <span>{suggestion.label}</span>
-  );
+  )
 }
 
-function getSuggestionValue(suggestion) {
-  return suggestion.value;
+function getSuggestionValue (suggestion) {
+  return suggestion.value
 }
 
 class MapContainer extends React.Component {
-
-  constructor(props) {
-    super(props);
-
+  constructor (props) {
+    super(props)
+    console.log('sosi', this.props.credentials)
     this.state = {
       input: (this.props.point.locationName ? this.props.point.locationName : ''),
       suggestions: []
-    };
+    }
+    this.getSuggestions = this.getSuggestions.bind(this)
+    this.handlePointSelected = this.handlePointSelected.bind(this)
+    this.handleSuggestionSelected = this.handleSuggestionSelected.bind(this)
+    this.getLocation = this.getLocation.bind(this)
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
+    this.onSearchRequested = this.onSearchRequested.bind(this)
+    this.onSuggestionsClearRequested = this.onSuggestionsFetchRequested.bind(this)
+    this.onSuggestionsUpdateRequested = this.onSuggestionsUpdateRequested.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
-  getSuggestions(value) {
-    if (!value) return Promise.resolve([]);
-    const inputLength = value.length;
-    if (inputLength === 0) return Promise.reject([]);
-    let app_id = 'fLR4pqJX0jZZZle8nwaM';
-    let app_code = 'eM1d0zQLOLaA44cULr6NwQ';
-    let url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json';
-    return fetch(`${url}?query=${value}&app_id=${app_id}&&app_code=${app_code}`, {
+  getSuggestions (value) {
+    if (!value) return Promise.resolve([])
+    const inputLength = value.length
+    if (inputLength === 0) return Promise.reject(new Error('Error'))
+    console.log('maps cred', this.props.credentials)
+    const { appId, appCode } = this.props.credentials
+    const url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json'
+    return fetch(`${url}?query=${value}&app_id=${appId}&&app_code=${appCode}`, {
       method: 'GET',
       mode: 'cors'
     }).then(response => {
-      return response.json();
-    });
-
+      return response.json()
+    })
   }
-  getLocation = (locationId) => {
-    const { app_code, app_id } = this.props.credentials;
-    let url = 'http://geocoder.api.here.com/6.2/geocode.json';
-    return fetch(`${url}?locationId=${locationId}&app_id=${app_id}&&app_code=${app_code}`, {
+
+  getLocation (locationId) {
+    const { appCode, appId } = this.props.credentials
+    const url = 'http://geocoder.api.here.com/6.2/geocode.json'
+    return fetch(`${url}?locationId=${locationId}&app_id=${appId}&&app_code=${appCode}`, {
       method: 'GET',
       mode: 'cors'
     }).then(response => {
-      return response.json();
+      return response.json()
     }).then(json => {
-      if (!json.Response.View[0]) return [0,0];
-      let pos = json.Response.View[0].Result[0].Location.DisplayPosition;
-      let coordinates = [pos.Latitude, pos.Longitude];
-      return coordinates;
-    });
+      if (!json.Response.View[0]) return [0, 0]
+      const pos = json.Response.View[0].Result[0].Location.DisplayPosition
+      const coordinates = [pos.Latitude, pos.Longitude]
+      return coordinates
+    })
   }
-  onSuggestionsFetchRequested = (value) => {
-    if (!value) { this.setState({ suggestions: [] }); return; }
-    let suggestions;
+
+  onSuggestionsFetchRequested (value) {
+    if (!value) { this.setState({ suggestions: [] }); return }
+    let suggestions
     this.getSuggestions(value.value)
       .then(resp => {
-        suggestions = resp.suggestions;
+        suggestions = resp.suggestions
         return Promise.all(
-          suggestions.map(s=> this.getLocation(s.locationId))
-        );
+          suggestions.map(s => this.getLocation(s.locationId))
+        )
       })
       .then(newCoordinates => {
-
-        let result = suggestions.map((suggestion, i) => (
+        const result = suggestions.map((suggestion, i) => (
           {
             label: suggestion.label,
             value: newCoordinates[i]
           }
-        ));
-        this.setState({ suggestions: result });
-      });
+        ))
+        this.setState({ suggestions: result })
+      })
   }
-  onSuggestionsClearRequested = () => {
+
+  onSuggestionsClearRequested () {
     this.setState({
       suggestions: []
-    });
-  };
-  findLabelByValue = (value) =>{
-    let equal = (x, y) => {
-        return x[0] === y[0] && x[1]===y[1];
-    }
-    let sug = this.state.suggestions.filter(s=>equal(value,s.value));
-    return sug ? sug[0].label:'';
+    })
   }
-  
-  onChange = (event, { newValue, method }) => {
-    
-    if (typeof(newValue)=='string') {
-      this.setState({input: newValue});
-      return;
+  ;
+  findLabelByValue (value) {
+    const equal = (x, y) => {
+      return x[0] === y[0] && x[1] === y[1]
+    }
+    const sug = this.state.suggestions.filter(s => equal(value, s.value))
+    return sug ? sug[0].label : ''
+  }
+
+  onChange (event, { newValue, method }) {
+    if (typeof (newValue) === 'string') {
+      this.setState({ input: newValue })
+      return
     }
     this.setState({ input: this.findLabelByValue(newValue) })
     // let new_label = this.state.suggestions.find(sug => sug.value === newValue);
@@ -102,39 +112,37 @@ class MapContainer extends React.Component {
     // new_label = new_label ? new_label.label : null;
     // this.setState({ value: new_label ? new_label : newValue });
     // this.onSuggestionsUpdateRequested(new_label ? new_label : newValue);
-
   }
 
-  onSuggestionsUpdateRequested({ value }) {
-    this.getSuggestions(value ? value.value : null);
-
+  onSuggestionsUpdateRequested ({ value }) {
+    this.getSuggestions(value ? value.value : null)
   }
 
-  onSearchRequested = () => {
+  onSearchRequested () {
     this.getSuggestions(this.state.input).then(resp => {
-      console.log('null',resp)
-      if (resp.length===0 || resp.suggestions.length===0) return; 
-      this.setState({ input: resp.suggestions[0].label });
-      this.getLocation(resp.suggestions[0].locationId).then(coordinates=>{
-        this.props.handlePointSelected(coordinates);
+      if (resp.length === 0 || resp.suggestions.length === 0) return
+      this.setState({ input: resp.suggestions[0].label })
+      this.getLocation(resp.suggestions[0].locationId).then(coordinates => {
+        this.props.handlePointSelected(coordinates)
       })
       // console.log('p;osdfj',position)
       // this.props.handleLocationIdChanged();
+    })
+  }
 
-    });
+  handlePointSelected (location) {
+    this.props.handlePointSelected(location).then(newLabel => {
+      this.setState({ input: newLabel })
+    })
   }
-  handlePointSelected = (location) => {
-    this.props.handlePointSelected(location).then(newLabel =>{
-      // if (!newLabel) this.setState({})
-      this.setState({input:newLabel});
-    });
+
+  handleSuggestionSelected (event, { suggestionValue }) {
+    this.props.handlePointSelected(suggestionValue)
   }
-  handleSuggestionSelected = (event, {suggestionValue}) =>{
-    this.props.handlePointSelected(suggestionValue);
-  }
-  render() {
-    const { required } = this.props;
-    const { input, suggestions } = this.state;
+
+  render () {
+    const { required } = this.props
+    const { input, suggestions } = this.state
     const inputProps = {
       id: 'search',
       name: 'search',
@@ -142,7 +150,7 @@ class MapContainer extends React.Component {
       className: 'react-autosuggest__input',
       required,
       onChange: this.onChange
-    };
+    }
     return (
       <div>
         <div className='search-bar-container'>
@@ -152,7 +160,7 @@ class MapContainer extends React.Component {
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             getSuggestionValue={getSuggestionValue}
-            onSuggestionSelected  = {this.handleSuggestionSelected}
+            onSuggestionSelected={this.handleSuggestionSelected}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />
@@ -161,19 +169,14 @@ class MapContainer extends React.Component {
           </IconButton>
         </div>
 
-        <MapPic 
-          point = {this.props.point}
+        <MapPic
+          point={this.props.point}
           handlePointSelected={this.handlePointSelected}
+          credentials={this.props.credentials}
         />
       </div>
-    );
+    )
   }
 }
 
-export default MapContainer;
-
-
-
-
-
-
+export default MapContainer
