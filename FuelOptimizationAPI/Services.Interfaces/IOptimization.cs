@@ -1,8 +1,9 @@
 ﻿using DataTransferObjects;
+using System.Collections.Generic;
 namespace Services.Interfaces
 {
     public interface IOptimization
     {
-        void StartOptimization(Input input);
+        List<OutputPoint> StartOptimization(Input input);
     }
 }

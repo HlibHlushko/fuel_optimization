@@ -30,11 +30,7 @@ namespace fuel_optimization.Controllers
     [HttpPost("hook")]
     public List<OutputPoint> Optimization(Input input)
     {
-      
-      return new List<OutputPoint>{
-        new OutputPoint()
-      };
-      _optimization.StartOptimization(input);
+      return _optimization.StartOptimization(input);
     }
 
   }

@@ -12,17 +12,18 @@ class App extends React.Component {
         appId: 'fLR4pqJX0jZZZle8nwaM',
         appCode: 'eM1d0zQLOLaA44cULr6NwQ'
       },
-      points: null
+      points: null,
+      selectedTruck: 0
     }
     this.handleStartOptimization = this.handleStartOptimization.bind(this)
   }
 
-  handleStartOptimization (points) {
-    this.setState({ points: points })
+  handleStartOptimization (points, selectedTruck) {
+    this.setState({ points: points, selectedTruck: selectedTruck })
   }
 
   render () {
-    const { credentials, points } = this.state
+    const { credentials, points, selectedTruck } = this.state
     return (
       <div className='App'>
         <Switch>
@@ -34,7 +35,9 @@ class App extends React.Component {
           <Route exact path='/result' component={() =>
             <Result
               credentials={credentials}
-              points={points} />}
+              points={points}
+              selectedTruck={selectedTruck}
+            />}
           />
           <Route exact path='/fuel-stations' component={() =>
             <FuelStations

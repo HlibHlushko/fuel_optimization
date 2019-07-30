@@ -14,7 +14,7 @@ namespace Services
             _dbData = dbData;
         }
 
-        public void StartOptimization(Input input)
+        public List<OutputPoint> StartOptimization(Input input)
         {
             //int[] volumes = new int[] { 300, 200, 300 };
             //double[] costs = new double[] { 1, 1.25, 0.95 };
@@ -56,6 +56,7 @@ namespace Services
             for (int i = 0; i < pos.Count; ++i)
                 result[pos[i]] = output[i];
             output = result;
+            return output;
             //Array.Sort(pos.ToArray(), output.Points.ToArray());
             //Console.ReadKey();
         }

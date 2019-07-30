@@ -189,7 +189,7 @@ class Optimization extends React.Component {
       this.setState({ isDialogOpened: true })
       event.preventDefault()
     } else {
-      this.props.handleStartOptimization(this.state.points)
+      this.props.handleStartOptimization(this.state.points, this.state.selectedTruck)
     }
   }
 

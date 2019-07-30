@@ -7,7 +7,7 @@ export const getFuelStationsAlongTwoPointsRouteAsync = (id, code, departCoords, 
       stations = extractStationsFromGeometries(resj.response.route[0].searchResult.geometries)
       dieselStations = findDieselStationsInVisitOrder(stations, resj.response.route[0].leg[0].link)
       shape = Array.prototype.concat(...resj.response.route[0].leg[0].link.map(l => pairs(l.shape)))
-
+      // console.log(stations, dieselStations, shape)
       return Promise.all(
         Array.prototype.concat(
           getRouteAsync(id, code, departCoords, dieselStations[0].latlng),
@@ -49,6 +49,7 @@ export const getDieselStationsAlongRouteAsync = (id, code, ...waypoints) => {
       .slice(0, waypoints.length - 1)
       .map((wp, i) => getFuelStationsAlongTwoPointsRouteAsync(id, code, wp, waypoints[i + 1]))
   ).then(stationInfos => {
+    // console.log('sasa')
     const [WP, ST] = ['waypoint', 'fuelStation']
     const stations = []
     for (const info of stationInfos) {
