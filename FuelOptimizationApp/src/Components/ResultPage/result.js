@@ -4,6 +4,7 @@ import React from 'react'
 import { Map, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
 import { hereTileUrl } from '../InputPage/Map/MapPic'
 import './Result.css'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const output = [
   { Coordinates: [49.43532, 19.33918], UnloadCars: null, FuelCost: 1.0, FuelVolume: 630 },
@@ -25,7 +26,8 @@ class Result extends React.Component {
   }
 
   componentDidMount () {
-    this.getRoute()
+
+    // this.getRoute()
   }
 
   getPopupText (point) {
@@ -69,6 +71,14 @@ class Result extends React.Component {
 
   render () {
     console.log('again')
+    if (!this.state.polylineShape) {
+      console.log()
+      return (<div className='welcome-container'>
+        <img src='../../avtologistika-logo.png' alt='logo' className='logo-image' />
+        <CircularProgress className='progress' />
+        <div className='progress-label'>Obtaining route plan</div>
+      </div>)
+    }
     let center = null
     center = center || [49.43532, 19.33918]
     const markers = output.map((item, id) => {
