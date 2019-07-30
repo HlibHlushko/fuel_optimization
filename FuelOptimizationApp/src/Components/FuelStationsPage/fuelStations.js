@@ -25,8 +25,7 @@ const getTruckRestrictionTilesURL = () => {
 const extractNames = (str) => {
   const ret = [];
   const names = str.split("\u001D");
-  for(var i = 0; i < names.length; i++)
-  { 
+  for(var i = 0; i < names.length; i++) {
     const name = names[i];
     const name_text_split = name.split("\u001E");
     const name_text = name_text_split[0];
@@ -95,6 +94,9 @@ class FuelStations extends React.Component {
             'max_detour_distance=100',
             'trailersCount=1',
             'limitiedweight=20',
+            'height=4',
+            'length=22',
+            'weightPerAxle=10',
             'mode=fastest;truck;traffic:disabled'
           ].join('&'))
             .then(res => res.json())
@@ -105,6 +107,8 @@ class FuelStations extends React.Component {
                   .split(' ');
                 return {
                   latlng: {lat: Number(lat), lng: Number(lng)},
+                  junctionLinkId: g.junctionLinkId,
+                  distanceToReach: g.distanceToReach,
                   attributes: g.attributes,
                   isDiesel: g.attributes.DIESEL && g.attributes.DIESEL.split(';')[0] === 'y',
                   name: extractNames(g.attributes.NAMES)[0].text
@@ -117,7 +121,109 @@ class FuelStations extends React.Component {
                 }, [])
               ))
 
-              this.setState({fuelStations: stations, routeShape: shape});
+              let order = 1;
+              const dieselStations = stations.filter(s => s.isDiesel)
+              for (const l of resj.response.route[0].leg[0].link) {
+                const linkId = Math.abs(Number(l.linkId));
+                const linkStations = dieselStations.filter(s => s.junctionLinkId === linkId);
+                if (linkStations.length === 1) {
+                  linkStations[0].order = order++;
+                } else if (linkStations.length > 1) {
+                  linkStations.sort((a, b) => a.distanceToReach - b.distanceToReach)
+                  for(const s of linkStations) s.order = order++;
+                }
+              }
+
+              dieselStations.sort((a, b) => a.order - b.order);
+
+              Promise.all(
+                Array.prototype.concat(
+                  fetch([
+                    'https://route.api.here.com/routing/7.2/calculateroute.json?',
+                    'routeAttributes=waypoints,summary,shape,legs,notes',
+                    'app_code=' + hereCredentials.code,
+                    'app_id=' + hereCredentials.id,
+                    'waypoint0=geo!' + this.state.departCoords.lat + ',' + this.state.departCoords.lng,
+                    'waypoint1=geo!' + dieselStations[0].latlng.lat + ',' + dieselStations[0].latlng.lng,
+                    'jsonAttributes=33',
+                    'legAttributes=none,links',
+                    'trailersCount=1',
+                    'limitiedweight=20',
+                    'height=4',
+                    'length=22',
+                    'weightPerAxle=10',
+                    'mode=fastest;truck;traffic:disabled'
+                  ].join('&')),
+                  dieselStations.slice(0, dieselStations.length - 1).map((ds, i) => fetch([
+                      'https://route.api.here.com/routing/7.2/calculateroute.json?',
+                      'routeAttributes=waypoints,summary,shape,legs,notes',
+                      'app_code=' + hereCredentials.code,
+                      'app_id=' + hereCredentials.id,
+                      'waypoint0=geo!' + ds.latlng.lat + ',' + ds.latlng.lng,
+                      'waypoint1=geo!' + dieselStations[i + 1].latlng.lat + ',' + dieselStations[i + 1].latlng.lng,
+                      'jsonAttributes=33',
+                      'legAttributes=none,links',
+                      'trailersCount=1',
+                      'limitiedweight=20',
+                      'height=4',
+                      'length=22',
+                      'weightPerAxle=10',
+                      'mode=fastest;truck;traffic:disabled'
+                    ].join('&'))
+                  ),
+                  fetch([
+                    'https://route.api.here.com/routing/7.2/calculateroute.json?',
+                    'routeAttributes=waypoints,summary,shape,legs,notes',
+                    'app_code=' + hereCredentials.code,
+                    'app_id=' + hereCredentials.id,
+                    'waypoint0=geo!' + dieselStations[dieselStations.length - 1].latlng.lat + ',' + dieselStations[dieselStations.length - 1].latlng.lng,
+                    'waypoint1=geo!' + this.state.destCoords.lat + ',' + this.state.destCoords.lng,
+                    'jsonAttributes=33',
+                    'legAttributes=none,links',
+                    'trailersCount=1',
+                    'limitiedweight=20',
+                    'height=4',
+                    'length=22',
+                    'weightPerAxle=10',
+                    'mode=fastest;truck;traffic:disabled'
+                  ].join('&'))
+                )
+              ).then(resps => Promise.all(resps.map(res => res.json())))
+              .then(resjs => {
+                const stationsInfo = {
+                  stations,
+                  fromDealerDistance: null,
+                  fromDealerPath: null,
+                  toDealerDistance: null,
+                  toDealerPath: null
+                };
+                for (let i = 0; i < resjs.length; i++) {
+                  const resj = resjs[i]
+                  const distance = resj.response.route[0].summary.distance
+                  const path = resj.response.route[0].shape.reduce((acc, coor, i, shape) => { // copy 119
+                    if (i % 2 === 1) acc.push([shape[i - 1], coor]);
+                    return acc;
+                  }, [])
+
+                  if (i === 0) {
+                    stationsInfo.fromDealerDistance = distance
+                    stationsInfo.fromDealerPath = path
+                    continue
+                  }
+                  if (i === resjs.length - 1) {
+                    stationsInfo.toDealerDistance = distance
+                    stationsInfo.toDealerPath = path
+                    continue
+                  }
+                  if (typeof resj === 'number') {
+                    dieselStations[i - 1].distanceToNextPoint = 0
+                  } else {
+                    dieselStations[i - 1].distanceToNextPoint = distance
+                    dieselStations[i - 1].pathToNextPoint = path
+                  }
+                }
+                this.setState({fuelStations: stationsInfo, routeShape: shape})
+              })
             }).catch(error => {
               console.log('Request failed', error);
             })
@@ -134,18 +240,45 @@ class FuelStations extends React.Component {
             url={getTruckRestrictionTilesURL()}
             subdomains={'1234'}
           />
-          {this.state.fuelStations && this.state.fuelStations.map(fs =>
-            <Marker
-              key={`${fs.latlng.lat}${fs.latlng.lng}`}
-              position={fs.latlng}
-              onClick={() => console.log(fs)}
-              opacity={fs.isDiesel ? 1 : .5}
-            />)}
           {this.state.routeShape && 
             <Polyline
               positions={this.state.routeShape}
               color={'blue'}
             />}
+          {this.state.fuelStations &&
+            <React.Fragment>
+              <Marker
+                position={this.state.departCoords}
+                onClick={() => console.log({coords: this.state.departCoords, fromDealerDistance: this.state.fuelStations.fromDealerDistance, fromDealerPath: this.state.fuelStations.fromDealerPath})}
+              />
+              <Polyline
+                positions={this.state.fuelStations.fromDealerPath}
+                color={'cyan'}
+              />
+              <Marker
+                position={this.state.destCoords}
+                onClick={() => console.log({coords: this.state.destCoords, toDealerDistance: this.state.fuelStations.toDealerDistance, toDealerPath: this.state.fuelStations.toDealerPath})}
+              />
+              <Polyline
+                positions={this.state.fuelStations.toDealerPath}
+                color={'cyan'}
+              />
+            </React.Fragment>}
+          {this.state.fuelStations && this.state.fuelStations.stations.map(fs =>
+            <Marker
+              key={`mk-${fs.latlng.lat}${fs.latlng.lng}`}
+              position={fs.latlng}
+              onClick={() => console.log(fs)}
+              opacity={fs.isDiesel ? 1 : .5}
+            />)}
+          {this.state.fuelStations && this.state.fuelStations.stations
+            .filter(fs => Boolean(fs.pathToNextPoint))
+            .map(fs =>
+            <Polyline
+              key={`pl-${fs.latlng.lat}${fs.latlng.lng}`}
+              positions={fs.pathToNextPoint}
+              color={'green'}
+            />)}
         </Map>
       </div>
     )
