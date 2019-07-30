@@ -5,16 +5,6 @@ export const getFuelStationsAlongTwoPointsRouteAsync = (id, code, departCoords, 
   return getFuelStationsAsync(id, code, departCoords, destCoords)
     .then(resj => {
       shape = Array.prototype.concat(...resj.response.route[0].leg[0].link.map(l => pairs(l.shape)))
-<<<<<<< HEAD
-      // console.log(stations, dieselStations, shape)
-      return Promise.all(
-        Array.prototype.concat(
-          getRouteAsync(id, code, departCoords, dieselStations[0].latlng),
-          dieselStations.slice(0, dieselStations.length - 1).map((ds, i) =>
-            getRouteAsync(id, code, ds.latlng, dieselStations[i + 1].latlng)
-          ),
-          getRouteAsync(id, code, dieselStations[dieselStations.length - 1].latlng, destCoords)
-=======
       const geometries = resj.response.route[0].searchResult.geometries
       if (geometries.length > 0) {
         stations = extractStationsFromGeometries(geometries)
@@ -27,7 +17,6 @@ export const getFuelStationsAlongTwoPointsRouteAsync = (id, code, departCoords, 
             ),
             getRouteAsync(id, code, dieselStations[dieselStations.length - 1].latlng, destCoords)
           )
->>>>>>> fix fuel station service bugs
         )
       } else {
         stations = []
