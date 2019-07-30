@@ -9,6 +9,8 @@ class FuelStations extends React.Component {
     super(props)
 
     this.state = {
+      // departCoords: {"lat":49.798372428551865,"lng":19.554076194763187},
+      // destCoords: {"lat":49.79824777402653,"lng":19.58019018173218},
       departCoords: { lat: 50.51696, lng: 30.37131 },
       destCoords: { lat: 50.37766, lng: 30.550723 },
       fuelStations: null,
@@ -32,6 +34,7 @@ class FuelStations extends React.Component {
           center={center}
           className='map'
           zoom={10}
+          onClick={e => { console.log(JSON.stringify(e.latlng)) }}
         >
           <TileLayer {...getMapTileUrl(appId, appCode)} />
           <TileLayer {...getTruckRestrictionTileUrl(appId, appCode)} />
@@ -52,11 +55,7 @@ class FuelStations extends React.Component {
               />
               <Marker
                 position={this.state.destCoords}
-                onClick={() => console.log({ coords: this.state.destCoords, destDistance: this.state.fuelStations.destDistance, destPath: this.state.fuelStations.destPath })}
-              />
-              <Polyline
-                positions={this.state.fuelStations.destPath}
-                color={'cyan'}
+                onClick={() => console.log({ coords: this.state.destCoords })}
               />
             </React.Fragment>}
           {this.state.fuelStations && this.state.fuelStations.stations.map(fs =>
