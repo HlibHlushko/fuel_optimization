@@ -25,7 +25,7 @@ namespace fuel_optimization
             {
                 options.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000").AllowAnyOrigin().AllowAnyMethod();
+                    builder.WithOrigins().AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

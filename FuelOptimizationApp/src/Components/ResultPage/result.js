@@ -6,10 +6,10 @@ import { hereTileUrl } from '../InputPage/Map/MapPic'
 import './Result.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const output = [
-  { Coordinates: [49.43532, 19.33918], UnloadCars: null, FuelCost: 1.0, FuelVolume: 630 },
-  { Coordinates: [49.53532, 19.346918], UnloadCars: [{ BrandId: 1, ModelId: 1, BrandName: 'Renault', ModelName: 'Logan' }, { BrandId: 1, ModelId: 2, BrandName: 'Renault', ModelName: 'Master' }, { BrandId: 2, ModelId: 3, BrandName: 'Nissan', ModelName: 'X-Trail' }], FuelCost: null, FuelVolume: null },
-  { Coordinates: [49.39532, 19.71918], UnloadCars: null, FuelCost: 0.94, FuelVolume: 370 }]
+// const output = [
+//   { Coordinates: [49.43532, 19.33918], UnloadCars: null, FuelCost: 1.0, FuelVolume: 630 },
+//   { Coordinates: [49.53532, 19.346918], UnloadCars: [{ BrandId: 1, ModelId: 1, BrandName: 'Renault', ModelName: 'Logan' }, { BrandId: 1, ModelId: 2, BrandName: 'Renault', ModelName: 'Master' }, { BrandId: 2, ModelId: 3, BrandName: 'Nissan', ModelName: 'X-Trail' }], FuelCost: null, FuelVolume: null },
+//   { Coordinates: [49.39532, 19.71918], UnloadCars: null, FuelCost: 0.94, FuelVolume: 370 }]
 const cred = {
   app_id: 'fLR4pqJX0jZZZle8nwaM',
   app_code: 'eM1d0zQLOLaA44cULr6NwQ'
@@ -26,8 +26,21 @@ class Result extends React.Component {
   }
 
   componentDidMount () {
-
-    // this.getRoute()
+    const readyInput = { TruckId: 0, Points: null }
+    console.log(JSON.stringify(readyInput))
+    fetch('http://localhost:1984/api/hook', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(readyInput),
+      mode: 'cors'
+    })
+      .then(response => response.json())
+      .then(output => {
+        this.getRoute(output)
+      })
   }
 
   getPopupText (point) {
@@ -50,13 +63,15 @@ class Result extends React.Component {
     )
   }
 
-  getRoute () {
+  getRoute (data) {
+    console.log('dat', data)
+    this.setState({ data: data })
     let path = ''
-    output.map((point, id) => {
+    data.map((point, id) => {
       path += `&waypoint${id}=geo!${point.Coordinates[0]},${point.Coordinates[1]}`
       return path
     })
-    path += `&waypoint${output.length - 1}=geo!${output[output.length - 1].Coordinates[0]},${output[output.length - 1].Coordinates[1]}`
+    path += `&waypoint${data.length - 1}=geo!${data[data.length - 1].Coordinates[0]},${data[data.length - 1].Coordinates[1]}`
     const url = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=${cred.app_id}&app_code=${cred.app_code}${path}&mode=fastest;truck;traffic:disabled&limitedWeight=30.5&height=4.25&representation=overview&routeattributes=sh`
     fetch(url)
       .then(response => response.json())
@@ -81,7 +96,8 @@ class Result extends React.Component {
     }
     let center = null
     center = center || [49.43532, 19.33918]
-    const markers = output.map((item, id) => {
+    const { data } = this.state
+    const markers = data.map((item, id) => {
       return (
         <Marker key={id}
           position={item.Coordinates} >
