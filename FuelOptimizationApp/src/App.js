@@ -36,7 +36,11 @@ class App extends React.Component {
               credentials={credentials}
               points={points} />}
           />
-          <Route exact path='/fuel-stations' component={FuelStations} />
+          <Route exact path='/fuel-stations' component={() =>
+            <FuelStations
+              credentials={credentials}
+            />}
+          />
         </Switch>
       </div>
     )
