@@ -1,12 +1,7 @@
-import { Map, TileLayer, Marker } from 'react-leaflet'
 import React from 'react'
+import { Map, TileLayer, Marker } from 'react-leaflet'
 
-export const hereCredentials = {
-  id: 'fLR4pqJX0jZZZle8nwaM',
-  code: 'eM1d0zQLOLaA44cULr6NwQ'
-}
-
-export const hereTileUrl = () => `https://2.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/512/png8?app_id=${hereCredentials.id}&app_code=${hereCredentials.code}&ppi=320`
+import { getMapTileUrl } from '../../../Services/hereClient'
 
 class MapPic extends React.Component {
   constructor (props) {
@@ -26,6 +21,7 @@ class MapPic extends React.Component {
   }
 
   render () {
+    const { appId, appCode } = this.props.credentials
     let center = this.props.point.coordinates
     center = center || [49.43532, 19.33918]
     return (
@@ -38,9 +34,7 @@ class MapPic extends React.Component {
 
         >
           {this.props.point.coordinates ? <Marker position={this.props.point.coordinates} /> : null }
-          <TileLayer
-            url={hereTileUrl()}
-          />
+          <TileLayer {...getMapTileUrl(appId, appCode)} />
         </Map>
       </div>
     )

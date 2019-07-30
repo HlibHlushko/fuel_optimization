@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Map, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
-import { hereTileUrl } from '../InputPage/Map/MapPic'
+import { getMapTileUrl } from '../../Services/hereClient'
 import './Result.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -94,6 +94,7 @@ class Result extends React.Component {
         <div className='progress-label'>Obtaining route plan</div>
       </div>)
     }
+    const { appId, appCode } = this.props.credentials
     let center = null
     center = center || [49.43532, 19.33918]
     const { data } = this.state
@@ -118,9 +119,7 @@ class Result extends React.Component {
 
         >
           {markers}
-          <TileLayer
-            url={hereTileUrl()}
-          />
+          <TileLayer {...getMapTileUrl(appId, appCode)} />
 
           {this.state.polylineShape ? <Polyline
             key={1}
