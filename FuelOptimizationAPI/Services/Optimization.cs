@@ -4,6 +4,7 @@ using Services.Interfaces;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
+
 namespace Services
 {
     public class Optimization : IOptimization
@@ -20,9 +21,15 @@ namespace Services
             //double[] costs = new double[] { 1, 1.25, 0.95 };
 
             int tank = _dbData.GetTrucks().Find(truck => truck.Id == input.TruckId).TankCapacity;
-
+            // tank = 300;
+            input.Points.Insert(0,new Point{
+              Coordinates = input.Points[0].Coordinates,
+              FuelCost = 1,
+              DistanceToNextPoint = 0,
+              PointType = 0
+            });
             var (volumes, costs, idx) = CalculateVolumes(input.Points);
-
+            
             FuelPlan P = new FuelPlan(costs.ToArray(), volumes.ToArray(), tank);
 
             List<OutputPoint> output = new List<OutputPoint>();
@@ -51,11 +58,17 @@ namespace Services
                 });
                 pos.Add(it);
             }
-            List<OutputPoint> result = new List<OutputPoint>();
-            for (int i=0;i<pos.Count; ++i) result.Add(new OutputPoint());
-            for (int i = 0; i < pos.Count; ++i)
-                result[pos[i]] = output[i];
-            output = result;
+            
+            for(int i=0;i<output.Count-1; ++i)
+              for (int j=i+1; j<output.Count; ++j)
+                if (pos[i] > pos[j])
+                  (pos[i], pos[j], output[i], output[j]) = (pos[j], pos[i], output[j], output[i]);
+                
+            // List<OutputPoint> result = new List<OutputPoint>();
+            // for (int i=0;i<pos.Count; ++i) result.Add(new OutputPoint());
+            // for (int i = 0; i < pos.Count; ++i)
+                // result[pos[i]] = output[i];
+            // output = result;
             return output;
             //Array.Sort(pos.ToArray(), output.Points.ToArray());
             //Console.ReadKey();
@@ -77,7 +90,7 @@ namespace Services
             currentVolume = ConvertDistanceToVolume(points[0].DistanceToNextPoint, currentWeight);
 
             for (int i = 1; i < points.Count; ++i)
-            { 
+            {   
                 Point point = points[i];
                 if (point.PointType == PointType.Dealer)
                 {
@@ -88,7 +101,7 @@ namespace Services
                 else
                 {
                     volumes.Add(currentVolume);
-                    costs.Add(1);
+                    costs.Add((double)point.FuelCost);
                     idx.Add(from);
                     from = i;
                     currentVolume = ConvertDistanceToVolume(point.DistanceToNextPoint, currentWeight);
@@ -130,8 +143,8 @@ namespace Services
         }
         private int ConvertDistanceToVolume(int distance, int weight)
         {
-            return distance;
-            //return distance / 100 * 30 + weight / 1000;
+            //return distance;
+            return (int)(distance / 1000  * 0.27 + weight / 1000);
         }
     }
 }

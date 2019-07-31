@@ -23,7 +23,7 @@ class MapPic extends React.Component {
   render () {
     const { appId, appCode } = this.props.credentials
     let center = this.props.point.coordinates
-    center = center || [49.43532, 19.33918]
+    center = center || [50.372285, 30.575796]
     return (
       <div>
         <Map

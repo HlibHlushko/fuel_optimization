@@ -10,8 +10,8 @@ import { getDieselStationsAlongRouteAsync } from '../../Services/fuelStationsSer
 //   { Coordinates: [49.43532, 19.33918], UnloadCars: null, FuelCost: 1.0, FuelVolume: 630 },
 //   { Coordinates: [49.53532, 19.346918], UnloadCars: [{ BrandId: 1, ModelId: 1, BrandName: 'Renault', ModelName: 'Logan' }, { BrandId: 1, ModelId: 2, BrandName: 'Renault', ModelName: 'Master' }, { BrandId: 2, ModelId: 3, BrandName: 'Nissan', ModelName: 'X-Trail' }], FuelCost: null, FuelVolume: null },
 //   { Coordinates: [49.39532, 19.71918], UnloadCars: null, FuelCost: 0.94, FuelVolume: 370 }]
-const points = [{ id: 'id1', name: 'Україна, Житомир', startOrFinish: 1, orders: [{ selectedBrand: { label: 'Nissan', value: 2 }, selectedModel: { label: 'Juke ', value: 4 }, number: 1 }], coordinates: [50.51696, 30.37131], locationName: 'Житомир, Україна' }, { id: 'id2', name: 'Україна, Київ', startOrFinish: -1, orders: [{ selectedBrand: { label: 'Renault', value: 1 }, selectedModel: { label: 'Dokker ', value: 2 }, number: 1 }], coordinates: [50.37766, 30.550723], locationName: 'Добровольчих Батальйонів вулиця, 12А, Київ, 01015, Україна' }]
-const selectedTruck = 1
+// const points = [{ id: 'id1', name: 'Україна, Житомир', startOrFinish: 1, orders: [{ selectedBrand: { label: 'Nissan', value: 2 }, selectedModel: { label: 'Juke ', value: 4 }, number: 1 }], coordinates: [50.51696, 30.37131], locationName: 'Житомир, Україна' }, { id: 'id2', name: 'Україна, Київ', startOrFinish: -1, orders: [{ selectedBrand: { label: 'Renault', value: 1 }, selectedModel: { label: 'Dokker ', value: 2 }, number: 1 }], coordinates: [50.37766, 30.550723], locationName: 'Добровольчих Батальйонів вулиця, 12А, Київ, 01015, Україна' }]
+// const selectedTruck = 1
 
 class Result extends React.Component {
   constructor (props) {
@@ -24,17 +24,15 @@ class Result extends React.Component {
   }
 
   componentDidMount () {
-    // const { points, selectedTruck } = this.props
+    const { points, selectedTruck } = this.props
 
     const { appId, appCode } = this.props.credentials
-    const readyInput = {}
     console.log('points', JSON.stringify(points))
     let it = 0
     getDieselStationsAlongRouteAsync(appId, appCode, ...points.map(item => ({ lat: item.coordinates[0], lng: item.coordinates[1] })))
       .then(data => {
-        console.log('ada', data)
         const obj = {
-          TruckId: selectedTruck,
+          TruckId: selectedTruck.value,
           Points: data.map(item => {
             if (item.type === 'fuelStation') {
               return {
@@ -59,7 +57,6 @@ class Result extends React.Component {
             }
           })
         }
-        console.log('skd', JSON.stringify(obj))
         fetch('http://localhost:1984/api/hook', {
           method: 'POST',
           headers: {
@@ -78,19 +75,19 @@ class Result extends React.Component {
 
   getPopupText (point) {
     let innerData
-    if (point.FuelCost != null) {
+    if (point.fuelCost != null) {
       innerData = (
         <div>
-          <div>Refuel here {point.FuelVolume} liters with cost {point.FuelCost} euro/liter</div>
-          <div>Total cost = {Number((point.FuelVolume * point.FuelCost).toFixed(10))} euros </div>
+          <div>Refuel here {point.fuelVolume} liters with cost {point.fuelCost} euro/liter</div>
+          <div>Total cost = {Number((point.fuelVolume * point.fuelCost).toFixed(10))} euros </div>
         </div>
       )
-    } else { innerData = point.UnloadCars.map((item, id) => <div key={id} > {item.BrandName} {item.ModelName} </div>) }
+    } else { innerData = point.unloadCars.map((item, id) => <div key={id} > {item.brandName} {item.modelName} </div>) }
 
     return (
       <div>
-        <div>Type: {point.FuelCost ? 'FuelStation' : 'Dealer'} </div>
-        <div>Name: {point.Coordinates}</div>
+        <div>Type: {point.fuelCost ? 'FuelStation' : 'Dealer'} </div>
+        <div>Name: {point.coordinates}</div>
         {innerData}
       </div>
     )
@@ -100,19 +97,21 @@ class Result extends React.Component {
     const { appId, appCode } = this.props.credentials
     this.setState({ data: data })
     let path = ''
+    console.log('data', data)
     data.map((point, id) => {
-      path += `&waypoint${id}=geo!${point.Coordinates[0]},${point.Coordinates[1]}`
+      console.log('point', point)
+      path += `&waypoint${id}=geo!${point.coordinates[0]},${point.coordinates[1]}`
       return path
     })
-    path += `&waypoint${data.length - 1}=geo!${data[data.length - 1].Coordinates[0]},${data[data.length - 1].Coordinates[1]}`
+    path += `&waypoint${data.length - 1}=geo!${data[data.length - 1].coordinates[0]},${data[data.length - 1].coordinates[1]}`
     const url = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=${appId}&app_code=${appCode}${path}&mode=fastest;truck;traffic:disabled&limitedWeight=30.5&height=4.25&representation=overview&routeattributes=sh`
     fetch(url)
       .then(response => response.json())
       .then(data => {
         // this.setState({polylineShape: data.response.route[0].shape});
-        const res = []
         console.log(data)
-        data.response.route[0].shape.map((item) => { res.push(item.split(',')); return res })
+        const res = data.response.route[0].shape.map((item) => item.split(',').map(Number))
+        console.log('res shape', res)
         this.setState({ polylineShape: res })
       })
   }
@@ -134,14 +133,14 @@ class Result extends React.Component {
     const markers = data.map((item, id) => {
       return (
         <Marker key={id}
-          position={item.Coordinates} >
+          position={item.coordinates} >
           <Popup autoClose={false}>
             {this.getPopupText(item)}
           </Popup>
         </Marker>
       )
     })
-
+    console.log('stsat', JSON.stringify(this.state.polylineShape))
     return (
       <div>
         <Map
@@ -155,10 +154,10 @@ class Result extends React.Component {
           <TileLayer {...getMapTileUrl(appId, appCode)} />
 
           {this.state.polylineShape ? <Polyline
-            key={1}
+
             positions={this.state.polylineShape}
             color={'red'}
-          > </Polyline> : null}
+          /> : null}
         </Map>
       </div>
     )

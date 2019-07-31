@@ -56,7 +56,6 @@ export const getDieselStationsAlongRouteAsync = (id, code, ...waypoints) => {
       .slice(0, waypoints.length - 1)
       .map((wp, i) => getFuelStationsAlongTwoPointsRouteAsync(id, code, wp, waypoints[i + 1]))
   ).then(stationInfos => {
-    // console.log('sasa')
     const [WP, ST] = ['waypoint', 'fuelStation']
     const stations = []
     for (const info of stationInfos) {
