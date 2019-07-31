@@ -13,11 +13,36 @@ import { getDieselStationsAlongRouteAsync } from '../../Services/fuelStationsSer
 // const points = [{ id: 'id1', name: 'Україна, Житомир', startOrFinish: 1, orders: [{ selectedBrand: { label: 'Nissan', value: 2 }, selectedModel: { label: 'Juke ', value: 4 }, number: 1 }], coordinates: [50.51696, 30.37131], locationName: 'Житомир, Україна' }, { id: 'id2', name: 'Україна, Київ', startOrFinish: -1, orders: [{ selectedBrand: { label: 'Renault', value: 1 }, selectedModel: { label: 'Dokker ', value: 2 }, number: 1 }], coordinates: [50.37766, 30.550723], locationName: 'Добровольчих Батальйонів вулиця, 12А, Київ, 01015, Україна' }]
 // const selectedTruck = 1
 
+<<<<<<< HEAD
 class Result extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       polylineShape: null
+=======
+const output = [
+    { "Coordinates": [50.427952, 30.511119], "UnloadCars": null, "FuelCost": 1.0, "FuelVolume": 630 },
+    { "Coordinates": [50.405157, 30.557426], "UnloadCars": [{ "BrandId": 1, "ModelId": 1, "BrandName": "Renault", "ModelName": "Logan" }, { "BrandId": 1, "ModelId": 2, "BrandName": "Renault", "ModelName": "Master" }, { "BrandId": 2, "ModelId": 3, "BrandName": "Nissan", "ModelName": "X-Trail" }], "FuelCost": null, "FuelVolume": null },
+    { "Coordinates": [50.471896, 30.635652], "UnloadCars": null, "FuelCost": 0.94, "FuelVolume": 370 }];
+const cred =  {
+    app_id: 'fLR4pqJX0jZZZle8nwaM',
+    app_code: 'eM1d0zQLOLaA44cULr6NwQ',
+};
+const polyline = [
+    {
+        from_lat: 49.43532,
+        from_long: 19.33918,
+        id: 1,
+        to_lat: 49.53532,
+        to_long: 19.346918,
+    },
+    {
+        from_lat: 49.53532,
+        from_long: 19.346918,
+        id: 2,
+        to_lat: 49.39532,
+        to_long: 19.71918,
+>>>>>>> merge
     }
     this.getPopupText = this.getPopupText.bind(this)
     this.getRoute = this.getRoute.bind(this)
