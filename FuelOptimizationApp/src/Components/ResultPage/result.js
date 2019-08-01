@@ -127,8 +127,7 @@ class Result extends React.Component {
       </div>)
     }
     const { appId, appCode } = this.props.credentials
-    let center = null
-    center = center || [49.43532, 19.33918]
+    const center = this.props.points[0].coordinates
     const { data } = this.state
     const markers = data.map((item, id) => {
       return (

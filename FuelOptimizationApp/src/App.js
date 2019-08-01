@@ -3,6 +3,9 @@ import Optimization from './Components/InputPage/Optimization/optimization'
 import Result from './Components/ResultPage/result'
 import FuelStations from './Components/FuelStationsPage/fuelStations'
 import { Switch, Route } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
+
+const history = createBrowserHistory()
 
 class App extends React.Component {
   constructor (props) {
@@ -26,7 +29,7 @@ class App extends React.Component {
     const { credentials, points, selectedTruck } = this.state
     return (
       <div className='App'>
-        <Switch>
+        <Switch history={history} >
           <Route exact path='/' component={() =>
             <Optimization
               credentials={credentials}

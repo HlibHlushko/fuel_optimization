@@ -46,7 +46,7 @@ namespace Services
                 });
                 pos.Add(idx[i]);
             }
-            int it = -1;
+            int it = -1;                    
             foreach (Point point in input.Points)
             {
                 it++;

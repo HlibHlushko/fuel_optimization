@@ -188,9 +188,7 @@ namespace OptimizationSimplexMethod
                 }
 
             for (int i = mainRow + 1; i < m - 1; i++)
-                // if ((table[i, mainCol] > 0) && ((table[i, 0] / table[i, mainCol]) < (table[mainRow, 0] / table[mainRow, mainCol])))
-                if ((table[i, mainCol] > 0.00001) && ((table[i, 0] / table[i, mainCol]) - (table[mainRow, 0] / table[mainRow, mainCol]) <0.0001))
-
+                if ((table[i, mainCol] > 0) && ((table[i, 0] / table[i, mainCol]) < (table[mainRow, 0] / table[mainRow, mainCol])))
                     mainRow = i;
 
             return mainRow;
