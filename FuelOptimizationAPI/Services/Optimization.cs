@@ -21,7 +21,7 @@ namespace Services
             //double[] costs = new double[] { 1, 1.25, 0.95 };
 
             int tank = _dbData.GetTrucks().Find(truck => truck.Id == input.TruckId).TankCapacity;
-            // tank = 300;
+            tank = 300;
             input.Points.Insert(0,new Point{
               Coordinates = input.Points[0].Coordinates,
               FuelCost = 1,
@@ -144,7 +144,7 @@ namespace Services
         private int ConvertDistanceToVolume(int distance, int weight)
         {
             //return distance;
-            return (int)(distance / 1000  * 0.27 + weight / 1000);
+            return (int)(distance / 1000 * 0.27 + weight / 1000);
         }
     }
 }

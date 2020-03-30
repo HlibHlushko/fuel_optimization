@@ -1,0 +1,64 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
+    "@david.kucsai/react-pdf-table": "^0.3.0",
+    "@material-ui/core": "^4.9.6",
+    "@material-ui/icons": "^4.2.1",
+    "@react-pdf/renderer": "^1.6.8",
+    "@turf/bbox": "^6.0.1",
+    "@turf/bbox-polygon": "^6.0.1",
+    "@turf/center": "^6.0.1",
+    "@turf/flip": "^5.1.5",
+    "@turf/helpers": "^6.1.4",
+    "@turf/invariant": "^6.1.2",
+    "@turf/length": "^6.0.2",
+    "@turf/line-slice": "^5.1.5",
+    "@turf/transform-scale": "^5.1.5",
+    "chart.js": "^2.8.0",
+    "chartjs-plugin-annotation": "^0.5.7",
+    "chartjs-plugin-dragdata": "^1.0.3",
+    "downshift": "^3.3.0",
+    "jwt-decode": "^2.2.0",
+    "leaflet": "^1.5.1",
+    "leaflet-active-area": "^1.1.1",
+    "lodash.throttle": "^4.1.1",
+    "lodash.uniqby": "^4.7.0",
+    "object-hash": "^2.0.0",
+    "path-to-regexp": "^3.1.0",
+    "react": "^16.9.0",
+    "react-chartjs-2": "^2.7.6",
+    "react-dom": "^16.9.0",
+    "react-input-mask": "^2.0.4",
+    "react-leaflet": "^2.4.0",
+    "react-router-dom": "^5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "react-scripts": "3.4.0",
+    "typescript": "^3.8.3",
+    "typescript-styled-plugin": "^0.15.0"
+  }
+}

@@ -1,0 +1,15 @@
+html{
+  height: 100%;
+
+}
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'TT Commons';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}

@@ -49,6 +49,7 @@ const polyline = [
   }
 
   componentDidMount () {
+    
     const { points, selectedTruck } = this.props
 
     const { appId, appCode } = this.props.credentials
