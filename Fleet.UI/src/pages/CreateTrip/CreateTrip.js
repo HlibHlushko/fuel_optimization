@@ -13,6 +13,7 @@ import { TripMap } from '../../components/TripMap'
 import { MapPopup } from '../../components/MapPopup'
 import { CreateCar } from '../../components/CreateCar'
 
+import { localStorageService } from '../../services/localStorageService'
 const defaultPoint = (address, coordinates, placeholder) => ({
   address,
   coordinates,
@@ -34,6 +35,24 @@ const defaultState = () => ({
   newCar: false,
   truck: '',
   liters: 0,
+  brands: [
+    { id: 1, brand: 'Audi' },
+    { id: 2, brand: 'BMW' },
+    { id: 3, brand: 'Nissan' },
+    { id: 4, brand: 'Renault' },
+    { id: 5, brand: 'Ford' },
+    { id: 6, brand: 'Toyota' }
+  ],
+  // cars: [],
+  cars: [
+    { id: 1, brandId: 1, consumption: 15, model: 'Q7' },
+    { id: 2, brandId: 2, consumption: 15, model: 'X5' },
+    { id: 3, brandId: 3, consumption: 15, model: 'X-Trail' },
+    { id: 4, brandId: 4, consumption: 15, model: 'Logan' },
+    { id: 5, brandId: 5, consumption: 15, model: 'Mondeo' },
+    { id: 6, brandId: 6, consumption: 15, model: 'Camry' }
+  ],
+  // brands: ['Audi', 'BMW', 'Renault', 'Mercedes', ''],
   suggestions: [],
   trucks: [],
   points: [
@@ -59,8 +78,8 @@ export class CreateTrip extends React.Component {
   }
 
   componentDidMount () {
-    truckService.getAllTrucks()
-      .then(resp => this.setState({ trucks: resp }))
+    console.log(localStorageService.getAllCars())
+    // this.setState({ cars: [...this.state.cars, ...localStorageService.getAllCars()] })
   }
 
   discardChanges () {
@@ -371,8 +390,9 @@ export class CreateTrip extends React.Component {
 
   render () {
     const { classes } = this.props
-    const { trucks, truck, points, suggestions, pointPopup, saveDisabled, needPanToBounds } = this.state
-    console.log('truck', truck)
+    const { brands, truck, points, suggestions, pointPopup, saveDisabled, needPanToBounds } = this.state
+    const cars = [...this.state.cars, ...localStorageService.getAllCars()]
+    // console.log('truck', cars)
     const pointError = points.some(p => p.error)
     return (
       <div className={classes.main}>
@@ -406,10 +426,10 @@ export class CreateTrip extends React.Component {
                     </ButtonBase>
                   </MenuItem>
 
-                  {trucks.map(option => {
+                  {cars.map(option => {
                     return (
                       <MenuItem key={option.id} value={option.id}>
-                        {`${option.driver} ${option.tractorModel} ${option.tractorStateNumberOrVin}${option.trailerStateNumberOrVin ? ('/' + option.trailerStateNumberOrVin) : ''}`}
+                        {`${brands.filter(x => x.id === option.brandId)[0].brand} ${option.model}`}
                       </MenuItem>
                     )
                   })}
@@ -432,6 +452,8 @@ export class CreateTrip extends React.Component {
               (
                 <CreateCar
                   opened={this.state.newCar}
+                  brands={brands}
+                  // ok={() => this.setState({ newCar: false })}
                   discard={() => this.setState({ newCar: false })}
                 />
               )

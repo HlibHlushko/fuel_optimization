@@ -2,21 +2,30 @@ import React from 'react'
 import { IconButton, MenuItem, FormControl, Input, InputLabel, Select, Dialog, DialogContent, DialogTitle } from '@material-ui/core'
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded'
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded'
+import { localStorageService } from '../../services/localStorageService'
 
 export class CreateCar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       selectedBrand: '',
-      brands: ['Renault', 'BMW', 'Mercedes', 'Nissan', 'Audi', 'Volvo', 'Hyundai'],
-      model: ''
+      model: '',
+      consumption: 1
     }
+    this.handleAddNewCar = this.handleAddNewCar.bind(this)
+  }
+
+  handleAddNewCar () {
+    const { selectedBrand, model, consumption } = this.state
+    localStorageService.addNewCar({ brandId: selectedBrand, model: model, consumption: consumption })
+    this.props.discard()
   }
 
   render () {
-    const { classes, discard, ok, opened } = this.props
-    const { brands, selectedBrand, model } = this.state
-    console.log(selectedBrand)
+    const { classes, discard, opened, brands } = this.props
+    const { selectedBrand, model } = this.state
+
+    console.log(brands)
     return (
       // <div className={classes.createCarContainer}>
       <Dialog
@@ -33,7 +42,7 @@ export class CreateCar extends React.Component {
                 value={selectedBrand}
                 onChange={(event) => this.setState({ selectedBrand: event.target.value })}
               >
-                {brands.sort().map(brand => <MenuItem key={brand} value={brand}>{brand}</MenuItem>)}
+                {brands.sort().map(brand => <MenuItem key={brand.id} value={brand.id}>{brand.brand}</MenuItem>)}
               </Select>
             </FormControl>
             <Input
@@ -43,10 +52,14 @@ export class CreateCar extends React.Component {
               onChange={event => this.setState({ model: event.target.value })}
             />
           </div>
-          <Input className={classes.consumptionInput} placeholder='Fuel consumption per 100km' />
+          <Input
+            className={classes.consumptionInput}
+            placeholder='Fuel consumption per 100km'
+            onChange={(event) => this.setState({ consumption: event.target.value })}
+          />
           <div className={classes.buttons}>
             <IconButton
-              onClick={ok}
+              onClick={this.handleAddNewCar}
             >
               <CheckRoundedIcon htmlColor='green' />
             </IconButton>

@@ -11,13 +11,13 @@ import { Trip } from '../../components/Trip'
 import { TripMap } from '../../components/TripMap'
 
 import { tripService } from '../../services/tmService'
-import { getRouteAsync, getRouteNewAsync, getAddressText, getRouteInfoAsync } from '../../services/hereClient'
-import { ws } from '../../services/wsService'
+import { getRouteAsync, getRouteNewAsync, getAddressText } from '../../services/hereClient'
+// import { ws } from '../../services/wsService'
 
 import GetAppIcon from '@material-ui/icons/GetApp'
 
-import { truckService } from '../../services/fmService'
-import { userClient } from '../../services/userClient'
+// import { truckService } from '../../services/fmService'
+// import { userClient } from '../../services/userClient'
 
 export class Trips extends React.Component {
   constructor (props) {
@@ -61,23 +61,23 @@ export class Trips extends React.Component {
   }
 
   updateTrips () {
-    return Promise.all([
-      tripService.getAllTrips(),
-      truckService.getAllTrucks(),
-      userClient.getUsersAsync()
-    ])
-      .then(([resp, trucks, users]) => {
-        const rows = resp.map(({ id, driverId, truckId, status, residualFuel, load, unload, inputPoints, optimizedPoints }) => ({
-          id,
-          driverId,
-          truckId,
-          fuel: residualFuel,
-          points: this.mapToPoint(inputPoints),
-          optimizedPoints: optimizedPoints ? this.mapToPoint(optimizedPoints) : [],
-          status
-        }))
-        this.setState({ rows })
-      })
+    // return Promise.all([
+    //   // tripService.getAllTrips(),
+    //   // truckService.getAllTrucks(),
+    //   // userClient.getUsersAsync()
+    // ])
+    //   .then(([resp, trucks, users]) => {
+    //     const rows = resp.map(({ id, driverId, truckId, status, residualFuel, load, unload, inputPoints, optimizedPoints }) => ({
+    //       id,
+    //       driverId,
+    //       truckId,
+    //       fuel: residualFuel,
+    //       points: this.mapToPoint(inputPoints),
+    //       optimizedPoints: optimizedPoints ? this.mapToPoint(optimizedPoints) : [],
+    //       status
+    //     }))
+    //     this.setState({ rows })
+    //   })
   }
 
   handleOpenDialog () {
