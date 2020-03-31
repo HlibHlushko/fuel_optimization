@@ -26,7 +26,8 @@ export const styles = ({
     marginTop: '5px'
   },
   consumptionInput: {
-    width: '100%'
+    width: '150px',
+    fontSize: '12px'
     // paddingRight: '10px'
   }
 })

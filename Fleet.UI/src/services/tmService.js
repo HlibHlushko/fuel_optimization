@@ -8,6 +8,7 @@ export const tripService = {
     return get(`${url}/trip/all`)
   },
   createTrip (data) {
+    console.log('data', data)
     return post(`${url}/trip/`, JSON.stringify(data))
   },
   deleteTrip (id) {

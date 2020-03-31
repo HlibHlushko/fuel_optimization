@@ -5,8 +5,6 @@ import length from '@turf/length'
 import lineSlice from '@turf/line-slice'
 import { Button, MenuItem, FormControl, Input, InputLabel, Select, ButtonBase } from '@material-ui/core'
 import { getSuggestionsAsync, getLocationAsync, getRouteAsync, getAddressAtLatLngAsync } from '../../services/hereClient'
-import { truckService } from '../../services/fmService'
-import { tripService } from '../../services/tmService'
 
 import { TripRoute } from '../../components/TripRoute'
 import { TripMap } from '../../components/TripMap'
@@ -14,6 +12,8 @@ import { MapPopup } from '../../components/MapPopup'
 import { CreateCar } from '../../components/CreateCar'
 
 import { localStorageService } from '../../services/localStorageService'
+import { tripService } from '../../services/tmService'
+
 const defaultPoint = (address, coordinates, placeholder) => ({
   address,
   coordinates,
@@ -45,12 +45,12 @@ const defaultState = () => ({
   ],
   // cars: [],
   cars: [
-    { id: 1, brandId: 1, consumption: 15, model: 'Q7' },
-    { id: 2, brandId: 2, consumption: 15, model: 'X5' },
-    { id: 3, brandId: 3, consumption: 15, model: 'X-Trail' },
-    { id: 4, brandId: 4, consumption: 15, model: 'Logan' },
-    { id: 5, brandId: 5, consumption: 15, model: 'Mondeo' },
-    { id: 6, brandId: 6, consumption: 15, model: 'Camry' }
+    { id: 1, brandId: 1, consumption: 15, tank: 70, model: 'Q7' },
+    { id: 2, brandId: 2, consumption: 15, tank: 70, model: 'X5' },
+    { id: 3, brandId: 3, consumption: 15, tank: 70, model: 'X-Trail' },
+    { id: 4, brandId: 4, consumption: 15, tank: 70, model: 'Logan' },
+    { id: 5, brandId: 5, consumption: 15, tank: 70, model: 'Mondeo' },
+    { id: 6, brandId: 6, consumption: 15, tank: 70, model: 'Camry' }
   ],
   // brands: ['Audi', 'BMW', 'Renault', 'Mercedes', ''],
   suggestions: [],
@@ -87,12 +87,11 @@ export class CreateTrip extends React.Component {
   }
 
   handleSave () {
-    this.setState({ saveDisabled: true, needPanToBounds: true })
+    // this.setState({ saveDisabled: true, needPanToBounds: true })
+    console.log(tripService.createTrip({ eob: 'sdokpdfkjlk' }))
     tripService.createTrip({
-      truckId: this.state.truck,
-      driverId: this.state.trucks.filter(t => t.id === this.state.truck)[0].driverId,
+      car: this.state.cars.filter(c => c.id === this.state.car)[0],
       residualFuel: this.state.balance,
-      shouldRemain: this.state.remain,
       inputPoints: this.state.points
         .reduce((a, p) => {
           if (p.coordinates) {
@@ -123,13 +122,14 @@ export class CreateTrip extends React.Component {
         }, [])
     })
       .then(resp => {
+        console.log(resp)
         this.discardChanges()
-        this.setState({ saveDisabled: false })
-        this.props.onClose()
+        // this.setState({ saveDisabled: false })
+        // this.props.onClose()
       })
       .catch(resp => {
         console.log(resp)
-        this.setState({ saveDisabled: false })
+        // this.setState({ saveDisabled: false })
       })
   }
 
@@ -390,9 +390,9 @@ export class CreateTrip extends React.Component {
 
   render () {
     const { classes } = this.props
-    const { brands, truck, points, suggestions, pointPopup, saveDisabled, needPanToBounds } = this.state
+    const { brands, car, points, suggestions, pointPopup, saveDisabled, needPanToBounds } = this.state
     const cars = [...this.state.cars, ...localStorageService.getAllCars()]
-    // console.log('truck', cars)
+    // console.log('truck', cars.filter(c => c.id === car)[0])
     const pointError = points.some(p => p.error)
     return (
       <div className={classes.main}>
@@ -404,11 +404,11 @@ export class CreateTrip extends React.Component {
           <div className={classes.parameters}>
             <div className={classes.paramHeader}>
               <FormControl className={classes.truck}>
-                <InputLabel htmlFor='truck' className={classes.litersLabel}>Car</InputLabel>
+                <InputLabel htmlFor='car' className={classes.litersLabel}>Car</InputLabel>
                 <Select
                   displayEmpty
-                  value={truck || ''}
-                  onChange={this.handleChange.bind(this, 'truck')}
+                  value={car || ''}
+                  onChange={this.handleChange.bind(this, 'car')}
                   className={classes.truckSelect}
                   classes={{
                     icon: classes.selectIcon

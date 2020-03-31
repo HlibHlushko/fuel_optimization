@@ -10,14 +10,21 @@ export class CreateCar extends React.Component {
     this.state = {
       selectedBrand: '',
       model: '',
-      consumption: 1
+      consumption: 1,
+      tank: 1
     }
     this.handleAddNewCar = this.handleAddNewCar.bind(this)
   }
 
   handleAddNewCar () {
-    const { selectedBrand, model, consumption } = this.state
-    localStorageService.addNewCar({ brandId: selectedBrand, model: model, consumption: consumption })
+    const { selectedBrand, model, consumption, tank } = this.state
+    localStorageService.addNewCar({
+      id: localStorageService.getAllCars().length + 1000,
+      brandId: selectedBrand,
+      model: model,
+      consumption: consumption,
+      tank: tank
+    })
     this.props.discard()
   }
 
@@ -25,7 +32,6 @@ export class CreateCar extends React.Component {
     const { classes, discard, opened, brands } = this.props
     const { selectedBrand, model } = this.state
 
-    console.log(brands)
     return (
       // <div className={classes.createCarContainer}>
       <Dialog
@@ -52,11 +58,18 @@ export class CreateCar extends React.Component {
               onChange={event => this.setState({ model: event.target.value })}
             />
           </div>
-          <Input
-            className={classes.consumptionInput}
-            placeholder='Fuel consumption per 100km'
-            onChange={(event) => this.setState({ consumption: event.target.value })}
-          />
+          <div className={classes.carName}>
+            <Input
+              className={classes.consumptionInput}
+              placeholder='Сonsumption per 100km'
+              onChange={(event) => this.setState({ consumption: event.target.value })}
+            />
+            <Input
+              className={classes.selectModel}
+              placeholder='Car tank'
+              onChange={(event) => this.setState({ tank: event.target.value })}
+            />
+          </div>
           <div className={classes.buttons}>
             <IconButton
               onClick={this.handleAddNewCar}
