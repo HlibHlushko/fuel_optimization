@@ -394,9 +394,9 @@ export class CreateTrip extends React.Component {
                     icon: classes.selectIcon
                   }}
                 >
-                  <MenuItem key='add-new-car'>
+                  <MenuItem key='add-new-car' style={{ padding: '0' }}>
                     <ButtonBase
-                      style={{ width: '100%', height: '100%', textAlign: 'left' }}
+                      style={{ width: '100%', height: '100%', padding: '5px', textAlign: 'left' }}
                       onClick={(event) => {
                         this.setState({ newCar: true })
                         // event.stopPropagation()
@@ -429,13 +429,11 @@ export class CreateTrip extends React.Component {
               </div>
             </div>
             {
-              this.state.newCar &&
               (
-                <div className={classes.newCar}>
-                  <CreateCar
-                    discard={() => this.setState({ newCar: false })}
-                  />
-                </div>
+                <CreateCar
+                  opened={this.state.newCar}
+                  discard={() => this.setState({ newCar: false })}
+                />
               )
             }
 

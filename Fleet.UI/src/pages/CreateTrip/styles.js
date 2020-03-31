@@ -146,10 +146,10 @@ export const styles = ({
     flexDirection: 'row'
   },
   newCar: {
-    position: 'absolute',
-    top: '100px',
-    left: '40px',
-    zIndex: '5'
+    // position: 'absolute',
+    // top: '100px',
+    // left: '40px',
+    // zIndex: '5'
     // top: '-100px'
   }
 })

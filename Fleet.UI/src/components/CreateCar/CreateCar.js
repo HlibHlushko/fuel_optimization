@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton, MenuItem, FormControl, Input, InputLabel, Select, Paper } from '@material-ui/core'
+import { IconButton, MenuItem, FormControl, Input, InputLabel, Select, Dialog, DialogContent, DialogTitle } from '@material-ui/core'
 import CheckRoundedIcon from '@material-ui/icons/CheckRounded'
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded'
 
@@ -14,12 +14,18 @@ export class CreateCar extends React.Component {
   }
 
   render () {
-    const { classes, discard, ok } = this.props
+    const { classes, discard, ok, opened } = this.props
     const { brands, selectedBrand, model } = this.state
     console.log(selectedBrand)
     return (
-      <div className={classes.createCarContainer}>
-        <Paper className={classes.carInfoContainer}>
+      // <div className={classes.createCarContainer}>
+      <Dialog
+        open={opened}
+      >
+        <DialogTitle>
+          Create new car
+        </DialogTitle>
+        <DialogContent>
           <div className={classes.carName}>
             <FormControl className={classes.selectBrand}>
               <InputLabel>Select Brand</InputLabel>
@@ -31,7 +37,7 @@ export class CreateCar extends React.Component {
               </Select>
             </FormControl>
             <Input
-              className={classes.selectBrand}
+              className={classes.selectModel}
               placeholder='Type model'
               value={model}
               onChange={event => this.setState({ model: event.target.value })}
@@ -48,9 +54,10 @@ export class CreateCar extends React.Component {
               <CloseRoundedIcon htmlColor='red' />
             </IconButton>
           </div>
-        </Paper>
+        </DialogContent>
+      </Dialog>
 
-      </div>
+    // </div>
     )
   }
 }

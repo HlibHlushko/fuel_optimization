@@ -1,8 +1,5 @@
 export const styles = ({
   carInfoContainer: {
-    width: '350px',
-    height: '150px',
-    padding: '10px',
     display: 'flex',
     flexDirection: 'column'
   },
@@ -11,18 +8,25 @@ export const styles = ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    paddingBottom: '0px'
+
+  },
+  selectModel: {
+    marginLeft: '10px',
+    width: '140px'
   },
   selectBrand: {
-    width: '45%'
+    width: '150px',
+    marginTop: '-10px '
   },
   buttons: {
     display: 'flex',
     justifyContent: 'space-around',
     marginTop: '5px'
   },
-  createCarContainer: {
-    width: '350px'
-
+  consumptionInput: {
+    width: '100%'
+    // paddingRight: '10px'
   }
 })
