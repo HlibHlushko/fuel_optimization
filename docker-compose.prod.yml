@@ -1,0 +1,112 @@
+version: '3'
+
+services:
+  driver_management:
+    image: 127.0.0.1:5000/driver_management
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  fleet_management:
+    entrypoint: /wait-for-it.sh fleet_management_db:1433 -t 0 --
+    image: 127.0.0.1:5000/fleet_management
+    command: ['dotnet', 'Fleet.FleetManagement.dll']
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ConnectionStrings:FleetManagement=Server=fleet_management_db,1433;Database=FleetManagement;User Id=sa;Password=Cn0gh0wtyny0;
+    depends_on:
+      - fleet_management_db
+  fleet_management_db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    volumes:
+      - './data/FleetManagement:/var/opt/mssql/data'
+    ports:
+      - "8012:1433"
+    environment: 
+      SA_PASSWORD: "Cn0gh0wtyny0"
+      ACCEPT_EULA: "Y"
+  fuel_optimization:
+    image: 127.0.0.1:5000/fuel_optimization
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  fuel_stations:
+    image: 127.0.0.1:5000/fuel_stations
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  fuel_stations_core:
+    entrypoint: /wait-for-it.sh fuel_stations_db:1433 -t 0 --
+    image: 127.0.0.1:5000/fuel_stations_core
+    command: ['dotnet', 'Fleet.FuelStationsCore.dll']
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ConnectionStrings:FuelStations=Server=fuel_stations_db,1433;Database=FuelStations;User Id=sa;Password=Cn0gh0wtyny0;
+    depends_on:
+      - fuel_stations_db
+  fuel_stations_db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    volumes:
+      - './data/FuelStations:/var/opt/mssql/data'
+    ports:
+      - "8018:1433"
+    environment: 
+      SA_PASSWORD: "Cn0gh0wtyny0"
+      ACCEPT_EULA: "Y"
+  transportation_management:
+    entrypoint: /wait-for-it.sh transportation_management_db:1433 -t 0 --
+    image: 127.0.0.1:5000/transportation_management
+    command: ['dotnet', 'Fleet.TransportationManagement.dll']
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=transportation_management_db,1433;Database=TransportationManagement;User Id=sa;Password=Cn0gh0wtyny0;
+    depends_on:
+      - transportation_management_db
+  transportation_management_db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    volumes:
+      - './data/TransportationManagement:/var/opt/mssql/data'
+    ports:
+      - "8014:1433"
+    environment: 
+      SA_PASSWORD: "Cn0gh0wtyny0"
+      ACCEPT_EULA: "Y"
+  users:
+    entrypoint: /wait-for-it.sh users_db:1433 -t 0 --
+    image: 127.0.0.1:5000/users
+    command: ['dotnet', 'Fleet.Users.dll']
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_CERT_PASS=1111
+      - ASPNETCORE_ConnectionStrings:UsersConnectionString=Server=users_db,1433;Database=users;User Id=sa;Password=Cn0gh0wtyny0;
+    depends_on:
+      - users_db
+  users_db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    volumes:
+      - './data/Users:/var/opt/mssql/data'
+    ports:
+      - "8015:1433"
+    environment: 
+      SA_PASSWORD: "Cn0gh0wtyny0"
+      ACCEPT_EULA: "Y"
+  ui:
+    image: 127.0.0.1:5000/ui
+    volumes:
+      - 'static-content:/app/build'
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_AUTH_URL=https://fo.avtologistika.com/auth
+      - REACT_APP_USERS_URL=https://fo.avtologistika.com/user
+      - REACT_APP_FM_URL=https://fo.avtologistika.com/fm
+      - REACT_APP_FS_URL=https://fo.avtologistika.com/fs
+      - REACT_APP_TM_URL=https://fo.avtologistika.com/tm
+  gateway:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - './nginx/production.conf:/etc/nginx/env/production.conf'
+      - 'static-content:/usr/share/nginx/static'
+    environment:
+      - NGINX_HOST=fo.avtologistika.com
+      - NGINX_EXT_SSL_PORT=443
+
+volumes:
+  static-content:

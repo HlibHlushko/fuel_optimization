@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  fuel_optimization:
+    image: fuel_optimization
+    build:
+      context: ./src/Fleet.FuelOptimization
+  fuel_stations:
+    image: fuel_stations
+    build:
+      context: ./src/Fleet.FuelStations
+    environment:
+      - HERE_APP_ID=fLR4pqJX0jZZZle8nwaM
+      - HERE_APP_CODE=eM1d0zQLOLaA44cULr6NwQ
+  fuel_stations_core:
+    image: fuel_stations_core
+    build:
+      context: ./src/Fleet.FuelStationsCore
+    volumes:
+      - './wait-for-it.sh:/wait-for-it.sh'
+    environment:
+      - ASPNETCORE_HERE_APP_ID=fLR4pqJX0jZZZle8nwaM
+      - ASPNETCORE_HERE_APP_CODE=eM1d0zQLOLaA44cULr6NwQ
+      - ASPNETCORE_COLLECT_APIKEY=2IdCnVbP5ZYXZ0HX8Ht2eT:26VMZF1zNeyjlwV7RCCAr1
+  transportation_management:
+    image: transportation_management
+    build:
+      context: ./src/Fleet.TransportationManagement
+    volumes:
+      - './wait-for-it.sh:/wait-for-it.sh'
+  ui:
+    image: ui
+    build:
+      context: ./src/Fleet.UI
+    environment:
+      - REACT_APP_HERE_APP_ID=fLR4pqJX0jZZZle8nwaM
+      - REACT_APP_HERE_APP_CODE=eM1d0zQLOLaA44cULr6NwQ
+  gateway:
+    image: nginx
+    volumes:
+      - './nginx/templates:/etc/nginx/templates'
+      - './nginx/snippets:/etc/nginx/snippets'
+      - './nginx/conf.d:/etc/nginx/conf.d'
+      - './nginx/log:/var/log/nginx'
+      - './nginx/error.html:/usr/share/nginx/html/error.html'
+      - './nginx/oauth2.js:/usr/share/nginx/scripts/oauth2.js'
+      - './certs:/etc/ssl/certs'
+      - './wait-for-it.sh:/wait-for-it.sh'
+    command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/nginx.template.conf > /etc/nginx/nginx.conf && envsubst '$$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/proxy_headers.template > /etc/nginx/proxy_headers && /wait-for-it.sh transportation_management:8000 -t 0 -- nginx -g 'daemon off;'"
