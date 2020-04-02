@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fleet.TransportationManagement.Migrations
 {
     [DbContext(typeof(TmContext))]
-    [Migration("20200131100900_ChangeFuelToDouble")]
-    partial class ChangeFuelToDouble
+    [Migration("20200402175917_ChangeTripModel")]
+    partial class ChangeTripModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,15 +21,31 @@ namespace Fleet.TransportationManagement.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Fleet.TransportationManagement.Models.Trip", b =>
+            modelBuilder.Entity("Fleet.TransportationManagement.Models.Car", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DriverId");
+                    b.Property<int>("Brand");
 
-                    b.Property<DateTime>("Finish");
+                    b.Property<int>("Consumption");
+
+                    b.Property<string>("Model");
+
+                    b.Property<int>("Tank");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Car");
+                });
+
+            modelBuilder.Entity("Fleet.TransportationManagement.Models.Trip", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CarId");
 
                     b.Property<string>("InputPoints");
 
@@ -37,19 +53,18 @@ namespace Fleet.TransportationManagement.Migrations
 
                     b.Property<int>("ResidualFuel");
 
-                    b.Property<int>("ShouldRemain");
-
-                    b.Property<DateTime>("Start");
-
-                    b.Property<string>("Status");
-
-                    b.Property<int>("TruckId");
-
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
                     b.ToTable("Trips");
+                });
+
+            modelBuilder.Entity("Fleet.TransportationManagement.Models.Trip", b =>
+                {
+                    b.HasOne("Fleet.TransportationManagement.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
                 });
 #pragma warning restore 612, 618
         }

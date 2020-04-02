@@ -114,7 +114,7 @@ namespace Fleet.TransportationManagement.Services
         private async Task<(GetFuelStationsDto[], FuelOptimizationInput)> CreateFuelData(Trip trip, IHttpClientFactory clientFactory)
         {
             HttpClient fuelStationsClient = clientFactory.CreateClient("fuelStations");
-            // fuelStationsClient.DefaultRequestHeaders.Add("X-UserId", userId);
+            fuelStationsClient.DefaultRequestHeaders.Add("X-UserId", "E boi");
             GetFuelStationsDto[] res = null;
             try
             {
@@ -175,6 +175,6 @@ namespace Fleet.TransportationManagement.Services
 
             return (volumes.ToArray(), costs.ToArray(), trip.ResidualFuel - volumeNeededToReachFirstFS);
         }
-        private double ConvertDistanceToVolume(double distance, int consumption) => distance / 1000 * consumption;
+        private double ConvertDistanceToVolume(double distance, int consumption) => distance / 1000 / 100 * consumption;
     }
 }
