@@ -1,33 +1,30 @@
-# dependencies
+# nodejs
 node_modules/
-.pnp
-.pnp.js
+dist/
 
-# production
-build/
-
-# editors
+# visual studio
 .vs/
 .vscode/
+bin/
+obj/
+*.DotSettings.user
 
-# Visual Studio
-*[Oo]bj
-*[Bb]in
-*.user
-*.suo
-*.[Cc]ache
-*.bak
-*.ncb
-*.log 
-*.DS_Store
-*.vs
+# rider
+.idea/
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# typescript
+typings/globals
+typings/modules
+
+# databases
+data/
+
+# security
+certs/
+DP_keys/
+
+# local .env files
+.env*.local
+
+# logs
+nginx/log/

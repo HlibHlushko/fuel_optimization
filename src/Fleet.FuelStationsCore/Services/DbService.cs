@@ -52,21 +52,21 @@ namespace Fleet.FuelStationsCore.Services
         public void CreateFuelPrice(FuelPrice price) => _ctx.FuelPrices.Add(price);
         public async Task SaveChangesAsync() => await _ctx.SaveChangesAsync();
 
-        public async Task<List<FuelPrice>> GetAllFuelPricesAsync(string userId)
+        public async Task<List<FuelPrice>> GetAllFuelPricesAsync()
         {
-            return await GetFuelPricesForNetworkNameAsync(userId);
+            return await GetFuelPricesForNetworkNameAsync();
         }
 
-        public async Task<List<FuelPrice>> GetFuelPricesForNetworkNameAsync(string userId, string network = DEFAULT_NETWORK_NAME)
+        public async Task<List<FuelPrice>> GetFuelPricesForNetworkNameAsync(string network = DEFAULT_NETWORK_NAME)
         {
             var fuelPricesWithDefaults = await _ctx.FuelPrices
                 .Include(fp => fp.Country)
                 .Include(fp => fp.Network)
-                .Where(fp => (fp.UserId == userId || fp.UserId == _options.DefaultUserId) && fp.Network.Name == network)
+                .Where(fp => (fp.UserId == _options.DefaultUserId) && fp.Network.Name == network)
                 .GroupBy(fp => fp.CountryId)
                 .ToListAsync();
             var fuelPrices = new List<FuelPrice>();
-            foreach(var pricesGroup in fuelPricesWithDefaults)
+            foreach (var pricesGroup in fuelPricesWithDefaults)
             {
                 fuelPrices.Add(pricesGroup.Count() == 1 || pricesGroup.First().UserId != _options.DefaultUserId
                     ? pricesGroup.First()

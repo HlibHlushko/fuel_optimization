@@ -15,9 +15,6 @@ namespace Fleet.FuelStationsCore.Controllers
         private readonly DbService _db;
         private readonly CollectApiService _collectApiServise;
 
-        private string GetUserIdFromHeader() => Request.Headers["X-UserId"];
-        private string GetRoleFromHeader() => Request.Headers["X-Role"];
-
         public FuelPricesController(DbService db, CollectApiService collectApiService)
         {
             _db = db;
@@ -34,7 +31,7 @@ namespace Fleet.FuelStationsCore.Controllers
         [HttpGet]
         public async Task<ActionResult<List<FuelPriceDto>>> GetFuelPrices()
         {
-            return (await _db.GetAllFuelPricesAsync(GetUserIdFromHeader()))
+            return (await _db.GetAllFuelPricesAsync())
                 .Select(fp => FuelPriceDto.From(fp))
                 .ToList();
         }
@@ -46,7 +43,7 @@ namespace Fleet.FuelStationsCore.Controllers
             {
                 var country = await _db.GetCountryAsync(p.CountryId);
                 var net = await _db.GetNetworkAsync(p.NetworkId);
-                _db.CreateOrUpdateFuelPrice(p.To(GetUserIdFromHeader(), country, net));
+                _db.CreateOrUpdateFuelPrice(p.To(country, net));
                 await _db.SaveChangesAsync();
             }
 

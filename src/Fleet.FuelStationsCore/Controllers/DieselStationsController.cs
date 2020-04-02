@@ -76,7 +76,7 @@ namespace Fleet.FuelStationsCore.Controllers
             NewGetFuelStationsDto[] ress = new NewGetFuelStationsDto[res.Length];
 
             var addresses = (await _ds.GetAddresses(res.Select(g => new Coord { Lat = g.Coords.Lat, Lng = g.Coords.Lng }).ToList())).ToList();
-            var costs = await _db.GetFuelPricesForNetworkNameAsync(Request.Headers["X-UserId"], "Default");
+            var costs = await _db.GetFuelPricesForNetworkNameAsync();
             var options = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy() } };
             for (int i = 0; i < res.Length; i++)
             {
