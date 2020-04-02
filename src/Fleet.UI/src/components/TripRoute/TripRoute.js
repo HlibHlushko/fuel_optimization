@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Dropdown } from '../Dropdown'
-import { Action } from '../Action'
 import { RouteList } from '../RouteList'
 
 import { getAddressText } from '../../services/hereClient'
@@ -29,12 +28,6 @@ export const TripRoute = ({
           })}
           handleInputChange={handleInputChange}
           handleSelectChange={handleSelectChange.bind(null, i)}
-        />
-        <Action
-          action={{ ...p }}
-          handleActionChange={handleActionChange.bind(null, i)}
-          handleActionInput={handleActionInput.bind(null, i)}
-          handleLoadingAction={handleLoadingAction.bind(null, i)}
         />
       </div>
     )}

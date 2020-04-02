@@ -465,9 +465,9 @@ export class CreateTrip extends React.Component {
                   suggestions={suggestions}
                   handleInputChange={this.handleInputChange.bind(this)}
                   handleSelectChange={this.handleSelectChange.bind(this)}
-                  handleActionChange={this.handleActionChange.bind(this)}
-                  handleActionInput={this.handleActionInput.bind(this)}
-                  handleLoadingAction={this.handleLoadingAction.bind(this)}
+                  // handleActionChange={this.handleActionChange.bind(this)}
+                  // handleActionInput={this.handleActionInput.bind(this)}
+                  // handleLoadingAction={this.handleLoadingAction.bind(this)}
                 />
                 <div className={classes.buttonContainer}>
                   <Button

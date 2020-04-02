@@ -33,14 +33,23 @@ namespace Fleet.TransportationManagement.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> CreateTrip(GetTripDto tripDto)
+        public async Task<object> CreateTrip(GetTripDto tripDto)
         {
             Trip newTrip = Trip.From(tripDto);
+            var x = Newtonsoft.Json.JsonConvert.SerializeObject(newTrip);
             await _dbService.CreateTripAsync(newTrip);
             _fuelOptimizationService.StartOptimization(newTrip);
-            return Ok();
+            return "{" + $"\"tripId\":\"{newTrip.Id}\"" + "}";
         }
 
+        public class eboi
+        {
+            public string tripId { get; set; }
+            public eboi(string x)
+            {
+                tripId = x;
+            }
+        }
         [HttpGet("{id}")]
         public async Task<SendTripDto> GetTrip(string id)
         {
