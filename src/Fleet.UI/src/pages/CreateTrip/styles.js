@@ -56,15 +56,15 @@ export const styles = ({
   content: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: '30px',
+    // marginTop: '30px',
     height: '100%'
   },
   parameters: {
-    width: '600px',
+    width: '520px',
     height: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    marginRight: '20px'
+    flexDirection: 'column'
+    // marginRight: '20px'
   },
   paramHeader: {
     display: 'flex',

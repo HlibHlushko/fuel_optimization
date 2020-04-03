@@ -78,7 +78,7 @@ export class CreateTrip extends React.Component {
   }
 
   componentDidMount () {
-    console.log(localStorageService.getAllCars())
+    // console.log(localStorageService.getAllCars())
     // this.setState({ cars: [...this.state.cars, ...localStorageService.getAllCars()] })
   }
 
@@ -123,8 +123,8 @@ export class CreateTrip extends React.Component {
       .then(resp => {
         console.log(resp)
         this.discardChanges()
-        // this.setState({ saveDisabled: false })
-        // this.props.onClose()
+        this.setState({ saveDisabled: false })
+        this.props.onClose(resp)
       })
       .catch(resp => {
         console.log(resp)
@@ -395,10 +395,6 @@ export class CreateTrip extends React.Component {
     const pointError = points.some(p => p.error)
     return (
       <div className={classes.main}>
-        <div className={classes.toolbar}>
-          <div className={classes.bold}>Route</div>
-
-        </div>
         <div className={classes.content}>
           <div className={classes.parameters}>
             <div className={classes.paramHeader}>
@@ -472,7 +468,7 @@ export class CreateTrip extends React.Component {
                 <div className={classes.buttonContainer}>
                   <Button
                     className={classes.button}
-                    variant='contained'
+                    variant='outlined'
                     color='secondary'
                     onClick={this.props.onClose}
                   >
@@ -480,7 +476,7 @@ export class CreateTrip extends React.Component {
                   </Button>
                   <Button
                     className={classes.button}
-                    variant='contained'
+                    variant='outlined'
                     color='primary'
                     disabled={saveDisabled || pointError}
                     onClick={this.handleSave}

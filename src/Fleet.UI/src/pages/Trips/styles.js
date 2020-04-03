@@ -11,9 +11,10 @@ export const styles = ({
     alignItems: 'center'
   },
   button: {
-    marginBottom: 4,
-    textTransform: 'none',
-    marginLeft: '20px'
+    position: 'absolute',
+    right: '50px',
+    top: '20px',
+    zIndex: 1000
   },
   small: {
     fontFamily: 'TT Commons',
@@ -36,17 +37,15 @@ export const styles = ({
     fontWeight: 'bold'
   },
   buttonText: {
-    color: 'blue',
-    borderBottom: '1px dashed blue'
+    color: 'white',
+    borderBottom: '1px dashed white'
   },
   mapContainer: {
     height: '100%',
     width: '100%'
   },
   page: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1
+    height: '100%'
   },
   paper: {
     width: '100%',
