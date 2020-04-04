@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter, Switch, Router, Redirect, Route } from 'react-router-dom'
+import { withRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { CreateTrip } from './pages/CreateTrip/'
 import { Trips } from './pages/Trips'
 class App extends React.Component {
@@ -12,9 +12,10 @@ class App extends React.Component {
       >
         <Switch>
           <Route path='/trip/:id' render={(props) => <Trips {...props} />} />
-          <Route path='/'>
+          <Route path='/create-trip'>
             <CreateTrip />
           </Route>
+          <Redirect to='/create-trip' />
         </Switch>
 
       </div>

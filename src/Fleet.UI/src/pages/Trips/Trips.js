@@ -1,9 +1,8 @@
 import React from 'react'
 import { Button, Paper } from '@material-ui/core'
 
-import { CreateTrip } from '../CreateTrip'
 import { TripMap } from '../../components/TripMap'
-import { useParams } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 export class Trips extends React.Component {
   constructor (props) {
@@ -12,14 +11,14 @@ export class Trips extends React.Component {
     this._tripReq = null
 
     this.state = {
-      isOpen: false
     }
     this.handleOpenDialog = this.handleOpenDialog.bind(this)
   }
 
   componentDidMount () {
     // const { id } = useParams()
-    console.log(this.props.match.params)
+    this.setState({ tripId: this.props.match.params })
+    // console.log(this.props.match.params)
   }
 
   mapToPoint (ps) {
@@ -38,10 +37,12 @@ export class Trips extends React.Component {
 
   updateTrips () {}
 
-  handleOpenDialog () {
+  handleOpenDialog (newId) {
     const newIsOpen = !this.state.isOpen
     this.setState({ isOpen: newIsOpen })
-    if (!newIsOpen) this.updateTrips()
+    if (!newIsOpen) {
+      this.setState({ tripId: newId.tripId, needRedirect: true })
+    }
   }
 
   render () {
@@ -54,9 +55,7 @@ export class Trips extends React.Component {
     const { selectedPoints, originalRoute, routeChunks } = this.state
     if (this.state.isOpen) {
       return (
-        <CreateTrip
-          onClose={this.handleOpenDialog}
-        />
+        <Redirect to='/create-trip' />
       )
     }
 

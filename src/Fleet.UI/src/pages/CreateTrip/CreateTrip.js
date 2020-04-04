@@ -4,6 +4,7 @@ import { lineString } from '@turf/helpers'
 import length from '@turf/length'
 import lineSlice from '@turf/line-slice'
 import { Button, MenuItem, FormControl, Input, InputLabel, Select, ButtonBase } from '@material-ui/core'
+import { Redirect } from 'react-router-dom'
 import { getSuggestionsAsync, getLocationAsync, getRouteAsync, getAddressAtLatLngAsync } from '../../services/hereClient'
 
 import { TripRoute } from '../../components/TripRoute'
@@ -33,8 +34,8 @@ const defaultPointPopup = (address, latlng, visible) => ({
 })
 const defaultState = () => ({
   newCar: false,
-  truck: '',
-  liters: 0,
+  car: '',
+  liters: '',
   brands: [
     { id: 1, brand: 'Audi' },
     { id: 2, brand: 'BMW' },
@@ -43,7 +44,6 @@ const defaultState = () => ({
     { id: 5, brand: 'Ford' },
     { id: 6, brand: 'Toyota' }
   ],
-  // cars: [],
   cars: [
     { id: 1, brandId: 1, consumption: 15, tank: 70, model: 'Q7' },
     { id: 2, brandId: 2, consumption: 15, tank: 70, model: 'X5' },
@@ -52,9 +52,7 @@ const defaultState = () => ({
     { id: 5, brandId: 5, consumption: 15, tank: 70, model: 'Mondeo' },
     { id: 6, brandId: 6, consumption: 15, tank: 70, model: 'Camry' }
   ],
-  // brands: ['Audi', 'BMW', 'Renault', 'Mercedes', ''],
   suggestions: [],
-  trucks: [],
   points: [
     defaultPoint(null, null, 'Indicate departure point'),
     defaultPoint(null, null, 'Indicate destination')
@@ -74,15 +72,10 @@ export class CreateTrip extends React.Component {
 
     this.getPointSuggestions = throttle(this.getPointSuggestions.bind(this), 500)
     this.handleSave = this.handleSave.bind(this)
-    this.discardChanges = this.discardChanges.bind(this)
+    this.handleDiscardChanges = this.handleDiscardChanges.bind(this)
   }
 
-  componentDidMount () {
-    // console.log(localStorageService.getAllCars())
-    // this.setState({ cars: [...this.state.cars, ...localStorageService.getAllCars()] })
-  }
-
-  discardChanges () {
+  handleDiscardChanges () {
     this.setState(defaultState())
   }
 
@@ -122,9 +115,10 @@ export class CreateTrip extends React.Component {
     })
       .then(resp => {
         console.log(resp)
-        this.discardChanges()
+        this.handleDiscardChanges()
         this.setState({ saveDisabled: false })
-        this.props.onClose(resp)
+        this.setState({ tripId: resp.tripId, needToRedirect: true })
+        // this.props.onClose(resp)
       })
       .catch(resp => {
         console.log(resp)
@@ -389,10 +383,15 @@ export class CreateTrip extends React.Component {
 
   render () {
     const { classes } = this.props
-    const { brands, car, points, suggestions, pointPopup, saveDisabled, needPanToBounds } = this.state
+    const { brands, car, liters, points, suggestions, pointPopup, saveDisabled, needPanToBounds, needToRedirect, tripId } = this.state
     const cars = [...this.state.cars, ...localStorageService.getAllCars()]
-    // console.log('truck', cars.filter(c => c.id === car)[0])
     const pointError = points.some(p => p.error)
+    if (needToRedirect) {
+      console.log(tripId, this.state)
+      return (
+        <Redirect to={`/trip/${tripId}`} />
+      )
+    }
     return (
       <div className={classes.main}>
         <div className={classes.content}>
@@ -436,8 +435,9 @@ export class CreateTrip extends React.Component {
                   <Input
                     id='balance'
                     type='tel'
-                    defaultValue={0}
-                    onChange={this.handleChange.bind(this, 'balance')}
+                    value={liters}
+                    // defaultValue={0}
+                    onChange={this.handleChange.bind(this, 'liters')}
                     className={classes.litersInput}
                   />
                 </FormControl>
@@ -470,7 +470,7 @@ export class CreateTrip extends React.Component {
                     className={classes.button}
                     variant='outlined'
                     color='secondary'
-                    onClick={this.props.onClose}
+                    onClick={this.handleDiscardChanges}
                   >
                     Discard
                   </Button>
