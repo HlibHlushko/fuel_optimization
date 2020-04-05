@@ -43,18 +43,11 @@ namespace Fleet.TransportationManagement.Controllers
             return "{" + $"\"tripId\":\"{newTrip.Id}\"" + "}";
         }
 
-        public class eboi
-        {
-            public string tripId { get; set; }
-            public eboi(string x)
-            {
-                tripId = x;
-            }
-        }
         [HttpGet("{id}")]
         public async Task<SendTripDto> GetTrip(string id)
         {
-            return new SendTripDto(await _dbService.GetTripAsync(id));
+            var trip = await _dbService.GetTripAsync(id);
+            return trip != null ? new SendTripDto(trip) : new SendTripDto();
         }
     }
 }

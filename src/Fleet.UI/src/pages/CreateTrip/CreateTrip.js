@@ -83,7 +83,7 @@ export class CreateTrip extends React.Component {
     // this.setState({ saveDisabled: true, needPanToBounds: true })
     tripService.createTrip({
       car: this.state.cars.filter(c => c.id === this.state.car)[0],
-      residualFuel: this.state.balance,
+      residualFuel: this.state.liters,
       inputPoints: this.state.points
         .reduce((a, p) => {
           if (p.coordinates) {

@@ -165,6 +165,9 @@ export const getAddressText = (item, preserveMarkup = false) => {
         suggestion.all.push(county)
         if (state && state !== county) suggestion.all.push(state)
         suggestion.all.push(country)
+        break
+      default:
+        break
     }
 
     const suggestionText = {

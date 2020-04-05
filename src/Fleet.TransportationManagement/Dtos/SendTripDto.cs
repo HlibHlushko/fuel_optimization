@@ -11,7 +11,7 @@ namespace Fleet.TransportationManagement.Dtos
         public int ResidualFuel { get; set; }
         public List<Point> InputPoints { get; set; }
         public List<Point> OptimizedPoints { get; set; }
-
+        public SendTripDto() { }
         public SendTripDto(Trip trip)
         {
             Id = trip.Id;

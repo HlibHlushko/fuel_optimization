@@ -4,11 +4,10 @@ import { get, post, delete_ } from './fetchService'
 const url = process.env.REACT_APP_TM_URL
 
 export const tripService = {
-  getAllTrips () {
-    return get(`${url}/trip/all`)
+  getTrip (id) {
+    return get(`${url}/trip/${id}`)
   },
   createTrip (data) {
-    console.log('data', data)
     return post(`${url}/trip/`, JSON.stringify(data))
   },
   deleteTrip (id) {

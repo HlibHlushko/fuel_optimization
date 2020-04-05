@@ -1,8 +1,10 @@
 import React from 'react'
-import { Button, Paper } from '@material-ui/core'
+import { Button, Paper, Dialog } from '@material-ui/core'
 
 import { TripMap } from '../../components/TripMap'
 import { Redirect } from 'react-router-dom'
+import { tripService } from '../../services/tmService'
+import { getRouteAsync, getRouteNewAsync } from '../../services/hereClient'
 
 export class Trips extends React.Component {
   constructor (props) {
@@ -11,14 +13,24 @@ export class Trips extends React.Component {
     this._tripReq = null
 
     this.state = {
+      found: false,
+      trip: null
     }
     this.handleOpenDialog = this.handleOpenDialog.bind(this)
+    this.handleBuildRoute = this.handleBuildRoute.bind(this)
   }
 
   componentDidMount () {
-    // const { id } = useParams()
-    this.setState({ tripId: this.props.match.params })
-    // console.log(this.props.match.params)
+    const { id } = this.props.match.params
+    console.log(id)
+    tripService.getTrip(id)
+      .then(resp => {
+        // console.log(resp)
+        const { inputPoints, optimizedPoints } = resp
+        console.log(inputPoints || [])
+        this.handleBuildRoute(this.mapToPoint(inputPoints || []), this.mapToPoint(optimizedPoints || []))
+        this.setState({ trip: resp, found: true })
+      })
   }
 
   mapToPoint (ps) {
@@ -40,8 +52,29 @@ export class Trips extends React.Component {
   handleOpenDialog (newId) {
     const newIsOpen = !this.state.isOpen
     this.setState({ isOpen: newIsOpen })
-    if (!newIsOpen) {
-      this.setState({ tripId: newId.tripId, needRedirect: true })
+  }
+
+  handleBuildRoute (points, optimizedPoints) {
+    let reqs
+    if (points.length > 0) { reqs = [getRouteAsync(...points.map(p => p.coordinates))] }
+    if (optimizedPoints.length > 0) {
+      for (let i = 0; i < optimizedPoints.length; ++i) {
+        if (optimizedPoints[i].type === 4) {
+          reqs.push(getRouteNewAsync(...optimizedPoints.slice(i, i + 3).map(p => p.coordinates)))
+          i += 2
+        }
+      }
+    }
+    if (reqs) {
+      const tripPromise = Promise.all(reqs)
+      return tripPromise.then(([original, ...optimizedChunks]) => {
+        this.setState({
+          // selectedId: id,
+          selectedPoints: optimizedPoints.length > 0 ? optimizedPoints : points,
+          originalRoute: optimizedPoints.length > 0 ? original : null,
+          routeChunks: optimizedChunks.length > 0 ? optimizedChunks : optimizedPoints.length > 0 ? [] : original
+        })
+      })
     }
   }
 
@@ -52,13 +85,18 @@ export class Trips extends React.Component {
       main,
       paper
     } = this.props.classes
-    const { selectedPoints, originalRoute, routeChunks } = this.state
+    const { trip, found, selectedPoints, originalRoute, routeChunks } = this.state
     if (this.state.isOpen) {
       return (
         <Redirect to='/create-trip' />
       )
     }
-
+    if (found && !trip) {
+      return (
+        <Dialog open>Trip not found:(</Dialog>
+      )
+    }
+    // if (!trip)
     return (
       <div className={page}>
         <div className={main}>
@@ -68,7 +106,7 @@ export class Trips extends React.Component {
             color='primary'
             onClick={this.handleOpenDialog}
           >
-            <div className={buttonText}>Create route</div>
+            <div className={buttonText}>Create new trip</div>
           </Button>
 
           <Paper className={paper}>

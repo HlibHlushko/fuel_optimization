@@ -62,9 +62,9 @@ export const TripMap = ({
   }
 
   const mapEl = useRef(null)
-  useEffect(() => {
-    if (mapActiveArea) mapEl.current.leafletElement.setActiveArea(mapArea, true)
-  }, [mapActiveArea])
+  // useEffect(() => {
+  //   if (mapActiveArea) mapEl.current.leafletElement.setActiveArea(mapArea, true)
+  // }, [mapActiveArea])
 
   const [bounds/*, maxBounds */] = routeChunksGeoJSON ? getRegAndMaxBounds(routeChunksGeoJSON) : [null, null]
   return (
