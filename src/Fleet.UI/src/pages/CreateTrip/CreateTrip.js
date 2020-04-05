@@ -82,7 +82,7 @@ export class CreateTrip extends React.Component {
   handleSave () {
     // this.setState({ saveDisabled: true, needPanToBounds: true })
     tripService.createTrip({
-      car: this.state.cars.filter(c => c.id === this.state.car)[0],
+      car: [...this.state.cars, ...localStorageService.getAllCars()].filter(c => c.id === this.state.car)[0],
       residualFuel: this.state.liters,
       inputPoints: this.state.points
         .reduce((a, p) => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Paper, Dialog } from '@material-ui/core'
+import { Button, Paper, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
 
 import { TripMap } from '../../components/TripMap'
 import { Redirect } from 'react-router-dom'
@@ -14,7 +14,8 @@ export class Trips extends React.Component {
 
     this.state = {
       found: false,
-      trip: null
+      trip: null,
+      redirect: false
     }
     this.handleOpenDialog = this.handleOpenDialog.bind(this)
     this.handleBuildRoute = this.handleBuildRoute.bind(this)
@@ -92,14 +93,21 @@ export class Trips extends React.Component {
       paper
     } = this.props.classes
     const { trip, found, selectedPoints, originalRoute, routeChunks } = this.state
-    if (this.state.isOpen) {
+    if (this.state.isOpen || this.state.redirect) {
       return (
         <Redirect to='/create-trip' />
       )
     }
-    if (found && !trip.car) {
+    console.log(trip)
+    if (found && !trip.inputPoints) {
       return (
-        <Dialog open>Trip not found:(</Dialog>
+        <Dialog open>
+          <DialogTitle>Trip not found:(</DialogTitle>
+          <DialogContent>Go to create new trip page?</DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.setState({ redirect: true })}>Yes</Button>
+          </DialogActions>
+        </Dialog>
       )
     }
     // if (!trip)
@@ -122,51 +130,6 @@ export class Trips extends React.Component {
               points={selectedPoints}
               originalRoute={originalRoute}
               routeChunks={routeChunks}
-              /* popup for truck tracking */
-              popup={null}/* {popupLatLng &&
-                <Marker
-                  position={popupLatLng}
-                  icon={icon({ iconUrl: pin, iconSize: [12, 12], popupAnchor: [0, 12] })}
-                  ref={el => {
-                    if (el) {
-                      // el.leafletElement.openPopup()
-                      // el.leafletElement.off('click')
-                    }
-                  }}
-                >
-                  <Popup
-                    className={popup}
-                    autoPan={false}
-                    closeButton={false}
-                    autoClose={false}
-                    closeOnEscapeKey={false}
-                    closeOnClick={false}
-                  >
-                    <div className={popupTile} style={{ height: '80px' }}>
-                      <div className={popupRow}>
-                        <span className={clsx(small, upper, bold)}>id</span>
-                        <span className={medium}>{id}</span>
-                      </div>
-                      <div className={popupRow}>
-                        <span className={clsx(small, upper, bold)}>sensor status</span>
-                        <span className={medium} style={{ color: '#3A84FF' }}>Active</span>
-                      </div>
-                    </div>
-                    <div style={{ height: '10px', opacity: 0.3 }} />
-                    <div className={popupTile}>
-                      <span className={clsx(small, upper, bold)}>route details</span>
-                      <div style={{ marginTop: '33px' }}>
-                        <RouteList
-                          points={points
-                            .filter(p => p.type === POINT_TYPE.waypoint)}
-                          renderPoint={({ address }, i) => (
-                            <span className={medium}>{getAddressText(address).all}</span>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  </Popup>
-                </Marker>} */
             />
           </Paper>
         </div>
