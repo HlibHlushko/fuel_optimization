@@ -67,7 +67,7 @@ namespace Fleet.TransportationManagement
 
             app.UseSignalR(route =>
             {
-                route.MapHub<NotificationHub>("/notificationhub");
+                route.MapHub<TripUpdateHub>("/tripshub");
             });
 
             app.UseMvc();

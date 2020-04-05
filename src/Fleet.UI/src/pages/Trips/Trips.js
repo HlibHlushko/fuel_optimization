@@ -5,7 +5,7 @@ import { TripMap } from '../../components/TripMap'
 import { Redirect } from 'react-router-dom'
 import { tripService } from '../../services/tmService'
 import { getRouteAsync, getRouteNewAsync } from '../../services/hereClient'
-
+import { updateService } from '../../services/updateService'
 export class Trips extends React.Component {
   constructor (props) {
     super(props)
@@ -25,11 +25,17 @@ export class Trips extends React.Component {
     console.log(id)
     tripService.getTrip(id)
       .then(resp => {
-        // console.log(resp)
         const { inputPoints, optimizedPoints } = resp
         console.log(inputPoints || [])
         this.handleBuildRoute(this.mapToPoint(inputPoints || []), this.mapToPoint(optimizedPoints || []))
         this.setState({ trip: resp, found: true })
+      })
+      .then(() => {
+        updateService.connection.on('UpdateTrip', (trip) => {
+          console.log(trip)
+          this.handleBuildRoute(this.mapToPoint(trip.inputPoints || []), this.mapToPoint(trip.optimizedPoints || []))
+          this.setState({ trip: trip, found: true })
+        })
       })
   }
 
@@ -55,7 +61,7 @@ export class Trips extends React.Component {
   }
 
   handleBuildRoute (points, optimizedPoints) {
-    let reqs
+    let reqs = []
     if (points.length > 0) { reqs = [getRouteAsync(...points.map(p => p.coordinates))] }
     if (optimizedPoints.length > 0) {
       for (let i = 0; i < optimizedPoints.length; ++i) {
@@ -91,7 +97,7 @@ export class Trips extends React.Component {
         <Redirect to='/create-trip' />
       )
     }
-    if (found && !trip) {
+    if (found && !trip.car) {
       return (
         <Dialog open>Trip not found:(</Dialog>
       )

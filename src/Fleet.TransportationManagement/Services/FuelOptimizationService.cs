@@ -20,9 +20,9 @@ namespace Fleet.TransportationManagement.Services
     {
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IHubContext<NotificationHub, INotificationClient> _hubContext;
+        private readonly IHubContext<TripUpdateHub, ITripUpdateHub> _hubContext;
 
-        public FuelOptimizationService(ILogger<FuelOptimizationService> logger, IServiceScopeFactory scopeFactory, IHubContext<NotificationHub, INotificationClient> hubContext)
+        public FuelOptimizationService(ILogger<FuelOptimizationService> logger, IServiceScopeFactory scopeFactory, IHubContext<TripUpdateHub, ITripUpdateHub> hubContext)
         {
             _logger = logger;
             _serviceScopeFactory = scopeFactory;
@@ -30,7 +30,6 @@ namespace Fleet.TransportationManagement.Services
         }
         public void StartOptimization(Trip trip)
         {
-            // _hubContext.Clients.Group(trip.UserId).ReceiveTripUpdate(trip.Id, "loading", null);
 
             Task.Run(async () =>
             {
@@ -50,8 +49,9 @@ namespace Fleet.TransportationManagement.Services
 
                     _logger.LogInformation(JsonConvert.SerializeObject(optimization));
 
+                    await _hubContext.Clients.All.UpdateTrip(await dbService.GetTripAsync(trip.Id));
                     // await _hubContext.Clients.Group(trip.UserId).ReceiveTripUpdate(trip.Id, "done", optPoints);
-                    // await _hubContext.Clients.Group(trip.DriverId.ToString()).ReceiveTripUpdate(trip.Id, "done", optPoints);
+                    // await _hubContext.Clie5nts.Group(trip.DriverId.ToString()).ReceiveTripUpdate(trip.Id, "done", optPoints);
                 }
             });
         }
@@ -114,7 +114,6 @@ namespace Fleet.TransportationManagement.Services
         private async Task<(GetFuelStationsDto[], FuelOptimizationInput)> CreateFuelData(Trip trip, IHttpClientFactory clientFactory)
         {
             HttpClient fuelStationsClient = clientFactory.CreateClient("fuelStations");
-            fuelStationsClient.DefaultRequestHeaders.Add("X-UserId", "E boi");
             GetFuelStationsDto[] res = null;
             try
             {

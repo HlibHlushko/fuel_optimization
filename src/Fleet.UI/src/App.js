@@ -2,7 +2,12 @@ import React from 'react'
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { CreateTrip } from './pages/CreateTrip/'
 import { Trips } from './pages/Trips'
+import { updateService } from './services/updateService'
 class App extends React.Component {
+  componentDidMount () {
+    updateService.connect()
+  }
+
   render () {
     return (
 
