@@ -9,7 +9,7 @@ using Fleet.TransportationManagement.Models;
 using Fleet.TransportationManagement.Hubs;
 using Fleet.TransportationManagement.Services;
 using Fleet.TransportationManagement.Services.Interfaces;
-
+using System.IO;
 namespace Fleet.TransportationManagement
 {
     public class Startup
@@ -26,7 +26,7 @@ namespace Fleet.TransportationManagement
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<TmContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:TransportationManagement"]));
+            services.AddDbContext<TmContext>(options => options.UseMySQL(Configuration["ConnectionStrings:TransportationManagement"]));
 
             services.AddHttpContextAccessor();
 
@@ -76,6 +76,7 @@ namespace Fleet.TransportationManagement
 
         public static void Initialize(TmContext context)
         {
+
             context.Database.Migrate();
         }
     }

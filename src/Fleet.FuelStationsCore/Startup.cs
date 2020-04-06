@@ -25,12 +25,12 @@ namespace Fleet.FuelStationsCore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<FsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FuelStations")));
+            services.AddDbContext<FsContext>(options => options.UseMySql(Configuration.GetConnectionString("FuelStations")));
             services.AddTransient<DbService>();
             services.AddTransient<DieselStationsService>();
             services.AddTransient<CollectApiService>();
 
-            services.AddCors(builder => builder.AddDefaultPolicy(p => 
+            services.AddCors(builder => builder.AddDefaultPolicy(p =>
             {
                 p.AllowAnyOrigin();
                 p.AllowAnyMethod();
@@ -44,7 +44,7 @@ namespace Fleet.FuelStationsCore
 
                 Configuration.GetSection(nameof(HereApiOptions)).Bind(hao);
             });
-            services.Configure<CollectApiOptions>(cao => 
+            services.Configure<CollectApiOptions>(cao =>
             {
                 cao.ApiKey = Configuration["COLLECT_APIKEY"];
                 Configuration.GetSection(nameof(CollectApiOptions)).Bind(cao);

@@ -2,14 +2,13 @@ version: '3'
 
 services:
   common_db:
-    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
-    volumes:
-      - './data/Common:/var/opt/mssql/data'
+    image: "mysql"
+    # volumes:
+      # - './data/Common:/var/opt/mssql/data'
     ports:
-      - "8033:1433"
+      - "8033:3306"
     environment: 
-      SA_PASSWORD: "Cn0gh0wtyny0"
-      ACCEPT_EULA: "Y"
+      MYSQL_ROOT_PASSWORD: "Cn0gh0wtyny0"
   fuel_optimization:
     build:
       dockerfile: dev.Dockerfile
@@ -31,7 +30,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - CHOKIDAR_USEPOLLING=true
   fuel_stations_core:
-    entrypoint: /wait-for-it.sh common_db:1433 -t 0 --
+    entrypoint: /wait-for-it.sh common_db:3306 -t 0 --
     command: [ 'dotnet', 'watch', 'run', '--no-launch-profile' ]
     build:
       dockerfile: dev.Dockerfile
@@ -41,11 +40,12 @@ services:
       - './src/Fleet.FuelStationsCore:/app'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db,1433;Database=FuelStations;User Id=sa;Password=Cn0gh0wtyny0;
+      - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db;Port=3306;Database=FuelStations;Uid=root;Pwd=Cn0gh0wtyny0
+      # - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db,1433;Database=FuelStations;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db
   transportation_management:
-    entrypoint: /wait-for-it.sh common_db:1433 -t 0 --
+    entrypoint: /wait-for-it.sh common_db:3306 -t 0 --
     command: [ 'dotnet', 'watch', 'run', '--no-launch-profile' ]
     build:
       dockerfile: dev.Dockerfile
@@ -55,7 +55,8 @@ services:
       - './src/Fleet.TransportationManagement:/app'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db,1433;Database=TransportationManagement;User Id=sa;Password=Cn0gh0wtyny0;
+      - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db;Port=3306;Database=TransportationManagement;Uid=root;Pwd=Cn0gh0wtyny0
+      # - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db,1433;Database=TransportationManagement;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db
   ui:

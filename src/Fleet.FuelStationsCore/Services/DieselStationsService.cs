@@ -22,7 +22,8 @@ namespace Fleet.FuelStationsCore.Services
 
         public async Task Test(int detour, List<Coord> waypoints)
         {
-            if (detour > 10000) {
+            if (detour > 10000)
+            {
                 throw new ArgumentException("detour must be less than 10 km");
             }
 
@@ -36,7 +37,7 @@ namespace Fleet.FuelStationsCore.Services
         public async Task<DieselStationInfos> GetDieselStationsAlongRouteAsync(int detour, List<Coord> waypoints)
         {
             var route = await _here.GetRouteAsync(waypoints);
-            var dieselStations = await _here.GetDieselStationsAlongCorridorAsync(radius: detour / 2, route.Id);
+            var dieselStations = await _here.GetDieselStationsAlongCorridorAsync(detour / 2, route.Id);
 
             return new DieselStationInfos
             {
@@ -47,7 +48,7 @@ namespace Fleet.FuelStationsCore.Services
                 Infos = dieselStations.Select(ds => new DieselStationInfo
                 {
                     Station = ds,
-                    Info = new {}
+                    Info = new { }
                 }).ToList()
             };
         }
