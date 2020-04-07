@@ -8,62 +8,35 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: "Cn0gh0wtyny0"
   fuel_optimization:
-    build:
-      dockerfile: dev.Dockerfile
-    ports:
-      - "8003:8000"
-    volumes:
-      - './src/Fleet.FuelOptimization:/app'
+    image: 127.0.0.1:5000/fuel_optimization
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
   fuel_stations:
-    build:
-      dockerfile: dev.Dockerfile
-    ports:
-      - "8007:8000"
-    volumes:
-      - './src/Fleet.FuelStations:/app'
-      - '/app/node_modules'
+    image: 127.0.0.1:5000/fuel_stations
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
   fuel_stations_core:
     entrypoint: /wait-for-it.sh common_db:3306 -t 0 --
-    command: [ 'dotnet', 'watch', 'run', '--no-launch-profile' ]
-    build:
-      dockerfile: dev.Dockerfile
-    ports:
-      - "8008:8000"
-    volumes:
-      - './src/Fleet.FuelStationsCore:/app'
+    image: 127.0.0.1:5000/fuel_stations_core
+    command: ['dotnet', 'Fleet.FuelStationsCore.dll']
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db;Port=3306;Database=FuelStations;Uid=root;Pwd=Cn0gh0wtyny0
-      # - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db,1433;Database=FuelStations;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db
   transportation_management:
     entrypoint: /wait-for-it.sh common_db:3306 -t 0 --
-    command: [ 'dotnet', 'watch', 'run', '--no-launch-profile' ]
-    build:
-      dockerfile: dev.Dockerfile
-    ports:
-      - "8004:8000"
-    volumes:
-      - './src/Fleet.TransportationManagement:/app'
+    image: 127.0.0.1:5000/transportation_management
+    command: ['dotnet', 'Fleet.TransportationManagement.dll']
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db;Port=3306;Database=TransportationManagement;Uid=root;Pwd=Cn0gh0wtyny0
-      # - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db,1433;Database=TransportationManagement;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db
   ui:
-    build:
-      dockerfile: dev.Dockerfile
-    ports:
-      - "8006:3000"
+    image: 127.0.0.1:5000/ui
     volumes:
-      - './src/Fleet.UI/public:/app/public'
-      - './src/Fleet.UI/src:/app/src'
+      - 'static-content:/app/build'
     environment:
       - NODE_ENV=production
       - REACT_APP_FM_URL=https://localhost:8443/fm
@@ -74,7 +47,13 @@ services:
       - "8080:80"
       - "8443:443"
     volumes:
+      # - './nginx/development.conf:/etc/nginx/env/development.conf'
+
       - './nginx/production.conf:/etc/nginx/env/production.conf'
+      - 'static-content:/usr/share/nginx/static'
     environment:
       - NGINX_HOST=localhost
       - NGINX_EXT_SSL_PORT=8443
+
+volumes:
+  static-content:

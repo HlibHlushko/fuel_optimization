@@ -46,4 +46,4 @@ services:
       - './nginx/oauth2.js:/usr/share/nginx/scripts/oauth2.js'
       - './certs:/etc/ssl/certs'
       - './wait-for-it.sh:/wait-for-it.sh'
-    command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/nginx.template.conf > /etc/nginx/nginx.conf && envsubst '$$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/proxy_headers.template > /etc/nginx/proxy_headers && /wait-for-it.sh transportation_management:8000 -t 0 -- nginx -g 'daemon off;'"
+    command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/nginx.template.conf > /etc/nginx/nginx.conf && envsubst '$$NGINX_EXT_SSL_PORT' < /etc/nginx/templates/proxy_headers.template > /etc/nginx/proxy_headers && /wait-for-it.sh common_db:3306 -t 0 -- nginx -g 'daemon off;'"
