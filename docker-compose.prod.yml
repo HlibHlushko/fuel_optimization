@@ -6,7 +6,10 @@ services:
     ports:
       - "8033:3306"
     environment: 
-      MYSQL_ROOT_PASSWORD: "Cn0gh0wtyny0"
+      - MYSQL_ROOT_PASSWORD=Cn0gh0wtyny0
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=Cn0gh0wtyny0
+       
   fuel_optimization:
     image: 127.0.0.1:5000/fuel_optimization
     environment:

@@ -8,7 +8,7 @@ services:
     ports:
       - "8033:3306"
     environment: 
-      MYSQL_ROOT_PASSWORD: "Cn0gh0wtyny0"
+      - MYSQL_ROOT_PASSWORD: "Cn0gh0wtyny0"
   fuel_optimization:
     build:
       dockerfile: dev.Dockerfile
