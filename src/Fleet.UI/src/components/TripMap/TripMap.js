@@ -42,12 +42,12 @@ export const TripMap = ({
   points, routeChunks, originalRoute, popup,
   onTripDragStart, onTripDrag, onTripDragEnd, onMapDoubleClick
 }) => {
-  useEffect(() => {
-    if (dragEnabled) {
-      onMove = debounce(onTripDrag, 200, { leading: false, trailing: true })
-      return () => onMove.cancel()
-    }
-  }, [dragEnabled, onTripDrag])
+  // useEffect(() => {
+  //   if (dragEnabled) {
+  //     onMove = debounce(onTripDrag, 200, { leading: false, trailing: true })
+  //     return () => onMove.cancel()
+  //   }
+  // }, [dragEnabled, onTripDrag])
 
   const [dotLatLng, setDotLanLng] = useState(null)
   const [index, setIndex] = useState(null)
