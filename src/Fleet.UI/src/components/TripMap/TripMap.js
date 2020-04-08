@@ -61,7 +61,7 @@ export const TripMap = ({
     }
   }
 
-  const mapEl = useRef(null)
+  // const mapEl = useRef(null)
   // useEffect(() => {
   //   if (mapActiveArea) mapEl.current.leafletElement.setActiveArea(mapArea, true)
   // }, [mapActiveArea])
@@ -70,7 +70,7 @@ export const TripMap = ({
   return (
     <div className={map}>
       <Map
-        ref={mapEl}
+        ref={useRef(null)}
         center={!points || points.length === 0
           ? [50.400158, 30.560204]
           : points.length === 1 && points[0].coordinates}
