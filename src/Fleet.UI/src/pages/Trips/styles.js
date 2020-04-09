@@ -77,5 +77,8 @@ export const styles = ({
     width: '20px',
     height: '20px',
     padding: 0
+  },
+  dialogText: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
   }
 })

@@ -60,7 +60,7 @@ export const styles = ({
     height: '100%'
   },
   parameters: {
-    width: '520px',
+    minWidth: '369px',
     height: '100%',
     display: 'flex',
     flexDirection: 'column'

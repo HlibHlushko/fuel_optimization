@@ -156,7 +156,7 @@ export class CreateTrip extends React.Component {
       }, [])
 
     const routeReq = Promise.all(
-      waypoints.map(wps => getRouteAsync(...wps))
+      waypoints.map(wps => getRouteAsync(0, ...wps))
     )
     this._pointReqs[i] = routeReq
 
@@ -256,7 +256,7 @@ export class CreateTrip extends React.Component {
     ]
     console.log('drag', newCorrection, latlng)
 
-    const correctionReq = getRouteAsync(
+    const correctionReq = getRouteAsync(0,
       { lat: slat, lng: slng },
       ...newCorrectionsCoords,
       { lat: flat, lng: flng }

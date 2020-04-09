@@ -30,9 +30,10 @@ const extractShape = geoJSON => {
   }
   return res
 }
-const extractRoute = resj => {
+const extractRoute = (info, resj) => {
   // console.log(resj.response.route[0].summary)
-  return resj.response.route[0].leg.map(({ link }, i) => {
+
+  const rrr = resj.response.route[0].leg.map(({ link }, i) => {
     const { latitude: slat, longitude: slng } = resj.response.route[0].waypoint[i].originalPosition
     const { latitude: elat, longitude: elng } = resj.response.route[0].waypoint[i + 1].originalPosition
     const slink = link[0].shape
@@ -63,37 +64,23 @@ const extractRoute = resj => {
     }
     return res
   })
+  return info ? {
+    info: resj.response.route[0].summary,
+    route: rrr
+  } : rrr
 }
 
-export const getRouteAsync = (...waypoints) => {
-  // console.log(waypoints)
+export const getRouteAsync = (info = 0, ...waypoints) => {
   return get('https://fleet.api.here.com/2/calculateroute.json?' +
-    ([ // 'routeAttributes=waypoints,summary,shape,legs,notes',
+    ([
       'app_code=' + appCode,
       'app_id=' + appId,
       ...waypoints.map((wp, i) => 'waypoint' + i + '=geo!' + wp.lat + ',' + wp.lng),
-      // 'jsonAttributes=1',
       'legAttributes=none,links',
-      // 'mapMatchRadius=500',
       'mode=fastest;car;traffic:disabled',
       'tollPass=transponder'
     ].join('&'))
-  ).then(extractRoute)
-}
-export const getRouteInfoAsync = (...waypoints) => {
-  // console.log(waypoints)
-  return get('https://fleet.api.here.com/2/calculateroute.json?' +
-    ([ // 'routeAttributes=waypoints,summary,shape,legs,notes',
-      'app_code=' + appCode,
-      'app_id=' + appId,
-      ...waypoints.map((wp, i) => 'waypoint' + i + '=geo!' + wp.lat + ',' + wp.lng),
-      // 'jsonAttributes=1',
-      'legAttributes=none,links',
-      // 'mapMatchRadius=500',
-      'mode=fastest;car;traffic:disabled',
-      'tollPass=transponder'
-    ].join('&'))
-  ).then(r => r.response.route[0].summary)
+  ).then(resp => extractRoute(info, resp))
 }
 
 export const getRouteNewAsync = (...waypoints) =>

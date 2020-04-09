@@ -50,8 +50,6 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # - './nginx/development.conf:/etc/nginx/env/development.conf'
-
       - './nginx/production.conf:/etc/nginx/env/production.conf'
       - 'static-content:/usr/share/nginx/static'
     environment:
