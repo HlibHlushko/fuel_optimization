@@ -37,7 +37,7 @@ namespace Fleet.FuelStationsCore.Services.HereApi
                 {
                     "app_id=" + _options.AppId,
                     "app_code=" + _options.AppCode,
-                    "mode=fastest;truck;traffic:disabled",
+                    "mode=fastest;car;traffic:disabled",
                     "routeAttributes=waypoints,summary,shape,legs,notes,routeId",
                     "jsonAttributes=33"
                 };
@@ -48,7 +48,7 @@ namespace Fleet.FuelStationsCore.Services.HereApi
                 response.EnsureSuccessStatusCode();
 
                 var routeResponse = await response.Content.ReadAsAsync<RouterResponse>();
-                
+
                 route = new HereRoute
                 {
                     Id = routeResponse.Response.Route[0].RouteId,
@@ -148,7 +148,7 @@ namespace Fleet.FuelStationsCore.Services.HereApi
                 else if (routeId != null)
                 {
                     queryParams.Add("route_id=" + routeId);
-                    queryParams.Add("mode=fastest;truck;traffic:disabled");
+                    queryParams.Add("mode=fastest;car;traffic:disabled");
                 }
                 else throw new ArgumentException("Either corridor or routeId parameter must be specified");
 

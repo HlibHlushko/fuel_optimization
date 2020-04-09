@@ -42,15 +42,17 @@ const defaultState = () => ({
     { id: 3, brand: 'Nissan' },
     { id: 4, brand: 'Renault' },
     { id: 5, brand: 'Ford' },
-    { id: 6, brand: 'Toyota' }
+    { id: 6, brand: 'Toyota' },
+    { id: 7, brand: 'Infinity' }
   ],
   cars: [
-    { id: 1, brandId: 1, consumption: 15, tank: 70, model: 'Q7' },
-    { id: 2, brandId: 2, consumption: 15, tank: 70, model: 'X5' },
-    { id: 3, brandId: 3, consumption: 15, tank: 70, model: 'X-Trail' },
-    { id: 4, brandId: 4, consumption: 15, tank: 70, model: 'Logan' },
-    { id: 5, brandId: 5, consumption: 15, tank: 70, model: 'Mondeo' },
-    { id: 6, brandId: 6, consumption: 15, tank: 70, model: 'Camry' }
+    { id: 1, brandId: 1, consumption: 9, tank: 75, model: 'Q7' },
+    { id: 2, brandId: 2, consumption: 8, tank: 80, model: 'X5' },
+    { id: 3, brandId: 3, consumption: 6, tank: 60, model: 'X-Trail' },
+    { id: 4, brandId: 4, consumption: 10, tank: 50, model: 'Logan' },
+    { id: 5, brandId: 5, consumption: 5, tank: 63, model: 'Mondeo' },
+    { id: 6, brandId: 6, consumption: 12, tank: 60, model: 'Camry' },
+    { id: 7, brandId: 7, consumption: 21, tank: 80, model: 'QX80' }
   ],
   suggestions: [],
   points: [

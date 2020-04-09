@@ -12,14 +12,13 @@ namespace Fleet.FuelOptimization.Services
         double[] volumes;//об'єм палива, що потрібен для доїзду від країни і до кордону країни i+1
         int tank;//об'єм баку автовоза - обов'язковий залишок
         int remainder;//залишок палива на початок маршруту
-        int minimum_remainder;//мінімальний залишок палива у баку
         public double[,] Table
         {
             get
             {
                 int points_number = costs.Length;
                 double[,] table = new double[2 * points_number + 1, points_number + 1];
-                table[0, 0] = -volumes[0] - minimum_remainder + remainder;
+                table[0, 0] = -volumes[0] + remainder;
                 table[0, 1] = -1;
                 for (int i = 1; i < points_number; i++)
                 {
@@ -29,7 +28,7 @@ namespace Fleet.FuelOptimization.Services
                         table[i, j] = -1;
                     }
                 }
-                table[points_number, 0] = tank - remainder + minimum_remainder;
+                table[points_number, 0] = tank - remainder;
                 table[points_number, 1] = 1;
                 for (int i = points_number + 1; i < 2 * points_number; i++)
                 {
@@ -95,7 +94,7 @@ namespace Fleet.FuelOptimization.Services
             for (int j = 0; j < n - 1; j++)
             {
                 if (costs[j] == costs[j + 1] /*&& volumeremainders[j + 1] + simple[j] <= tank */&&
-                    volumeremainders[j] - simple[j] > volumes[j] + minimum_remainder)
+                    volumeremainders[j] - simple[j] > volumes[j])
                 {
                     simple[j + 1] += simple[j];
                     simple[j] = 0;

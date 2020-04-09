@@ -3,8 +3,9 @@ version: '3'
 services:
   common_db:
     image: "mysql"
-    # volumes:
-      # - './data/Common:/var/opt/mssql/data'
+    volumes:
+      - './data/CommonDb:/var/lib/mysql'
+      - ./mycustom.cnf:/etc/mysql/conf.d/custom.cnf
     ports:
       - "8033:3306"
     environment: 
@@ -40,7 +41,7 @@ services:
       - './src/Fleet.FuelStationsCore:/app'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db;Port=3306;Database=FuelStations;Uid=root;Pwd=Cn0gh0wtyny0
+      - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db;Port=3306;Database=FuelStations;Uid=root;Pwd=Cn0gh0wtyny0;old guids=true;
       # - ASPNETCORE_ConnectionStrings:FuelStations=Server=common_db,1433;Database=FuelStations;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db
@@ -55,7 +56,7 @@ services:
       - './src/Fleet.TransportationManagement:/app'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db;Port=3306;Database=TransportationManagement;Uid=root;Pwd=Cn0gh0wtyny0
+      - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db;Port=3306;Database=TransportationManagement;Uid=root;Pwd=Cn0gh0wtyny0;old guids=true;
       # - ASPNETCORE_ConnectionStrings:TransportationManagement=Server=common_db,1433;Database=TransportationManagement;User Id=sa;Password=Cn0gh0wtyny0;
     depends_on:
       - common_db

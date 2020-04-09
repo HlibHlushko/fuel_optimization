@@ -39,7 +39,6 @@ namespace Fleet.TransportationManagement.Controllers
             var x = Newtonsoft.Json.JsonConvert.SerializeObject(newTrip);
             await _dbService.CreateTripAsync(newTrip);
             _fuelOptimizationService.StartOptimization(newTrip);
-            // return newTrip.Id;
             return "{" + $"\"tripId\":\"{newTrip.Id}\"" + "}";
         }
 

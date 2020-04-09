@@ -16,9 +16,8 @@ function usage () {
 echo "FO Building Script"
 cd "$(dirname "$0")"
 
-mkdir -p ./data/FleetManagement
-mkdir -p ./data/TransportationManagement
-mkdir -p ./data/FuelStations
+mkdir -p ./data/CommonDb
+touch mycustom.cnf
 mkdir -p ./nginx/log
 
 SOLUTION_NAME='FO'
