@@ -12,6 +12,7 @@ namespace Fleet.TransportationManagement.Models
         public int ResidualFuel { get; set; }
         public List<Point> InputPoints { get; set; }
         public List<Point> OptimizedPoints { get; set; }
+        public List<Point> NoOptPoints { get; set; }
         public Trip() { }
         public static Trip From(GetTripDto trip) => new Trip
         {

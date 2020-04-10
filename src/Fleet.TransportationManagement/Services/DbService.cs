@@ -23,10 +23,11 @@ namespace Fleet.TransportationManagement.Services
             _ctx.Trips.Add(trip);
             return await _ctx.SaveChangesAsync();
         }
-        public async Task<int> AddOptimizedPointsAsync(string tripId, List<Point> points)
+        public async Task<int> AddOptimizedPointsAsync(string tripId, List<Point> points, List<Point> noOptPoints)
         {
             var point = (await _ctx.Trips.FirstOrDefaultAsync(x => x.Id == tripId));
             point.OptimizedPoints = points;
+            point.NoOptPoints = noOptPoints;
             return await _ctx.SaveChangesAsync();
         }
         public async Task<Trip> GetTripAsync(string tripId)

@@ -2,14 +2,16 @@
 using Fleet.TransportationManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fleet.TransportationManagement.Migrations
 {
     [DbContext(typeof(TmContext))]
-    partial class TmContextModelSnapshot : ModelSnapshot
+    [Migration("20200410115904_AddConversionToNonOptPoints")]
+    partial class AddConversionToNonOptPoints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

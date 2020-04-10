@@ -11,6 +11,7 @@ namespace Fleet.TransportationManagement.Dtos
         public int ResidualFuel { get; set; }
         public List<Point> InputPoints { get; set; }
         public List<Point> OptimizedPoints { get; set; }
+        public List<Point> NonOptimizedPoints { get; set; }
         public SendTripDto() { }
         public SendTripDto(Trip trip)
         {
@@ -18,7 +19,9 @@ namespace Fleet.TransportationManagement.Dtos
             ResidualFuel = trip.ResidualFuel;
             InputPoints = trip.InputPoints;
             OptimizedPoints = trip.OptimizedPoints;
+            NonOptimizedPoints = trip.NoOptPoints;
             Car = trip.Car;
+
         }
     }
 

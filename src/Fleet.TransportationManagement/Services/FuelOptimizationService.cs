@@ -38,14 +38,18 @@ namespace Fleet.TransportationManagement.Services
                     IHttpClientFactory clientFactory = scope.ServiceProvider.GetRequiredService<IHttpClientFactory>();
 
                     var (stations, optimization) = await CreateFuelData(trip, clientFactory);
+                    var noOptimizaton = optimization.GetCopy();
+                    double maxCost = noOptimizaton.Costs.Max();
+                    noOptimizaton.Costs = noOptimizaton.Costs.Select(x => x = maxCost + 1 - x).ToArray();
                     _logger.LogInformation(JsonConvert.SerializeObject(optimization));
                     HttpClient optimizationClient = clientFactory.CreateClient("fuelOptimization");
 
                     OptimizationData res = await (await optimizationClient.PostAsync("/optimization", new StringContent(JsonConvert.SerializeObject(optimization), Encoding.UTF8, "application/json"))).Content.ReadAsAsync<OptimizationData>();
+                    OptimizationData noOptRes = await (await optimizationClient.PostAsync("/optimization", new StringContent(JsonConvert.SerializeObject(noOptimizaton), Encoding.UTF8, "application/json"))).Content.ReadAsAsync<OptimizationData>();
                     var optPoints = CreateResult(res, stations, trip);
-
+                    var noOptPoints = CreateResult(noOptRes, stations, trip);
                     IDbService dbService = scope.ServiceProvider.GetRequiredService<IDbService>();
-                    await dbService.AddOptimizedPointsAsync(trip.Id, optPoints);
+                    await dbService.AddOptimizedPointsAsync(trip.Id, optPoints, noOptPoints);
 
                     _logger.LogInformation(JsonConvert.SerializeObject(optimization));
 
@@ -137,6 +141,7 @@ namespace Fleet.TransportationManagement.Services
             {
                 throw new Exception("Residual fuel is inefficient to reach any gas station :/ Optimization will keep going forever, nice.");
             }
+
             return (res, new FuelOptimizationInput
             {
                 Volumes = volumes,

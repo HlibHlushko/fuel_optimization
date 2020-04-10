@@ -21,6 +21,9 @@ namespace Fleet.TransportationManagement.Models
             builder.Entity<Trip>().Property(e => e.OptimizedPoints).HasConversion(
                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                 v => JsonConvert.DeserializeObject<List<Point>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+            builder.Entity<Trip>().Property(e => e.NoOptPoints).HasConversion(
+                v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                v => JsonConvert.DeserializeObject<List<Point>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
     }
 }
