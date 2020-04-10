@@ -20,12 +20,12 @@ export class Summary extends React.Component {
   render () {
     const { classes, trip, info } = this.props
     const { distance } = info || {}
-    const rows = [{ name: 'Total Distance', value: distance && (distance / 1000).toFixed(2) }]
+    const rows = [{ name: 'Total Distance', value: distance && (distance / 1000).toFixed(2).toString() + 'km' }]
     if (trip && trip.optimizedPoints) {
       const { totalFuel, totalCost } = calcVolumeAndCost(trip.optimizedPoints)
       rows.push(
-        { name: 'Consumed fuel', value: totalFuel.toFixed(2) },
-        { name: 'Total cost', value: totalCost.toFixed(2) }
+        { name: 'Consumed fuel', value: totalFuel.toFixed(2).toString() + 'L' },
+        { name: 'Total cost', value: totalCost.toFixed(2).toString() + '€' }
       )
     }
     console.log(rows)

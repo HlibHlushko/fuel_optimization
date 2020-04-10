@@ -56,8 +56,8 @@ export class MyTable extends React.Component {
                       tabIndex={-1}
                       key={index}
                     >
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.value}</TableCell>
+                      <TableCell style={{ fontSize: '18px' }}>{row.name}</TableCell>
+                      <TableCell style={{ fontSize: '18px' }}>{row.value}</TableCell>
                     </TableRow>
                   )
                 })}
