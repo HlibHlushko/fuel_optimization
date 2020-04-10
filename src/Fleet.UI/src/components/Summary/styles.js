@@ -3,9 +3,10 @@ export const styles = ({
   summaryContainer: {
     position: 'absolute',
     width: '300px',
-    height: '200px',
+    height: '155px',
     zIndex: 1500,
-    bottom: 0
+    bottom: 0,
+    right: 0
 
   },
   row: {

@@ -25,6 +25,7 @@ export class Trips extends React.Component {
     const { id } = this.props.match.params
     tripService.getTrip(id)
       .then(resp => {
+        console.log(resp)
         const { inputPoints, optimizedPoints } = resp
         this.handleBuildRoute(this.mapToPoint(inputPoints || []), this.mapToPoint(optimizedPoints || []))
         this.setState({ trip: resp, found: true })
@@ -51,8 +52,6 @@ export class Trips extends React.Component {
       residualFuel: p.remainder
     }))
   }
-
-  updateTrips () {}
 
   handleOpenDialog (newId) {
     const newIsOpen = !this.state.isOpen
