@@ -26,7 +26,8 @@ export class Summary extends React.Component {
         { name: 'Consumed fuel', value: totalFuel.toFixed(2).toString() + 'L' },
         { name: 'Total cost', value: totalCost.toFixed(2).toString() + '€' },
         // { name: 'Consumed fuel(non)', value: nonTotalFuel.toFixed(2).toString() + 'L' },
-        { name: 'Total cost(non)', value: nonTotalCost.toFixed(2).toString() + '€' }
+        { name: 'Total cost(the worst case)', value: nonTotalCost.toFixed(2).toString() + '€' },
+        { name: 'Profit percentage', value: ((nonTotalCost - totalCost) / totalCost * 100).toFixed(2).toString() + '%' }
 
       )
     }
