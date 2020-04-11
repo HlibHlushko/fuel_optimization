@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { CreateTrip } from './pages/CreateTrip/'
+import { Footer } from './components/Footer'
 import { Trips } from './pages/Trips'
 import { updateService } from './services/updateService'
 class App extends React.Component {
@@ -22,7 +23,7 @@ class App extends React.Component {
           </Route>
           <Redirect to='/create-trip' />
         </Switch>
-
+        <Footer />
       </div>
 
     )
