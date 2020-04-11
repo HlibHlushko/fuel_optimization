@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paper } from '@material-ui/core'
+import { Paper, Typography } from '@material-ui/core'
 
 import { Table } from '../Table'
 export class Summary extends React.Component {
@@ -31,11 +31,15 @@ export class Summary extends React.Component {
 
       )
     }
+    console.log(rows.length)
     return (
       <Paper className={classes.summaryContainer}>
         <Table
           rows={rows}
         />
+        {rows.length < 2 && (
+          <Typography>There'll be additional info after route is ready, just wait:)</Typography>
+        )}
       </Paper>
 
     )

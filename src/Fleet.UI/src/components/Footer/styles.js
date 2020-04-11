@@ -26,8 +26,12 @@ export const styles = ({
     bottom: '10px',
     display: 'flex',
     justifyContent: 'space-around',
-    height: '100px',
+    height: '150px',
     padding: '25px 25px 50px 25px'
     // justifyContent: ''
+  },
+  lowerCase: {
+    textTransform: 'none'
   }
+
 })

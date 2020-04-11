@@ -2,12 +2,16 @@ import React from 'react'
 import clsx from 'clsx'
 import { IconButton, Icon, Button } from '@material-ui/core/'
 import { ReactComponent as QuestionIcon } from '../../pics/question-sign.svg'
+import { Redirect } from 'react-router-dom'
 
 export class Footer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      opened: false
+      opened: false,
+      author: false,
+      usage: false,
+      trip: false
     }
   }
 
@@ -15,9 +19,23 @@ export class Footer extends React.Component {
     const handleChange = (value) => { this.setState({ opened: value }) }
 
     const { classes } = this.props
-    const { opened } = this.state
+    const { opened, author, usage, trip } = this.state
+    const ns = {
+      author: false,
+      usage: false,
+      trip: false
+    }
     return (
       <>
+        {author && (
+          <Redirect to='/author' />
+        )}
+        {trip && (
+          <Redirect to='/create-trip' />
+        )}
+        {usage && (
+          <Redirect to='/usage' />
+        )}
         <IconButton
           className={classes.speedDial}
           color='primary'
@@ -35,18 +53,44 @@ export class Footer extends React.Component {
           onMouseLeave={() => handleChange(false)}
         >
           <Button
+            className={classes.lowerCase}
             variant='contained'
             color='primary'
+            onClick={() => this.setState(() => {
+              ns.trip = true
+              return ns
+            }
+            )}
           >
-            about author
+            Create trip
           </Button>
           <Button
+            className={classes.lowerCase}
             variant='contained'
             color='primary'
+            onClick={() => this.setState(() => {
+              ns.author = true
+              return ns
+            }
+            )}
           >
-            how to use
+            About author
           </Button>
+          <Button
+            className={classes.lowerCase}
+            variant='contained'
+            color='primary'
+            onClick={() => this.setState(() => {
+              ns.usage = true
+              return ns
+            }
+            )}
+          >
+            How to use
+          </Button>
+
         </div>
+
       </>
     )
   }

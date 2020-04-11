@@ -2,7 +2,7 @@
 export const styles = ({
   summaryContainer: {
     position: 'absolute',
-    width: '370px',
+    width: '400px',
     height: '195px',
     zIndex: 1500,
     bottom: 0
