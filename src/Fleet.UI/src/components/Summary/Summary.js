@@ -19,6 +19,7 @@ export class Summary extends React.Component {
     const rows = [{ name: 'Total Distance', value: distance && (distance / 1000).toFixed(2).toString() + 'km' }]
     if (trip && trip.optimizedPoints) {
       const { totalFuel, totalCost } = calcVolumeAndCost(trip.optimizedPoints)
+      console.log('npn', trip.nonOptimizedPoints)
       const nonOpt = calcVolumeAndCost(trip.nonOptimizedPoints)
       const nonTotalFuel = nonOpt.totalFuel
       const nonTotalCost = nonOpt.totalCost
@@ -31,7 +32,6 @@ export class Summary extends React.Component {
 
       )
     }
-    console.log(rows.length)
     return (
       <Paper className={classes.summaryContainer}>
         <Table

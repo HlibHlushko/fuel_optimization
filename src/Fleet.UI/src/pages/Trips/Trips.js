@@ -25,14 +25,15 @@ export class Trips extends React.Component {
     const { id } = this.props.match.params
     tripService.getTrip(id)
       .then(resp => {
-        console.log(resp)
         const { inputPoints, optimizedPoints } = resp
         this.handleBuildRoute(this.mapToPoint(inputPoints || []), this.mapToPoint(optimizedPoints || []))
         this.setState({ trip: resp, found: true })
       })
       .then(() => {
         updateService.connection.on('UpdateTrip', (trip) => {
-          console.log(trip)
+          console.log('updated')
+          const { noOptPoints } = trip
+          trip.nonOptimizedPoints = noOptPoints
           this.handleBuildRoute(this.mapToPoint(trip.inputPoints || []), this.mapToPoint(trip.optimizedPoints || []))
           this.setState({ trip: trip, found: true })
         })
@@ -100,6 +101,7 @@ export class Trips extends React.Component {
       )
     }
 
+    console.log(trip)
     // if (!trip)
     return (
       <div className={page}>

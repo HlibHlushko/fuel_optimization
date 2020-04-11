@@ -43,7 +43,7 @@ export class MyTable extends React.Component {
 
     return (
       <>
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div>
           <TableContainer className={classes.container}>
             <Table stickyHeader className={classes.table} size='small'>
               <TableBody>
