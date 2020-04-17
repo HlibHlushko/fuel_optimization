@@ -2,8 +2,6 @@ namespace Fleet.TransportationManagement.Models
 {
     public class Point
     {
-        public int Id { get; set; }
-
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
@@ -33,6 +31,7 @@ namespace Fleet.TransportationManagement.Models
         Visit,
         FuelStation,
         Correction,
-        Junction
+        Junction,
+        Split
     }
 }

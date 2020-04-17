@@ -19,16 +19,19 @@ export class Summary extends React.Component {
     const rows = [{ name: 'Total Distance', value: distance && (distance / 1000).toFixed(2).toString() + 'km' }]
     if (trip && trip.optimizedPoints) {
       const { totalFuel, totalCost } = calcVolumeAndCost(trip.optimizedPoints)
-      console.log('npn', trip.nonOptimizedPoints)
-      const nonOpt = calcVolumeAndCost(trip.nonOptimizedPoints)
-      const nonTotalFuel = nonOpt.totalFuel
-      const nonTotalCost = nonOpt.totalCost
+      const splitPoint = trip.nonOptimizedPoints.indexOf(trip.nonOptimizedPoints.filter(x => x.type === 5)[0])
+      console.log(splitPoint)
+      const nop = trip.nonOptimizedPoints.slice(0, splitPoint)
+      const greedy = trip.nonOptimizedPoints.slice(splitPoint, trip.nonOptimizedPoints.length)
+      const nonTotalCost = calcVolumeAndCost(nop).totalCost
+      const greedyTotalCost = calcVolumeAndCost(greedy).totalCost
       rows.push(
-        { name: 'Consumed fuel', value: totalFuel.toFixed(2).toString() + 'L' },
+        { name: 'Bought fuel', value: totalFuel.toFixed(2).toString() + 'L' },
         { name: 'Total cost', value: totalCost.toFixed(2).toString() + '€' },
         // { name: 'Consumed fuel(non)', value: nonTotalFuel.toFixed(2).toString() + 'L' },
-        { name: 'Total cost(the worst case)', value: nonTotalCost.toFixed(2).toString() + '€' },
-        { name: 'Profit percentage', value: ((nonTotalCost - totalCost) / totalCost * 100).toFixed(2).toString() + '%' }
+        { name: 'Total cost(greedy)', value: greedyTotalCost.toFixed(2).toString() + '€' },
+        // { name: 'Total cost(the worst case)', value: nonTotalCost.toFixed(2).toString() + '€' },
+        { name: 'Profit percentage', value: ((greedyTotalCost - totalCost) / totalCost * 100).toFixed(2).toString() + '%' }
 
       )
     }

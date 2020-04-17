@@ -47,7 +47,9 @@ namespace Fleet.TransportationManagement.Services
                     OptimizationData res = await (await optimizationClient.PostAsync("/optimization", new StringContent(JsonConvert.SerializeObject(optimization), Encoding.UTF8, "application/json"))).Content.ReadAsAsync<OptimizationData>();
                     OptimizationData noOptRes = await (await optimizationClient.PostAsync("/optimization", new StringContent(JsonConvert.SerializeObject(noOptimizaton), Encoding.UTF8, "application/json"))).Content.ReadAsAsync<OptimizationData>();
                     var optPoints = CreateResult(res, stations, trip);
-                    /* this code is greedy algorithm
+                    var noOptPoints = CreateResult(noOptRes, stations, trip);
+
+                    /// this code is greedy algorithm
                     noOptRes.Refuels = optimization.Volumes;
                     double started = optimization.Remainder;
                     int i = 0;
@@ -65,8 +67,12 @@ namespace Fleet.TransportationManagement.Services
                         }
                         i++;
                     }
-                     */
-                    var noOptPoints = CreateResult(noOptRes, stations, trip);
+                    noOptPoints.Add(new Point
+                    {
+                        Type = PointType.Split
+                    });
+                    noOptPoints.AddRange(CreateResult(noOptRes, stations, trip));
+
                     IDbService dbService = scope.ServiceProvider.GetRequiredService<IDbService>();
                     await dbService.AddOptimizedPointsAsync(trip.Id, optPoints, noOptPoints);
 
